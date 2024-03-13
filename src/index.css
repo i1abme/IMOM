@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "GmarketSans";
+    height: 100%;
+  }
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  src: url("./font/GmarketSansTTFBold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GmarketSans";
+  src: url("./font/GmarketSansTTFMedium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GmarketSans";
+  src: url("./font/GmarketSansTTFLight.ttf");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@layer components {
+  .centerPosition {
+    @apply top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%];
+  }
+  .backBtn {
+    @apply top-16 left-1/4;
+  }
+}
