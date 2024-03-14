@@ -23,6 +23,8 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
   const [tableData, setTableData] = useState<ProductListInfo[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
 
+  console.log(data);
+
   const columnHelper = createColumnHelper<ProductListInfo>();
   const columns = [
     columnHelper.accessor("productId", { header: "상품번호" }),
@@ -46,6 +48,7 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
 
   useEffect(() => {
     mutate();
+    console.log(request);
   }, [request, mutate]);
 
   useEffect(() => {

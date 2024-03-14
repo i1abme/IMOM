@@ -5,6 +5,7 @@ import useGetProductDates from "../../queries/products/useGetProductDates";
 import { useNavigate } from "react-router-dom";
 import { CalendarProductDates } from "../../types/product";
 import { ko } from "date-fns/locale";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ProductCalendar = ({ packageId }: { packageId: number }) => {
   const navigate = useNavigate();
