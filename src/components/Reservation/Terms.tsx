@@ -3,6 +3,8 @@ import SectionTitle from "./SectionTitle";
 import PrivacyStatement from "../terms/PrivacyStatement";
 import OverseasTravelAgreement from "../terms/OverseasTravelAgreement";
 import { TermsState } from "../../types/reservation";
+import CancellationAndRefund from "../terms/CancellationAndRefund";
+import IdentificationInfo from "../terms/IdentificationInfo";
 
 const Terms = ({
   handleCheck,
@@ -92,7 +94,7 @@ const Terms = ({
         </div>
         {details.refund && (
           <div className="my-[10px]">
-            <PrivacyStatement />
+            <CancellationAndRefund />
           </div>
         )}
         <div className="flex justify-between">
@@ -132,7 +134,7 @@ const Terms = ({
         </div>
         {details.identification && (
           <div className="my-[10px]">
-            <PrivacyStatement />
+            <IdentificationInfo />
           </div>
         )}
         <div className="flex justify-between">

@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/common/Header/Header";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import TravelDetail from "./pages/TravelDetail";
@@ -14,6 +13,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import MyPageNav from "./components/MyPage/MyPageNav";
 import MyPageOrderInfo from "./pages/MyPageOrderInfo";
 import { TopScroll } from "./hooks/TopScroll";
+import MainLayout from "./components/common/MainLayout";
 
 function App() {
   return (
@@ -22,14 +22,12 @@ function App() {
         <TopScroll />
         <Routes>
           <Route path="/login" element={<Login />} />
-
           <Route element={<MyPageNav />}>
             <Route path="/mypage" element={<MyPage />} />
-
             <Route path="/mypageorderinfo" element={<MyPageOrderInfo />} />
           </Route>
           {/* 본문 네비게이션바 */}
-          <Route element={<Header />}>
+          <Route element={<MainLayout />}>
             <Route path="/" element={<Main />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/traveldetail/:id" element={<TravelDetail />} />
