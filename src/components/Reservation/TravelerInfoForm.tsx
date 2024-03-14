@@ -45,7 +45,7 @@ const TravelerInfoForm = ({
     gender: "남",
     birth: "",
     phoneNumber: "",
-    isRepresentative: isRepresentative,
+    representative: isRepresentative,
   });
 
   const [inputBirth, setInputBirth] = useState("");
@@ -66,7 +66,7 @@ const TravelerInfoForm = ({
           gender: userInfo.gender,
           birth: userInfo.birth,
           phoneNumber: userInfo.phoneNumber,
-          isRepresentative: isRepresentative,
+          representative: isRepresentative,
         };
         setInfo(newInfo);
         setInputBirth(userInfo.birth);
@@ -89,7 +89,7 @@ const TravelerInfoForm = ({
         gender: "남",
         birth: "",
         phoneNumber: "",
-        isRepresentative: isRepresentative,
+        representative: isRepresentative,
       };
       setInfo(() => ({ ...newInfo }));
       handleTravelerInfo(travelerId, newInfo);

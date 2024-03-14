@@ -39,7 +39,7 @@ export interface travelerInfo {
   gender: string;
   birth: string;
   phoneNumber: string;
-  isRepresentative: boolean;
+  representative: boolean;
 }
 
 export interface TermsState {
