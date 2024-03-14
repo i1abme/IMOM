@@ -101,7 +101,10 @@ const FilterBox = ({ name = "우리" }) => {
             className="w-[327px] h-[250px] rounded-[40px] overflow-hidden bg-main-color hover:bg-sub-black hover:bg-opacity-[0.5]"
             onClick={handleSubmit}
           >
-            <img className="w-[327px] h-[250px]" src="" />
+            <img
+              className="w-[327px] h-[250px]"
+              src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?q=80&w=5108&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            />
           </div>
         </div>
       )}
