@@ -15,17 +15,17 @@ const ReservationBox = ({
     성인: {
       count: 0,
       totalPrice: 0,
-      price: prices[0].price + prices[0].surcharge ?? 0,
+      price: prices[0].price + prices[0].surcharge,
     },
     아동: {
       count: 0,
       totalPrice: 0,
-      price: prices[1].price + prices[1].surcharge ?? 0,
+      price: prices[1].price + prices[1].surcharge,
     },
     유아: {
       count: 0,
       totalPrice: 0,
-      price: prices[2].price + prices[2].surcharge ?? 0,
+      price: prices[2].price + prices[2].surcharge,
     },
     totalPay: 0,
     totalCount: 0,

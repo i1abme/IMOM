@@ -26,7 +26,7 @@ const PackageBoxGroup = ({
     isPending: isCountryPending,
     isError: isCountryError,
     error: countryError,
-  } = useGetPackages(tagSubmit, countryClick);
+  } = useGetPackages(countryClick);
 
   useEffect(() => {
     // console용 useEffect

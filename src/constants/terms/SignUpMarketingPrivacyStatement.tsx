@@ -1,5 +1,3 @@
-import React from "react";
-
 const SignUpMarketingPrivacyStatement = () => {
   return (
     <div className="h-[300px] overflow-y-scroll p-[12px] text-[12px] text-sub-black border-sub-black border-[1px]">
