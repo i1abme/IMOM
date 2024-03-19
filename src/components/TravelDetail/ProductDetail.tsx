@@ -20,13 +20,11 @@ const ProductDetail = ({
           airline={info.airline}
           minCount={info.minCount}
         />
-        <div className="w-[460px] flex ">
-          <span className="text-[12px] border-[1px] border-main-color p-[6px]">
+        <div className="w-[460px] flex h-fit border border-main-color items-center">
+          <span className="text-[12px] p-[6px] border-r border-main-color">
             여행지역
           </span>
-          <span className="text-[10px] border-[1px] border-l-0 border-main-color p-[6px] grow">
-            {info.travelRegion}
-          </span>
+          <span className="text-[10px] p-[6px] grow">{info.travelRegion}</span>
         </div>
         <div className="w-[460px]">
           <h2 className="font-bold text-main-color flex">여행 요금 안내</h2>

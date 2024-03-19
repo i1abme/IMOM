@@ -28,7 +28,7 @@ const TagBtnGroup = ({
       className="my-[66px] min-w-[200px] text-main-color"
       onSubmit={(e: FormEvent) => handleSubmit(e)}
     >
-      <h1 className="text-[20px] font-bold">{name}와 함께</h1>
+      <h1 className="text-[20px] font-bold">{name}(이)와 함께</h1>
       {data &&
         Object.entries(data).map(([key, value]) => (
           <div id={key} key={key} className="flex flex-col mb-[48px]">

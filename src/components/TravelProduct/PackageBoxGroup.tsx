@@ -9,6 +9,7 @@ const PackageBoxGroup = ({
   tagSubmit,
   countryClick,
   tagCheckList,
+  setCountryClick,
 }: PackageBoxGroupProps) => {
   const [packageData, setPackageData] = useState<Package[] | []>([]);
 
@@ -25,10 +26,7 @@ const PackageBoxGroup = ({
     isPending: isCountryPending,
     isError: isCountryError,
     error: countryError,
-  } = useGetPackages(countryClick);
-
-  console.log("tagData", tagData);
-  console.log("countryData", countryData);
+  } = useGetPackages(tagSubmit, countryClick);
 
   useEffect(() => {
     // console용 useEffect
@@ -37,27 +35,38 @@ const PackageBoxGroup = ({
 
   useEffect(() => {
     if (tagData) {
+      console.log(`tagData`, tagData);
       setPackageData(tagData);
     }
   }, [tagData]);
 
   useEffect(() => {
-    if (countryData) {
+    if (countryData && !tagSubmit) {
+      console.log(`country`, countryData);
       setPackageData(countryData);
     }
-  }, [countryData, countryClick]);
+    console.log(countryClick);
+  }, [countryData, countryClick, tagSubmit]);
 
   useEffect(() => {
-    if (tagSubmit === true) {
+    if (tagSubmit) {
+      // 모든 태그가 비어있는 경우, 전체 데이터로 패키지 데이터 업데이트
       if (Object.values(tagCheckList).every((list) => list.length === 0)) {
-        setPackageData(() => countryData || []);
+        setTagSubmit(false);
+        setCountryClick("");
       } else {
         mutate();
-        setTagSubmit(false);
       }
+      setTagSubmit(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagSubmit, mutate, setTagSubmit]);
+  }, [
+    tagSubmit,
+    mutate,
+    tagCheckList,
+    countryData,
+    setTagSubmit,
+    setCountryClick,
+  ]);
 
   if (isTagPending || isCountryPending) {
     return <div>로딩 중...</div>;

@@ -51,9 +51,9 @@ export interface Products extends Pageable {
 }
 
 export type ProductListRequest = {
-  ["packageId"]: number;
-  ["offset"]: number;
-  ["limit"]: number;
+  packageId: number | null;
+  offset: number;
+  limit: number;
 };
 
 export type ProductListInfo = {
@@ -85,7 +85,7 @@ export type SummaryTableInfo = {
 export type Schedule = {
   scheduleId: number;
   day: number;
-  dayContent: HTMLElement | string;
+  dayContent: string;
   hotel: string;
   meal: string;
   vehicle: string;
@@ -97,7 +97,7 @@ export type ScheduleListProps = {
 
 export type ScheduleItemProps = {
   title?: string;
-  content: string | HTMLElement;
+  content: string;
 };
 
 export type Prices = {

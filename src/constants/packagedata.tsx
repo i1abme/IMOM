@@ -1,5 +1,5 @@
-import flagCarrierExist from "../../public/문의하기.svg";
-import flagCarrierNotExist from "../../public/문의하기.svg";
+import flagCarrierExist from "../../public/icon_check.svg";
+import flagCarrierNotExist from "../../public/icon_ask.svg";
 
 export const PACKAGE_ICON_CATEGORIES = {
   flagCarrier: {
@@ -18,4 +18,18 @@ export const PACKAGE_ICON_CATEGORIES = {
     0: flagCarrierNotExist,
     1: flagCarrierExist,
   },
+};
+
+export const EMPTY_TABLE_DATA = {
+  startDate: "",
+  endDate: "",
+  id: null,
+  detail: null,
+  productId: null,
+  productCode: "",
+  maxCount: null,
+  nowCount: null,
+  airline: "",
+  price: null,
+  productState: "",
 };

@@ -24,20 +24,34 @@ const TravelDetail = () => {
   const [detailData, setDetailData] = useState<ProductDetialInfo>();
   const { data, isPending, isError, error } = useGetProduct(id ? +id : 0);
 
+  const [scheduleInfo, setScheuleInfo] = useState<string>("");
+
   useEffect(() => {
     if (data) {
       setDetailData(data);
     }
+    console.log(data);
   }, [data]);
 
   const handleScheduleInfo = (id: string) => {
-    setShowScheduleInfo(
-      id as "hotelInfo" | "scheduleList" | "regionInfo" | "terms"
-    );
+    console.log(id);
+    if (detailData) {
+      setShowScheduleInfo(
+        () => id as "hotelInfo" | "scheduleList" | "regionInfo" | "terms"
+      );
+      if (id !== "scheduleList")
+        setScheuleInfo(() =>
+          typeof detailData.packageInfo[
+            id as "hotelInfo" | "regionInfo" | "terms"
+          ] === "string"
+            ? detailData.packageInfo[id as "hotelInfo" | "regionInfo" | "terms"]
+            : ""
+        );
+    }
   };
 
   const handleProductInfo = (id: string) => {
-    setShowProductInfo(id);
+    setShowProductInfo(() => id);
   };
 
   const prices: Prices[] = detailData
@@ -156,7 +170,7 @@ const TravelDetail = () => {
               }
             />
           ) : (
-            <ScheduleInfo info={detailData.packageInfo[showScheduleInfo]} />
+            <ScheduleInfo info={scheduleInfo} key={showScheduleInfo} />
           )}
         </div>
       </section>

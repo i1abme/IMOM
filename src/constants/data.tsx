@@ -1,4 +1,5 @@
 export const myPageNavTitle = [
+  { title: "홈으로가기", prams: "/" },
   { title: "주문 정보", prams: "/mypageorderinfo" },
   { title: "회원 정보 수정", prams: "/editmember" },
 ];
@@ -261,18 +262,4 @@ export const productCost = [
   { title1: "성인 총액", title2: "성인 유류 할증료" },
   { title1: "아동 총액", title2: "아동 유류 할증료" },
   { title1: "유아 총액", title2: "유아 유류 할증료" },
-];
-
-export const memberInfo = [
-  {
-    title: "이메일",
-    content: "test@test.com",
-  },
-  { title: "비밀번호" },
-  { title: "이름", content: "이름" },
-  { title: "성별", content: "남" },
-  { title: "생년월일", content: "1999.99.99" },
-  { title: "핸드폰번호" },
-  { title: "가족인원" },
-  { title: "자녀대표이름" },
 ];

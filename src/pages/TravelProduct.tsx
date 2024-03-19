@@ -14,11 +14,17 @@ const TravelProduct = () => {
     seasonList: [],
   });
 
+  console.log(location.state);
+
   const [tagSubmit, setTagSubmit] = useState<boolean>(false);
 
   const [countryClick, setCountryClick] = useState<string>("");
 
   useEffect(() => {
+    setCountryClick("");
+    if (location.state !== "여행상품") {
+      setCountryClick(location.state);
+    }
     if (location.state?.tagCheckList) {
       setTagCheckList(location.state.tagCheckList);
       setTagSubmit(true);
@@ -92,6 +98,7 @@ const TravelProduct = () => {
           tagSubmit={tagSubmit}
           countryClick={countryClick}
           tagCheckList={tagCheckList}
+          setCountryClick={setCountryClick}
         />
       </div>
     </div>

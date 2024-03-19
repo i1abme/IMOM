@@ -3,6 +3,7 @@ export type FilterDropdownProps<T> = {
   id: string;
   handleClick: (value: string, id: string) => void;
   label?: string;
+  selected?: string | null;
   divStyle?: string;
   labeStyle?: string;
   selectStyle?: string;
@@ -12,7 +13,7 @@ export type FilterDropdownProps<T> = {
 };
 
 export type PackageDropdownProps = {
-  handleClick: (value: string, id: string) => void;
+  handleClick: (value: string, id: string, packageName?: string) => void;
   label?: string;
   divStyle?: string;
   labeStyle?: string;
@@ -20,4 +21,5 @@ export type PackageDropdownProps = {
   optionStyle?: string;
   listId?: string;
   listContent?: string;
+  selected?: string;
 };

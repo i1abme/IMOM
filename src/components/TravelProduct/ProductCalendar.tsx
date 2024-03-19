@@ -58,9 +58,6 @@ const ProductCalendar = ({ packageId }: { packageId: number }) => {
   if (isError) {
     return <div>에러 발생: {error?.message}</div>;
   }
-  if (!data) {
-    return <div>데이터가 없습니다.</div>;
-  }
   return (
     <ReactDatePicker
       locale={ko}

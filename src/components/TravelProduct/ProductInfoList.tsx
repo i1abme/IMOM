@@ -12,6 +12,8 @@ import { dateFormat } from "../../utils/dateFormat";
 import "./ProductLists.css";
 import ProductCalendar from "./ProductCalendar";
 import CustomPagination from "../common/CustomPagination";
+import { fillData } from "../../utils/fillData";
+import { EMPTY_TABLE_DATA } from "../../constants/packagedata";
 
 const ProductInfoList = ({ packageId }: { packageId: number }) => {
   const [request, setRequest] = useState<ProductListRequest>({
@@ -19,11 +21,10 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
     offset: 0,
     limit: 5,
   });
-  const { mutate, data, isPending, isError, error } = usePostProducts(request);
+  const { mutate, data, isError, error } = usePostProducts(request);
   const [tableData, setTableData] = useState<ProductListInfo[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
-
-  console.log(data);
+  const [hasSchedule, setHasSchedule] = useState(false);
 
   const columnHelper = createColumnHelper<ProductListInfo>();
   const columns = [
@@ -48,12 +49,11 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
 
   useEffect(() => {
     mutate();
-    console.log(request);
   }, [request, mutate]);
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
+    if (data && data.content.length > 0) {
+      setHasSchedule(true);
       setTableData(() => {
         const newTableData = data.content.map((item: ProductList) => ({
           ...item,
@@ -61,22 +61,27 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
           endDate: dateFormat(item.endDate),
           id: item.productId,
           detail: (
-            <button type="button">
-              <Link to={`/traveldetail/${item.productId}`}>자세히</Link>
+            <button
+              type="button"
+              className="bg-main-color py-[2px] px-[20px] rounded-[12px] text-white"
+            >
+              <Link to={`/traveldetail/${item.productId}`}>확인하기</Link>
             </button>
           ),
         }));
-        return newTableData;
+        return fillData(newTableData, 5, EMPTY_TABLE_DATA);
       });
       setTotalPages(data.totalPages);
+    } else if (data && data.content.length === 0) {
+      setHasSchedule(false);
     }
   }, [data]);
 
-  if (isPending) {
-    <div></div>;
-  }
   if (isError) {
     return <div>에러 발생: {error?.message}</div>;
+  }
+  if (!hasSchedule) {
+    return <div>추후 일정 업데이트 예정입니다.</div>;
   }
   return (
     <>
@@ -90,10 +95,10 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
         theadStyle={
           "bg-main-color bg-opacity-10 h-[24px] mt-[1px] border-t-[0.5px] border-b-[0.5px] border-main-color"
         }
-        thStyle={"text-[12px]"}
+        thStyle={"text-[12px] font-medium"}
         tbodyStyle={"text-[10px]"}
         tbodyTrStyle={"border-t-[0.5px] border-dashed border-main-color"}
-        tdStyle={"py-[14px]"}
+        tdStyle={"h-[36px] font-light"}
       />
       <CustomPagination
         totalPage={totalPages}

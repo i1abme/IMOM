@@ -3,6 +3,7 @@ import ScheduleBtn from "./ScheduleBtn";
 import PackageInfo from "../common/PackageInfo";
 import { Package } from "../../types/package";
 import ProductInfoList from "./ProductInfoList";
+import { motion } from "framer-motion";
 
 const PackageBox = ({ packageData }: { packageData: Package }) => {
   const [showSchedule, setShowSchedule] = useState(false);
@@ -21,7 +22,7 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
         {packageData.thumbnailList && (
           <img
             src={packageData.thumbnailList[0]?.imageUrl}
-            alt={packageData.thumbnailList[0]?.originalImageName}
+            alt="여행지 이미지"
             className="w-full h-full object-cover"
           />
         )}
@@ -39,7 +40,16 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
           showSchedule={showSchedule}
           handleScheduleBtn={handleScheduleBtn}
         />
-        {showSchedule && <ProductInfoList packageId={packageData.packageId} />}
+        {showSchedule && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center gap-[24px]"
+          >
+            <ProductInfoList packageId={packageData.packageId} />
+          </motion.div>
+        )}
       </div>
     </section>
   );
