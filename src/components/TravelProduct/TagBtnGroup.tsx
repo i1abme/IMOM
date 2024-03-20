@@ -9,14 +9,13 @@ const TagBtnGroup = ({
   handleCheck,
   handleSubmit,
   tagCheckList,
-  handelResetTags,
+  handleResetTags,
 }: TagBtnGroupProps) => {
   const { data, isPending, isError, error } = useGetTags();
 
   if (isPending) {
     return <div>로딩 중...</div>;
   }
-
   if (isError) {
     return <div>에러 발생: {error?.message}</div>;
   }
@@ -49,7 +48,7 @@ const TagBtnGroup = ({
           type="button"
           className="rounded-[15px] border-main-color border-[1px] text-sub-black text-[10px] text-center py-[4px] px-[20px] self-center"
           aria-label="초기화"
-          onClick={handelResetTags}
+          onClick={handleResetTags}
         >
           초기화
         </button>

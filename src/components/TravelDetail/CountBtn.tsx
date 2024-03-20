@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CountBtnProps } from "../../types/product";
+import { amountFormat } from "../../utils/amountFormat";
 
 const CountBtn = ({
   age,
@@ -32,7 +33,7 @@ const CountBtn = ({
       <div className="flex justify-between w-[198px]">
         <div className="flex flex-col text-[14px] text-sub-black">
           <span className="text-main-color font-bold">{age}</span>
-          <span>{price}원</span>
+          <span>{amountFormat(price)}원</span>
         </div>
         <div className="flex gap-[22px] items-center">
           <button

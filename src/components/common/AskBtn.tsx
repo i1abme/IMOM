@@ -1,19 +1,11 @@
-import { Link } from "react-router-dom";
+import IconAsk from "/public/icon_ask.svg";
 
 const AskBtn = () => {
   return (
     <div
-      className="flex flex-col justify-center py-[8px] px-[12px] 
-    h-[68px] border-[1px] border-main-color rounded-[15px]
-    fixed right-[12vw] bg-white float-right mt-[216px] z-50"
-    >
-      <Link to={"./"}>
-        <div>icon</div>
-        <span className="text-[10px] text-main-color text-center">
-          문의하기
-        </span>
-      </Link>
-    </div>
+      className="h-[70px] w-[61.5px] fixed right-[12vw] bg-white float-right mt-[216px] z-50 bg-cover rounded-[12.2px]"
+      style={{ backgroundImage: `url(${IconAsk})` }}
+    ></div>
   );
 };
 export default AskBtn;

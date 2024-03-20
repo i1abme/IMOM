@@ -1,22 +1,28 @@
-import flagCarrierExist from "../../public/icon_check.svg";
-import flagCarrierNotExist from "../../public/icon_ask.svg";
+import flagCarrierTrue from "/public/flagCarrierTrue.svg";
+import flagCarrierFalse from "/public/flagCarrierFalse.svg";
+import tourConductorTrue from "/public/tourConductorTrue.svg";
+import tourConductorFalse from "/public/tourConductorFalse.svg";
+import shoppingTrue from "/public/shoppingTrue.svg";
+import shoppingFalse from "/public/shoppingFalse.svg";
+import optionalTourTrue from "/public/optionalTourTrue.svg";
+import optionalTourFalse from "/public/optionalTourFalse.svg";
 
 export const PACKAGE_ICON_CATEGORIES = {
   flagCarrier: {
-    0: flagCarrierNotExist,
-    1: flagCarrierExist,
+    0: flagCarrierFalse,
+    1: flagCarrierTrue,
   },
   tourConductor: {
-    0: flagCarrierNotExist,
-    1: flagCarrierExist,
+    0: tourConductorFalse,
+    1: tourConductorTrue,
   },
   shopping: {
-    0: flagCarrierNotExist,
-    1: flagCarrierExist,
+    0: shoppingFalse,
+    1: shoppingTrue,
   },
   optionalTour: {
-    0: flagCarrierNotExist,
-    1: flagCarrierExist,
+    0: optionalTourFalse,
+    1: optionalTourTrue,
   },
 };
 

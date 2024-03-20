@@ -5,6 +5,7 @@ const FilterDropdown = ({
   id,
   handleClick,
   label,
+  selected,
   divStyle,
   labeStyle,
   selectStyle,
@@ -21,6 +22,7 @@ const FilterDropdown = ({
         id={id}
         onChange={(e) => handleClick(e.target.value, id)}
         className={`${selectStyle ? selectStyle : ""}`}
+        value={selected ? selected : list[0]}
       >
         {list.map((data) => (
           <option

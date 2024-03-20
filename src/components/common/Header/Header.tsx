@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import NavMenu from "./NavMenu";
 import UserMenu from "./UserMenu";
 import AskBtn from "../AskBtn";
@@ -23,6 +23,7 @@ const Header = () => {
         </div>
         <NavMenu />
       </nav>
+      <Outlet />
       <AskBtn />
     </>
   );

@@ -14,6 +14,7 @@ import ProductCalendar from "./ProductCalendar";
 import CustomPagination from "../common/CustomPagination";
 import { fillData } from "../../utils/fillData";
 import { EMPTY_TABLE_DATA } from "../../constants/packagedata";
+import { amountFormat } from "../../utils/amountFormat";
 
 const ProductInfoList = ({ packageId }: { packageId: number }) => {
   const [request, setRequest] = useState<ProductListRequest>({
@@ -57,6 +58,7 @@ const ProductInfoList = ({ packageId }: { packageId: number }) => {
       setTableData(() => {
         const newTableData = data.content.map((item: ProductList) => ({
           ...item,
+          price: `${amountFormat(+item.price)}원`,
           startDate: dateFormat(item.startDate),
           endDate: dateFormat(item.endDate),
           id: item.productId,

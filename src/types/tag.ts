@@ -37,5 +37,5 @@ export interface TagBtnGroupProps {
   handleCheck: (checked: boolean, tagFor: string, tagId: number) => void;
   handleSubmit: (e: FormEvent) => void;
   tagCheckList: TagCheckList;
-  handelResetTags: () => void;
+  handleResetTags: () => void;
 }

@@ -3,7 +3,6 @@ import { travelerInfo } from "../../types/reservation";
 import { User } from "../../types/user";
 import {
   birthFormat,
-  calculateAge,
   checkValidDate,
   onlyEnglish,
   onlyKorean,
@@ -12,6 +11,7 @@ import {
 import CustomRadioBtn from "./CustomRadionbtn";
 import { WRONG_AGE_MESSAGES } from "../../constants/travelerdata";
 import "./TravelerInfoForm.css";
+import { calculateAge } from "../../utils/calculateAge";
 
 const TravelerInfoForm = ({
   role,

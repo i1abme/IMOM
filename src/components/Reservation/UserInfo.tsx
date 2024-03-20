@@ -17,7 +17,6 @@ const UserInfo = () => {
     headCount: 3,
     childName: "정우리",
   };
-
   return (
     <section>
       <SectionTitle title="예약자 정보" />

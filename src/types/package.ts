@@ -6,7 +6,7 @@ import { TagCheckList } from "./tag";
 export type PackageInfoProps = {
   name: string;
   summary: string;
-  price: number;
+  price: string;
   hashTag: string;
   page: string;
   country: string;

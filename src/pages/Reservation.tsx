@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Payment from "../components/Reservation/Payment";
 import { PriceInfoData, TermsState, travelerInfo } from "../types/reservation";
 import Terms from "../components/Reservation/Terms";
+import { REQUIRED_TRAVELER_DATA } from "../constants/travelerdata";
 
 const Reservation = () => {
   const location = useLocation();
@@ -139,18 +140,9 @@ const Reservation = () => {
   };
 
   const handlePayment = () => {
-    // 기본적인 필수 여행자 정보
-    const requiredData = [
-      "travelerName",
-      "enFirstName",
-      "enLastName",
-      "gender",
-      "birth",
-    ];
-
     // 기본적인 필수 정보 존재 여부 확인
     const isAllValid = Object.values(travelerInfoList).every((info) => {
-      return requiredData.every(
+      return REQUIRED_TRAVELER_DATA.every(
         (field) => info[field as keyof travelerInfo] !== ""
       );
     });

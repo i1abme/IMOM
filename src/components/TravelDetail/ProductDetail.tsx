@@ -14,7 +14,7 @@ const ProductDetail = ({
       <div className="flex flex-col gap-[20px]">
         <h2 className="font-bold text-main-color">여행개요</h2>
         <SummaryTable
-          productId={info.productId}
+          productId={info.productCode}
           startDate={info.startDate}
           endDate={info.endDate}
           airline={info.airline}
@@ -34,8 +34,8 @@ const ProductDetail = ({
                 <PriceInfo
                   key={item.age}
                   age={item.age}
-                  price={item.price}
-                  surcharge={item.surcharge + item.price}
+                  price={item.surcharge + item.price}
+                  surcharge={item.surcharge}
                 />
               ))}
           </div>

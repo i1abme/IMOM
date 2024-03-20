@@ -4,6 +4,7 @@ import PackageInfo from "../common/PackageInfo";
 import { Package } from "../../types/package";
 import ProductInfoList from "./ProductInfoList";
 import { motion } from "framer-motion";
+import { amountFormat } from "../../utils/amountFormat";
 
 const PackageBox = ({ packageData }: { packageData: Package }) => {
   const [showSchedule, setShowSchedule] = useState(false);
@@ -31,7 +32,7 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
         country={packageData.country ?? packageData.countryName ?? ""}
         name={packageData.packageName}
         summary={packageData.summary}
-        price={packageData.price}
+        price={amountFormat(packageData.price)}
         hashTag={packageData.hashTag}
         page="travelproduct"
       />

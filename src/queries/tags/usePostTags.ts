@@ -1,9 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GetTagPackages } from "../../api/api";
-import { queryClient } from "../common/quertClient";
 import { TagCheckList } from "../../types/tag";
 
 const usePostTags = (req: TagCheckList) => {
+  const queryClient = useQueryClient();
   const { mutate, data, isPending, isError, error } = useMutation({
     mutationKey: ["postTags"],
     mutationFn: () => GetTagPackages(req),

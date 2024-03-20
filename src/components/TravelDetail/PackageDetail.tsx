@@ -1,5 +1,6 @@
 import { Package } from "../../types/package";
 import { Product } from "../../types/product";
+import { amountFormat } from "../../utils/amountFormat";
 import PackageInfo from "../common/PackageInfo";
 import PackageIcon from "./PackageIcon";
 import Thumnails from "./Thumnails";
@@ -20,7 +21,9 @@ const PackageDetail = ({
             country={packageInfo.country ?? packageInfo.countryName ?? ""}
             name={packageInfo.packageName}
             summary={packageInfo.summary}
-            price={packageInfo.price}
+            price={
+              packageInfo.price ? `${amountFormat(packageInfo.price)}` : "0"
+            }
             hashTag={packageInfo.hashTag}
             page="traveldetail"
           />

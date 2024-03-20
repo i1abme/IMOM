@@ -1,10 +1,14 @@
 const KakaoLogin = () => {
-  const RestApiKey = "99b3ad892a94a312f662b534aef9be75";
-  const redirectUri = "http://localhost:3000/oauth"; //Redirect URI
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${RestApiKey}&redirect_uri=${redirectUri}&response_type=code`;
+  const redirectUri = "http://localhost:3000/kakao/oauth"; //Redirect URI
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${
+    import.meta.env.VITE_KAKAO_CLIENT_ID
+  }&redirect_uri=${redirectUri}&response_type=code`;
 
   const handleLogin = () => {
     window.location.href = kakaoURL;
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    console.log(code);
   };
 
   return <button onClick={handleLogin}>카카오</button>;

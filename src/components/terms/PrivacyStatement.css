@@ -1,9 +1,0 @@
-.borderTable {
-  border: 1px solid #3c3a36;
-}
-
-.borderTable th,
-.borderTable td {
-  border: 1px solid #3c3a36;
-  padding: 5px;
-}

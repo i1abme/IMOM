@@ -7,6 +7,8 @@ const useGetBanners = () => {
     queryFn: GetBanner,
     refetchOnWindowFocus: false,
     retry: false,
+    gcTime: Infinity,
+    staleTime: Infinity,
   });
   return { data, isPending, isError, error };
 };

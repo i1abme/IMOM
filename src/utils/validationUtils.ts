@@ -1,9 +1,9 @@
-export const onlyKorean = (name: string) => {
+export const onlyKorean = (name: string): string => {
   // travelerName 정규식 (한글만 가능)
   return name.replace(/[^a-zA-Zㄱ-ㅣ가-힣]/g, "");
 };
 
-export const onlyEnglish = (name: string) => {
+export const onlyEnglish = (name: string): string => {
   // enFirstName, enLastName 정규식 (영문만 가능)
   if (name && !/^[a-zA-Z]+$/.test(name)) {
     alert("영문으로 입력해주세요.");
@@ -11,7 +11,14 @@ export const onlyEnglish = (name: string) => {
   return name.replace(/[^a-zA-Z]/g, "").toUpperCase();
 };
 
-export const phoneNumberFormat = (num: string) => {
+export const onlyNumber = (num: string): number => {
+  if (num && !/^[0-9]*$/.test(num)) {
+    alert("숫자로 입력해주세요.");
+  }
+  return Number(num.replace(/[^0-9]/g, ""));
+};
+
+export const phoneNumberFormat = (num: string): string => {
   if (num && !/^[0-9-]*$/.test(num)) {
     alert("숫자로 입력해주세요.");
   }
@@ -34,29 +41,10 @@ export const birthFormat = (num: string): string => {
     .replace(/(-{1,2})$/g, "");
 };
 
-export const calculateAge = (
-  birthDate: string,
-  startDate: string
-): "유아" | "아동" | "성인" => {
-  const birth = new Date(birthDate);
-  const departure = new Date(startDate);
-  const diffYears = departure.getFullYear() - birth.getFullYear();
-  const ageAdjustment =
-    departure.getMonth() - birth.getMonth() < 0 ||
-    (departure.getMonth() === birth.getMonth() &&
-      departure.getDate() < birth.getDate())
-      ? -1
-      : 0;
-  const age = diffYears + ageAdjustment;
-
-  if (age < 2) return "유아";
-  if (age < 12) return "아동";
-  return "성인";
-};
-
-export const checkValidDate = (dateOfBirth: string) => {
+export const checkValidDate = (dateOfBirth: string): boolean => {
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/; //? YYYY-MM-DD 형식의 정규식
-  const dateRegex4 = /^(19|20)\d{2}-(0[1-9]|1[0-2])-([0-2][1-9]|3[01])$/; //? 230613 kty YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
+  const dateRegex4 =
+    /^(19|20)\d{2}-(0[1-9]|1[0-2])-((0[1-9])|([1-2][0-9])|(3[0-1]))$/; //? YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
 
   if (dateRegex.test(dateOfBirth)) {
     if (dateRegex4.test(dateOfBirth)) return true;

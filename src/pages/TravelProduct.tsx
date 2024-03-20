@@ -1,12 +1,13 @@
 import { FormEvent, useEffect, useState } from "react";
 import TagBtnGroup from "../components/TravelProduct/TagBtnGroup";
-import TravelPlaceBtns from "../components/TravelProduct/TravelPlaceBtns";
-import { useLocation } from "react-router-dom";
+import CountryBtns from "../components/TravelProduct/CountryBtns";
+import { useLocation, useParams } from "react-router-dom";
 import PackageBoxGroup from "../components/TravelProduct/PackageBoxGroup";
 import { TagCheckList } from "../types/tag";
 
 const TravelProduct = () => {
   const location = useLocation();
+  const { category } = useParams();
   const [tagCheckList, setTagCheckList] = useState<TagCheckList>({
     priceList: [],
     familyList: [],
@@ -14,22 +15,22 @@ const TravelProduct = () => {
     seasonList: [],
   });
 
-  console.log(location.state);
-
   const [tagSubmit, setTagSubmit] = useState<boolean>(false);
 
   const [countryClick, setCountryClick] = useState<string>("");
 
   useEffect(() => {
-    setCountryClick("");
-    if (location.state !== "여행상품") {
-      setCountryClick(location.state);
-    }
     if (location.state?.tagCheckList) {
       setTagCheckList(location.state.tagCheckList);
       setTagSubmit(true);
     }
-  }, [location.state]);
+    if (category) {
+      setCountryClick(category);
+    }
+    if (!category) {
+      setCountryClick("");
+    }
+  }, [location.state, category]);
 
   useEffect(() => {
     console.log(tagCheckList);
@@ -41,23 +42,7 @@ const TravelProduct = () => {
     setCountryClick("");
   };
 
-  const handleCountry = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    country: string
-  ): void => {
-    if (countryClick !== country) {
-      e.preventDefault();
-      setCountryClick(() => country);
-      setTagCheckList({
-        priceList: [],
-        familyList: [],
-        themeList: [],
-        seasonList: [],
-      });
-    }
-  };
-
-  const handelResetTags = () => {
+  const handleResetTags = () => {
     setTagSubmit(true);
     setTagCheckList({
       priceList: [],
@@ -86,13 +71,10 @@ const TravelProduct = () => {
         handleCheck={handelCheck}
         handleSubmit={handleSubmit}
         tagCheckList={tagCheckList}
-        handelResetTags={handelResetTags}
+        handleResetTags={handleResetTags}
       />
       <div className="flex flex-col grow max-w-[850px] mr-[12%] items-center">
-        <TravelPlaceBtns
-          handleCountry={handleCountry}
-          countryClick={countryClick}
-        />
+        <CountryBtns countryClick={countryClick} />
         <PackageBoxGroup
           setTagSubmit={setTagSubmit}
           tagSubmit={tagSubmit}

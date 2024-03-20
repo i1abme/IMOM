@@ -1,11 +1,22 @@
 import { Link } from "react-router-dom";
 
 import "./NavDropdown.css";
+import useGetCountries from "../../../queries/countries/useGetCountries";
 
 type NavDropdownProps = {
   handleMenuClose: () => void;
 };
 const NavDropdown = ({ handleMenuClose }: NavDropdownProps) => {
+  const { data } = useGetCountries();
+
+  const travelProductList = data?.reduce<{ [key: string]: string }>(
+    (acc, countryName) => {
+      acc[countryName] = `/travelproduct/${countryName}`;
+      return acc;
+    },
+    {}
+  );
+
   const FULL_MENU_LIST = [
     {
       title: "아이맘투어소개",
@@ -15,16 +26,7 @@ const NavDropdown = ({ handleMenuClose }: NavDropdownProps) => {
     },
     {
       title: "여행상품보기",
-      list: {
-        동유럽: "/travelproduct",
-        프랑스위스: "/travelproduct",
-        스페인: "/travelproduct",
-        이탈리아: "/travelproduct",
-        호주: "/travelproduct",
-        뉴질랜드: "/travelproduct",
-        대만: "/travelproduct",
-        일본: "/travelproduct",
-      },
+      list: travelProductList,
     },
     {
       title: "커뮤니티",
