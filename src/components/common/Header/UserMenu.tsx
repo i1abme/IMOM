@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import IconUser from "/public/icon_user.svg";
-import { useRecoilValue } from "recoil";
-import { loginCheck } from "../../../atom/atom";
+// import { useRecoilValue } from "recoil";
+// import { loginCheck } from "../../../atom/atom";
 
 const UserMenu = () => {
-  const isLogin = useRecoilValue(loginCheck);
+  // const isLogin = useRecoilValue(loginCheck);
+  const isLogin = false;
   return (
     <>
       {!isLogin ? (
