@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/common/Header/Header";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SideNav from "./components/common/SideNav";
