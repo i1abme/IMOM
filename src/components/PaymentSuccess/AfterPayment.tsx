@@ -23,7 +23,7 @@ const AfterPayment = () => {
   useEffect(() => {
     // reqData가 준비되었는지 확인 후 mutate 함수 호출
     if (paymentKey && amount) {
-      console.log(paymentKey);
+      console.log(req);
       mutate();
     }
   }, [mutate, paymentKey, amount]);

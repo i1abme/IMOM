@@ -36,6 +36,7 @@ import EasySignUp from "./pages/EasySignUp";
 import KakaoOAuthCallback from "./components/Login/KakaoOAuthCallback";
 import NaverOAuthCallback from "./components/Login/NaverOAuthCallback";
 import OrderConfirm from "./pages/OrderConfirm";
+import MainLayout from "./components/common/MainLayout";
 
 function App() {
   const queryClient = new QueryClient({
@@ -73,7 +74,7 @@ function App() {
             <Route path="/orderconfirm/:orderId" element={<OrderConfirm />} />
           </Route>
           {/* 본문 네비게이션바 */}
-          <Route element={<Header />}>
+          <Route element={<MainLayout />}>
             <Route path="/" element={<Main />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/community" element={<Community />} />
