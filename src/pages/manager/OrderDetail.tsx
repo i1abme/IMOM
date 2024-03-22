@@ -42,9 +42,10 @@ const OrderDetail = () => {
         totalPrice={data?.totalPrice}
         payedPrice={data?.payedPrice}
         balance={data?.balance}
+        role={"admin"}
       />
       {showInfo === "orderInfo" && data ? (
-        <OrderInfo data={data} />
+        <OrderInfo data={data} role={"admin"} />
       ) : (
         <PaymentInfo idList={idList} />
       )}

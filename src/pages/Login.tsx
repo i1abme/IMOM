@@ -14,7 +14,6 @@ const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const setLoginCheck = useSetRecoilState(loginCheck);
-  console.log(setLoginCheck);
 
   const handleLoginClick = () => {
     if (id !== "" && password !== "") {
@@ -25,6 +24,7 @@ const Login = () => {
         })
         .then((res) => {
           if (res.status === 200) {
+            setLoginCheck(true);
             window.localStorage.setItem("token", res.data.data.accessToken);
             window.localStorage.setItem(
               "refreshToken",
@@ -38,15 +38,19 @@ const Login = () => {
             alert(res.data.massage);
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          if (err.response.status === 401) {
+            alert("존재하지 않는 이메일 입니다.");
+          }
+        });
     } else {
       alert("이메일 비밀번호를 입력해주세요!");
     }
   };
   return (
-    <>
+    <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col justify-center h-full items-center lg:w-[500px]">
-        <div className="w-[170px] h-[50px] bg-main-color mb-[24px]" />
+        <img src="/subLogo.svg" />
         <LoginInput
           placeholder={"이메일 계정"}
           setState={setId}
@@ -72,13 +76,13 @@ const Login = () => {
           <button onClick={() => navigation("/signup")}>회원가입</button>
         </div>
         <div className="bg-main-color w-full h-[1px]" />
-        <div className="flex justify-end w-full">
+        <div className="flex flex-col justify-center items-center w-full">
           <KakaoLogin />
           <NaverLogin />
         </div>
       </div>
       <Button label={"홈으로 가기"} loc="" />
-    </>
+    </div>
   );
 };
 export default Login;

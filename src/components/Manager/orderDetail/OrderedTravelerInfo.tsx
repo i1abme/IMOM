@@ -23,7 +23,7 @@ const OrderedTravelerInfo = ({
   handleDelete,
   handleEdit,
   startDate,
-  page,
+  role,
   orderState,
 }: {
   startDate?: string;
@@ -37,7 +37,7 @@ const OrderedTravelerInfo = ({
     changedRole?: string,
     orderdRole?: string
   ) => void;
-  page?: string;
+  role?: string;
   orderState?: string;
 }) => {
   const [travelerInfo, setTravlerInfo] = useState<TravelerInfoData>({
@@ -62,18 +62,18 @@ const OrderedTravelerInfo = ({
       setEditable(true);
       return;
     }
-
     if (role === "cancel") {
       setTravlerInfo(() => ({ ...data }));
-    } else if (birth.length < 10) {
+    }
+    if (birth.length < 10) {
       alert("필수 여행자정보를 모두 기입해주세요.");
       return;
-    } else if (role === "submit" && id && handleEdit && startDate) {
+    }
+    if (role === "submit" && (id === 0 || id) && handleEdit && startDate) {
       // 기본적인 필수 정보 존재 여부 확인
       const isAllValid = REQUIRED_TRAVELER_DATA.every(
         (field) => travelerInfo[field as keyof typeof travelerInfo] !== ""
       );
-
       // 대표 1인의 핸드폰 번호 존재 여부 확인
       const isRepresenterValid =
         !travelerInfo.representative || travelerInfo.phoneNumber !== "";
@@ -155,9 +155,9 @@ const OrderedTravelerInfo = ({
 
   return (
     <div className={`flex flex-col items-end w-full min-w-max`}>
-      {!representative && page === "admin" && orderState !== "취소" && (
+      {!representative && role === "admin" && orderState !== "취소" && (
         <div className="flex gap-[12px] mb-[4px]">
-          {id != null && !editable ? (
+          {id !== null && !editable ? (
             <OrderDetailBtn handleClick={handleEditable} label="수정하기" />
           ) : (
             <>

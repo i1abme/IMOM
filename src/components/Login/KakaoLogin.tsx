@@ -6,11 +6,14 @@ const KakaoLogin = () => {
 
   const handleLogin = () => {
     window.location.href = kakaoURL;
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    console.log(code);
   };
 
-  return <button onClick={handleLogin}>카카오</button>;
+  return (
+    <img
+      className="h-1/2 w-1/2 mt-5 cursor-pointer"
+      onClick={handleLogin}
+      src="/kakao_login_large_narrow.png"
+    />
+  );
 };
 export default KakaoLogin;

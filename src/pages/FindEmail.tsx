@@ -24,8 +24,7 @@ const FindEmail = () => {
             setSelectEmail(res.data.data.email);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           setSelectEmail("");
         });
     } else {

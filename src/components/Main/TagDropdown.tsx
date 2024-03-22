@@ -41,7 +41,7 @@ const TagDropdown = ({
         <button
           onClick={toggleDropdown}
           type="button"
-          className="flex justify-center w-full px-4 items-center min-w-[200px] font-bold gap-[4px]"
+          className="flex justify-center w-full pl-2 items-center min-w-[200px] gap-[4px]"
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"

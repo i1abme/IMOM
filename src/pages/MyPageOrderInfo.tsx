@@ -31,7 +31,6 @@ const MyPageOrderInfo = ({ refreshToken, token }: EditType) => {
   const [orderInfoData, setOrderInfoData] = useState<OrderInfoType[]>([]);
   const [totalPage, setTotalPage] = useState(0);
 
-  console.log(orderInfoData);
   useEffect(() => {
     baseInstance
       .get(

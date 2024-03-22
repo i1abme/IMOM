@@ -59,7 +59,6 @@ const NewRegistrationEdit = () => {
   const { tagsData } = useGetTags({
     params: "tags",
   });
-  console.log(tagsData);
   // 호텔안내
   const [hotelInfoMd, setHotelInfoMd] = useState<string>("");
   const [hotelInfoHtml, setHotelInfoHtml] = useState<string>("");
@@ -77,11 +76,9 @@ const NewRegistrationEdit = () => {
     priceList: [],
   });
 
-  console.log("[LIST]", lists);
   useEffect(() => {
     baseInstance.get(`/packages/${id}`).then((res) => {
       if (res.status === 200) {
-        console.log(res.data.data);
         const {
           countryName,
           hashTag,
@@ -143,15 +140,21 @@ const NewRegistrationEdit = () => {
           );
           return newLists;
         });
-        console.log(thumbnailList);
-        setSendImg(
+        const filesToSend = Promise.all(
           thumbnailList.map(
             (thumbnail: { imageUrl: string; originalImageName: string }) => {
               const { imageUrl, originalImageName } = thumbnail;
-              return new File([imageUrl], originalImageName);
+              return fetch(imageUrl)
+                .then((response) => response.blob())
+                .then((blob) => new File([blob], originalImageName));
             }
           )
         );
+
+        filesToSend.then((files) => {
+          setSendImg(files);
+        });
+
         setMyImage(
           thumbnailList.map((thumbnail: { imageUrl: string }) => {
             const { imageUrl } = thumbnail;
@@ -165,7 +168,6 @@ const NewRegistrationEdit = () => {
   // 핸들
   const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, checked } = e.target;
-    console.log(name);
 
     if (checked) {
       // 새로운 태그가 추가되는 경우

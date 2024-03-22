@@ -1,3 +1,4 @@
+import React from "react";
 import UiEditor from "../../common/UiEditor";
 
 interface PackageEditorProps {

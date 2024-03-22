@@ -3,6 +3,8 @@ import { MENU_LIST } from "../../../constants/menudata";
 import NavDropdown from "./NavDropdown";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 import { useRef, useState } from "react";
+import IconHamburger from "/public/icon_hamburger.svg";
+import IconCancel from "/public/icon_cancel.svg";
 
 const NavMenu = () => {
   const dropdownRef = useRef(null);
@@ -29,8 +31,15 @@ const NavMenu = () => {
     items-center justify-center gap-[33px] text-[14px] w-full text-sub-black"
     >
       <li ref={dropdownRef}>
-        <button className="flex gap-[15px]" onClick={handleFullMenu}>
-          {!isMenuOpen ? <span>≣</span> : <span>x</span>}
+        <button
+          className="flex gap-[15px] items-center"
+          onClick={handleFullMenu}
+        >
+          {!isMenuOpen ? (
+            <img src={IconHamburger} alt="menu" className="w-[16px] h-[16px]" />
+          ) : (
+            <img src={IconCancel} alt="close" className="w-[16px] h-[16px]" />
+          )}
           <span>전체메뉴</span>
         </button>
         {isMenuOpen && <NavDropdown handleMenuClose={handleMenuClose} />}

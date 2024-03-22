@@ -65,7 +65,7 @@ const TravelProduct = () => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-row gap-[1%] justify-center py-[216px]">
+    <div className="w-full h-auto flex flex-row gap-[1%] justify-center">
       <TagBtnGroup
         name="우리"
         handleCheck={handelCheck}

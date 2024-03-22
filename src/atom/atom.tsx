@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
 interface SocialType {
   userName: string;
@@ -9,6 +10,13 @@ interface SocialType {
   socialType: string;
 }
 
+const { persistAtom } = recoilPersist();
+
+export const loginCheck = atom({
+  key: "loginCheck",
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
 export const tagFetchState = atom({
   key: "tagFetchState",
   default: false,
@@ -17,14 +25,6 @@ export const tagFetchState = atom({
 export const saveState = atom({
   key: "saveState",
   default: "",
-});
-
-export const loginCheck = atom({
-  key: "loginCheck",
-  default: () => {
-    const storedToken = window.localStorage.getItem("token");
-    return storedToken ? true : false;
-  },
 });
 
 export const socialData = atom<SocialType | null>({

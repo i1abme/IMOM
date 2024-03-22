@@ -1,12 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostDeposit } from "../../api/api";
-import { PaymentData } from "../../types/payment";
+import { BalanceRequset, PaymentData } from "../../types/payment";
 
-const usePostDeposit = (req: PaymentData) => {
+const usePostDeposit = (
+  req: PaymentData | BalanceRequset | null,
+  payFor: string | null
+) => {
   const queryClient = useQueryClient();
   const { mutate, data, isPending, isError, error } = useMutation({
     mutationKey: ["postDeposit"],
-    mutationFn: () => PostDeposit(req),
+    mutationFn: () => PostDeposit(req, payFor),
     retry: false,
     onSuccess: (data) => {
       queryClient.setQueryData(["postDeposit"], data);

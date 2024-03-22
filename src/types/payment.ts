@@ -1,16 +1,24 @@
 import { travelerInfo } from "./reservation";
 
 export interface PaymentData {
-  ordereId: string;
-  amount: number;
+  orderId: string;
+  amount: string | number;
   paymentKey: string;
-  productId: number;
+  productId: string;
   adultCount: number;
   childCount: number;
   infantCount: number;
   totalCount: number;
   totalPrice: number;
   travelerInfoList: travelerInfo[];
+  marketing: boolean;
+}
+
+export interface BalanceRequset {
+  orderId: string;
+  amount: string;
+  paymentKey: string;
+  imomOrderId: string;
 }
 
 export interface Failure {

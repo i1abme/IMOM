@@ -263,7 +263,12 @@ const OrderManager = () => {
       <div className="flex self-start w-fit gap-[30px] ">
         <ManagerTitle title="주문목록" />
         {excelData && excelData.length > 0 && (
-          <ExcelDownload data={excelData} headers={ORDER_EXCEL_HEADER} />
+          <ExcelDownload
+            data={excelData}
+            headers={ORDER_EXCEL_HEADER}
+            title="전체목록 다운로드"
+            fileName="아이맘_주문목록.csv"
+          />
         )}
       </div>
       <section className="w-full">

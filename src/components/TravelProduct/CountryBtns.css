@@ -1,7 +1,7 @@
-.placeBtn:nth-child(5n) {
-  border-right: none;
-}
-
 .placeBtn:nth-last-child(-n + 5) {
   border-bottom: none;
+}
+
+.placeBtn:nth-child(5n) {
+  border-right: none;
 }

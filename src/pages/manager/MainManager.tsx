@@ -1,13 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainManagerBtn from "../../components/Manager/MainManagerBtn";
 import MainTitle from "../../components/Manager/ManagerTitle";
 import ManagerTitleBox from "../../components/Manager/ManagerTitleBox";
 import { baseInstance } from "../../api/instance";
+import ExcelDownload from "../../components/Manager/ExcelDownload";
+import { USER_EXCEL_HEADER } from "../../constants/managerdata";
 
 const MainManager = () => {
   const [myImage, setMyImage] = useState<string[]>([]);
   const [sendImg, setSendImg] = useState<File[]>([]);
-  console.log(sendImg);
+  const [userExcelData, setUserExcelData] = useState([]);
+
+  useEffect(() => {
+    baseInstance.get("/users/excel").then((res) => {
+      if (res.status === 200) {
+        setUserExcelData(res.data.data);
+      }
+    });
+  }, []);
+  useEffect(() => {
+    baseInstance.get("/images/banners").then((res) => {
+      if (res.status === 200) {
+        const filesToSend = Promise.all(
+          res.data.data.map(
+            (thumbnail: { imageUrl: string; originalImageName: string }) => {
+              const { imageUrl, originalImageName } = thumbnail;
+              return fetch(imageUrl)
+                .then((response) => response.blob())
+                .then((blob) => new File([blob], originalImageName));
+            }
+          )
+        );
+
+        filesToSend.then((files) => {
+          setSendImg(files);
+        });
+
+        setMyImage(
+          res.data.data.map((thumbnail: { imageUrl: string }) => {
+            const { imageUrl } = thumbnail;
+            return imageUrl;
+          })
+        );
+      }
+    });
+  }, []);
 
   const handleImgSendClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,8 +62,6 @@ const MainManager = () => {
         .then((res) => {
           if (res.status === 200) {
             alert("업로드가 완료 되었습니다.");
-            setSendImg([]);
-            setMyImage([]);
           }
         })
         .catch((error) => console.error(error));
@@ -59,6 +94,15 @@ const MainManager = () => {
           </button>
         </div>
       </form>
+      {userExcelData && (
+        <ExcelDownload
+          data={userExcelData}
+          headers={USER_EXCEL_HEADER}
+          title="유저목록.csv"
+          fileName="아이맘_유저목록.csv"
+          className="mt-10 text-white bg-main-color px-10 py-4 hover:bg-opacity-50"
+        />
+      )}
     </div>
   );
 };

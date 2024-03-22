@@ -6,13 +6,14 @@ import LoginSignUpBtn from "../components/common/LoginSignUpBtn";
 import { useDebounce } from "../hooks/useDebounce";
 import { baseInstance } from "../api/instance";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { socialData } from "../atom/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loginCheck, socialData } from "../atom/atom";
 import SignUpTerms from "../components/SignUp/\bSignUpTerms";
 
 const EasySignUp = () => {
   const navigation = useNavigate();
   const userData = useRecoilValue(socialData);
+  const setIsLogin = useSetRecoilState(loginCheck);
   // 입력정보
   const [name, setName] = useState("");
   const [englishName, setEnglishName] = useState("");
@@ -140,8 +141,13 @@ const EasySignUp = () => {
           marketing: marketCheck === 3 ? "동의" : "비동의",
         })
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
+            window.localStorage.setItem("token", res.data.data.accessToken);
+            window.localStorage.setItem(
+              "refreshToken",
+              res.data.data.refreshToken
+            );
+            setIsLogin(true);
             navigation("/");
             alert("로그인 완료!");
           }

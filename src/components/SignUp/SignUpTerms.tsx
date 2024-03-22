@@ -41,7 +41,6 @@ const SignUpTerms = ({ setMarketCheck }: termType) => {
 
   const handleTermClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name } = e.currentTarget;
-    console.log(name);
     if (name === "term") {
       setTermsUseActive(!termsUseActive);
     } else if (name === "personal") {
@@ -81,7 +80,11 @@ const SignUpTerms = ({ setMarketCheck }: termType) => {
                   {el.title}
                 </label>
               </div>
-              <button name={el.name} onClick={handleTermClick}>
+              <button
+                className="whitespace-nowrap"
+                name={el.name}
+                onClick={handleTermClick}
+              >
                 자세히보기
               </button>
             </div>

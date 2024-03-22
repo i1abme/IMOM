@@ -12,7 +12,6 @@ const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [resetPasswordActive, setResetPasswordActive] = useState(false);
   const [resetData, setResetDate] = useState(false);
-  console.log(name, email);
 
   const handleResetPasswordClick = () => {
     if (name !== "" && email !== "") {

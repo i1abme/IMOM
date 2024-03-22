@@ -2,6 +2,7 @@ export const myPageNavTitle = [
   { title: "홈으로가기", prams: "/" },
   { title: "주문 정보", prams: "/mypageorderinfo" },
   { title: "회원 정보 수정", prams: "/editmember" },
+  { title: "회원 탈퇴", prams: "secession" },
 ];
 
 export const fileTitle = ["배너1", "배너2", "배너3"];

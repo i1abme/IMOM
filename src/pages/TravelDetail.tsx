@@ -122,7 +122,7 @@ const TravelDetail = () => {
     return <div>데이터가 없습니다.</div>;
   }
   return (
-    <div className="w-full flex flex-col items-center gap-[46px] py-[216px]">
+    <div className="w-full flex flex-col items-center gap-[46px]">
       <PackageDetail
         packageInfo={detailData.packageInfo}
         productInfo={detailData.productInfo}

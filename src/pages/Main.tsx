@@ -6,7 +6,7 @@ import SectionTitle from "../components/Main/SectionTitle";
 
 const Main = () => {
   return (
-    <div className="w-full h-auto flex flex-col items-center gap-[48px] py-[216px] ">
+    <div className="w-full h-auto flex flex-col items-center gap-[48px]">
       <Banner />
       <section className="flex items-start w-[850px] gap-[24px] flex-col">
         <SectionTitle title={"어디로 가볼까요?"} />

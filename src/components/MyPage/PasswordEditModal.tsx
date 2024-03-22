@@ -66,12 +66,12 @@ const PasswordEditModal = ({
   return (
     <>
       <div className="bg-gray-300 opacity-80 absolute top-0 w-full h-full right-0" />
-      <div className="absolute centerPosition h-96 border border-main-color bg-white w-1/3 rounded-2xl ">
-        <div className="flex flex-col justify-center items-center w-full h-full px-10">
+      <div className="absolute centerPosition h-96 border border-main-color bg-white w-2/3 rounded-2xl ">
+        <div className="flex flex-col justify-center items-center w-full h-full ">
           <SignUpInput
             value={password}
             name="password"
-            title="변경 비밀번호"
+            title="새 비밀번호"
             placeholder="6자리이상 대문자 1개이상 포함"
             onChange={handleInputChange}
             isValid={isValidPassword}

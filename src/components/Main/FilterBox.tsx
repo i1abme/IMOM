@@ -61,7 +61,7 @@ const FilterBox = ({ name = "우리" }) => {
               />
             </div>
             <div className="flex flex-row">
-              <span>여행을 떠나는 시기는</span>
+              <span>여행 시기는</span>
               <TagDropdown
                 list={data.seasonList}
                 id={"seasonList"}
@@ -79,7 +79,7 @@ const FilterBox = ({ name = "우리" }) => {
               />
             </div>
             <div className="flex flex-row">
-              <span>특별히 {name}(이)하고</span>
+              <span>{name}(이)하고</span>
               <TagDropdown
                 list={data.themeList}
                 id={"themeList"}

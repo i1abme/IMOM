@@ -2,14 +2,18 @@ import axios from "axios";
 import { BlogPost } from "../types/community";
 import { Img } from "../types/img";
 import {
-  OrdeInfoData,
   OrderData,
+  OrderInfoData,
   OrderRequest,
   SpecialAmountData,
   UpdateTravelerReq,
 } from "../types/manager";
 import { Package, PackageName } from "../types/package";
-import { OrderedPaymentData, PaymentData } from "../types/payment";
+import {
+  BalanceRequset,
+  OrderedPaymentData,
+  PaymentData,
+} from "../types/payment";
 import {
   ProductDates,
   ProductDetialInfo,
@@ -18,7 +22,7 @@ import {
 } from "../types/product";
 import { TagCheckList, TagDatas } from "../types/tag";
 import { User } from "../types/user";
-import { baseInstance } from "./instance";
+import { baseInstance, userInstance } from "./instance";
 
 /* 배너 이미지 가져오기 */
 export const GetBanner = (): Promise<Img[]> =>
@@ -69,27 +73,34 @@ export const GetCountryPackages = (country: string): Promise<Package[]> =>
 
 /* 유저 정보 조회 */
 export const GetUserInfo = (): Promise<User> =>
-  baseInstance.get(`users/mypage`).then((res) => res.data.data);
+  userInstance.get(`users/mypage`).then((res) => res.data.data);
 
-/* 예약금 결제하기 */
-export const PostDeposit = (req: PaymentData) =>
-  baseInstance.post(`/payments/confirm`, req).then((res) => res.data);
+/* 결제하기 */
+export const PostDeposit = async (
+  req: PaymentData | BalanceRequset | null,
+  payFor: string | null
+) => {
+  const url =
+    payFor === "deposit" ? `/payments/confirm` : `/payments/confirm/full`;
+  const res = await userInstance.post(url, req);
+  return res.data;
+};
 
 /* 유저 주문 정보 조회 */
-export const GetUserOrderDetail = (id: string) =>
-  baseInstance.get(`/orders/myinfo/${id}`).then((res) => res.data);
+export const GetUserOrderDetail = (id: string): Promise<OrderInfoData> =>
+  baseInstance.get(`/orders/myinfo/${id}`).then((res) => res.data.data);
 
 /* 관리자 주문 목록 조회 */
 export const PostManagerOrders = (req: OrderRequest): Promise<OrderData> =>
   baseInstance.post(`/orders`, req).then((res) => res.data.data);
 
 /* 관리자 주문 전체 조회 (엑셀용) */
-export const GetManagerOrders = (): Promise<OrdeInfoData[]> =>
+export const GetManagerOrders = (): Promise<OrderInfoData[]> =>
   baseInstance.get(`/orders/excel`).then((res) => res.data.data);
 
 /* 관리자 주문 정보 조회 */
-export const GetOrderDetail = (orderId: string): Promise<OrdeInfoData> =>
-  baseInstance.get(`orders/detail/${orderId}`).then((res) => res.data.data);
+export const GetOrderDetail = (orderId: string): Promise<OrderInfoData> =>
+  userInstance.get(`orders/detail/${orderId}`).then((res) => res.data.data);
 
 /* 관리자 결제 정보 조회 */
 export const GetPaymentInfo = async (

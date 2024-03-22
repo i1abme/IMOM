@@ -31,6 +31,7 @@ const ProductCost = ({
         <div className="whitespace-nowrap mx-5">{title1}</div>
         <input
           name={title1}
+          min={0}
           className="outline-none border"
           onChange={onChange}
           required={required}
@@ -56,6 +57,7 @@ const ProductCost = ({
           required={required}
           type="number"
           placeholder="숫자만 입력해주세요"
+          min={0}
           value={
             title2 === "성인 유류 할증료"
               ? adultSurcharge

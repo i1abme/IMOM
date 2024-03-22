@@ -27,7 +27,6 @@ import MyPageNav from "./components/MyPage/MyPageNav";
 import EditMember from "./pages/EditMember";
 import MyPageOrderInfo from "./pages/MyPageOrderInfo";
 import { TopScroll } from "./hooks/TopScroll";
-import AuthenticationPage from "./pages/AuthenticationPage";
 import NewRegistrationEdit from "./pages/manager/NewRegistrationEdit";
 import FindEmail from "./pages/FindEmail";
 import ResetPassword from "./pages/ResetPassword";
@@ -35,7 +34,10 @@ import EasySignUp from "./pages/EasySignUp";
 import KakaoOAuthCallback from "./components/Login/KakaoOAuthCallback";
 import NaverOAuthCallback from "./components/Login/NaverOAuthCallback";
 import OrderConfirm from "./pages/OrderConfirm";
+import PaymentCheckout from "./pages/PaymentCheckout";
 import MainLayout from "./components/common/MainLayout";
+import { loginCheck } from "./atom/atom";
+import { useRecoilValue } from "recoil";
 
 function App() {
   const queryClient = new QueryClient({
@@ -45,6 +47,8 @@ function App() {
   });
   const token = window.localStorage.getItem("token");
   const refreshToken = window.localStorage.getItem("refreshToken");
+  const isLoggedIn = useRecoilValue(loginCheck);
+  console.log(isLoggedIn);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -54,26 +58,27 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/easysignup" element={<EasySignUp />} />
-          <Route path="/test" element={<AuthenticationPage />} />
           <Route path="/findemail" element={<FindEmail />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/kakao/oauth" element={<KakaoOAuthCallback />} />
           <Route path="/naver/oauth" element={<NaverOAuthCallback />} />
-          <Route element={<MyPageNav />}>
-            <Route
-              path="/editmember"
-              element={<EditMember token={token} refreshToken={refreshToken} />}
-            />
-            <Route
-              path="/mypageorderinfo"
-              element={
-                <MyPageOrderInfo token={token} refreshToken={refreshToken} />
-              }
-            />
-            <Route path="/orderconfirm/:orderId" element={<OrderConfirm />} />
-          </Route>
           {/* 본문 네비게이션바 */}
           <Route element={<MainLayout />}>
+            <Route element={<MyPageNav />}>
+              <Route
+                path="/editmember"
+                element={
+                  <EditMember token={token} refreshToken={refreshToken} />
+                }
+              />
+              <Route
+                path="/mypageorderinfo"
+                element={
+                  <MyPageOrderInfo token={token} refreshToken={refreshToken} />
+                }
+              />
+              <Route path="/orderconfirm/:orderId" element={<OrderConfirm />} />
+            </Route>
             <Route path="/" element={<Main />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/community" element={<Community />} />
@@ -85,7 +90,6 @@ function App() {
               element={<TravelProduct />}
             />
             <Route path="/reservation" element={<Reservation />} />
-            <Route path="/reservation/success" element={<PaymentSuccess />} />
           </Route>
           {/* 관리자 네비게이션바 */}
           <Route element={<SideNav />}>
@@ -94,7 +98,6 @@ function App() {
             <Route path="/productmanager" element={<ProductManager />} />
             <Route path="/ordermanager" element={<OrderManager />} />
             {/* 임시: 페이지 띄우기*/}
-            <Route path="/orderdetail" element={<OrderDetail />} />
             <Route path="/orderdetail/:id" element={<OrderDetail />} />
             <Route path="/newregistration" element={<NewRegistration />} />
             <Route
@@ -105,6 +108,8 @@ function App() {
             <Route path="/productdetail" element={<ProductDetail />} />
             <Route path="/tagsmanager" element={<TagsManager />} />
           </Route>
+          <Route path="/paymentcheckout" element={<PaymentCheckout />} />
+          <Route path="/paymentcheckout/success" element={<PaymentSuccess />} />
         </Routes>
       </div>
     </QueryClientProvider>

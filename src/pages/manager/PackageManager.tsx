@@ -1,10 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { country, packageHeaders } from "../../constants/data";
 import { useNavigate } from "react-router-dom";
 import ManagerTitle from "../../components/Manager/ManagerTitle";
 import ManagerTitleBox from "../../components/Manager/ManagerTitleBox";
 import { usePostPackage } from "../../api/usePostPackage";
+import { useDeletePackage } from "../../api/useDeletePackage";
 import PackageSelect from "../../components/Manager/package/PackageSelect";
+import { useChangePackage } from "../../api/useChangePackage";
 import { baseInstance } from "../../api/instance";
 import CustomPagination from "../../components/common/CustomPagination";
 interface CountryData {
@@ -16,7 +18,6 @@ const PackageManager = () => {
   const navagation = useNavigate();
   // 여행 체크
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  console.log(selectedItems);
   /* 필터링 */
 
   const [packagePeriod, setPackagePeriod] = useState<boolean>(false);
@@ -41,8 +42,21 @@ const PackageManager = () => {
     setOffset(selected);
   };
 
-  console.log(privacyState);
-
+  // 공개 변경
+  useChangePackage({
+    operation: privacyState,
+    ids: selectedItems,
+    setChangeActive,
+    changeActive,
+    params: "packages",
+  });
+  // 패키지 삭제
+  useDeletePackage({
+    operation: "",
+    ids: selectedItems,
+    deleteActive,
+    setDeleteActive,
+  });
   // 패키지 여행 리스트
   const { packageList, totalPage } = usePostPackage({
     data: {
@@ -63,7 +77,6 @@ const PackageManager = () => {
     packagePeriod,
     offset,
   });
-  console.log(packageList);
 
   // 체크 삭제
   const handlePackageDelete = () => {

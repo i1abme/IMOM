@@ -4,6 +4,7 @@ import PasswordEditModal from "../components/MyPage/PasswordEditModal";
 import { baseInstance } from "../api/instance";
 import SignUpInput from "../components/SignUp/SignUpInput";
 import { useDebounce } from "../hooks/useDebounce";
+import userInstance from "../api/userInstance";
 
 type EditType = {
   token: string | null;
@@ -27,7 +28,6 @@ const EditMember = ({ refreshToken, token }: EditType) => {
   const debounceEnglishLastName = useDebounce(englishLastName, 300);
   const debounceBirth = useDebounce(birth, 300);
   const debouncePhone = useDebounce(phone, 300);
-  console.log(userData);
   // 정규식
   const nameRegex = /^[가-힣]/;
   const englishNameRegex = /^[a-zA-Z]+$/;
@@ -44,27 +44,20 @@ const EditMember = ({ refreshToken, token }: EditType) => {
     setModalActive(true);
   };
   useEffect(() => {
-    baseInstance
-      .get("/users/mypage", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Refresh: `Bearer ${refreshToken}`,
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          setUserData(res.data.data);
-          setEmail(res.data.data.email);
-          setGender(res.data.data.gender);
-          setName(res.data.data.userName);
-          setEnglishLastName(res.data.data.enLastName);
-          setEnglishName(res.data.data.enFirstName);
-          setPhone(res.data.data.phoneNumber);
-          setChildName(res.data.data.childName);
-          setHeadCount(res.data.data.headCount);
-          setBirth(res.data.data.birth);
-        }
-      });
+    userInstance.get("/users/mypage").then((res) => {
+      if (res.status === 200) {
+        setUserData(res.data.data);
+        setEmail(res.data.data.email);
+        setGender(res.data.data.gender);
+        setName(res.data.data.userName);
+        setEnglishLastName(res.data.data.enLastName);
+        setEnglishName(res.data.data.enFirstName);
+        setPhone(res.data.data.phoneNumber);
+        setChildName(res.data.data.childName);
+        setHeadCount(res.data.data.headCount);
+        setBirth(res.data.data.birth);
+      }
+    });
   }, []);
 
   const keyToKorean = (key: string) => {

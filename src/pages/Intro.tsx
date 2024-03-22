@@ -1,7 +1,7 @@
 const Intro = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center text-lg text-sub-gray leading-10">
-      <div className="bg-main-color h-[400px] w-full mt-52" />
+      <div className="bg-main-color h-[400px] w-full" />
       <div className="flex justify-center flex-col max-w-[800px]">
         <div className="text-main-color">
           <section className="mt-10 ">

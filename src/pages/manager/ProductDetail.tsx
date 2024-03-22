@@ -42,8 +42,9 @@ const ProductDetail = () => {
   // 항공사
   const [airline, setAirline] = useState<string>("");
   // 출발인원 최대/최소
-  const [minCount, setMinCount] = useState<number>(0);
-  const [maxCount, setMaxCount] = useState<number>(0);
+  const [minCount, setMinCount] = useState<number>(1);
+  const [maxCount, setMaxCount] = useState<number>(2);
+
   //? 여행 비용
   //성인총액/ 성인유류할증료
   const [adultPrice, setAdultPrice] = useState("");
@@ -70,21 +71,30 @@ const ProductDetail = () => {
     (packageItem) => packageItem.packageName === packageName
   );
 
-  console.log(selectedPackage?.packageId);
-
   // 패키지선택,항공사,인원onChange함수
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.currentTarget;
     if (name === "패키지선택") {
       setPackageName(value);
     } else if (name === "최소인원") {
-      setMinCount(Number(value));
+      const parsedValue = parseInt(value);
+      setMinCount(isNaN(parsedValue) || parsedValue < 1 ? 1 : parsedValue);
+      if (parsedValue >= maxCount) {
+        setMaxCount(parsedValue + 1);
+      }
     } else if (name === "최대인원") {
-      setMaxCount(Number(value));
+      const parsedValue = parseInt(value);
+      setMaxCount(isNaN(parsedValue) || parsedValue < 2 ? 2 : parsedValue);
+      if (parsedValue <= minCount) {
+        setMinCount(parsedValue - 1);
+      }
     } else if (name === "항공사") {
       setAirline(value);
     }
   };
+
   // 상품아이콘, 상품상태, 공개상태 라디오 Change함수
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -186,8 +196,8 @@ const ProductDetail = () => {
           packageId: selectedPackage?.packageId,
           startDate: startDate.toISOString().slice(0, 19).replace(" ", "T"),
           endDate: endDate.toISOString().slice(0, 19).replace(" ", "T"),
-          minCount: Number(minCount),
-          maxCount: Number(maxCount),
+          minCount: minCount,
+          maxCount: maxCount,
           privacy: privacy,
           productState: productState,
           airline: airline,
@@ -403,19 +413,13 @@ const ProductDetail = () => {
             className="border-r border-black"
           />
 
-          <select
+          <input
             onChange={handleSelectChange}
             name="최소인원"
             value={minCount}
-          >
-            {new Array(15).fill(null).map((_, index) => (
-              <>
-                <option key={index} value={index}>
-                  {index}
-                </option>
-              </>
-            ))}
-          </select>
+            type="number"
+            min={1}
+          />
           <span>명</span>
         </div>
         <div className="flex border-t border-black">
@@ -424,19 +428,13 @@ const ProductDetail = () => {
             className="border-r border-black"
           />
 
-          <select
+          <input
             onChange={handleSelectChange}
             name="최대인원"
             value={maxCount}
-          >
-            {new Array(15).fill(null).map((_, index) => (
-              <>
-                <option key={index} value={index}>
-                  {index}
-                </option>
-              </>
-            ))}
-          </select>
+            type="number"
+            min={2}
+          />
           <span>명</span>
         </div>
       </div>

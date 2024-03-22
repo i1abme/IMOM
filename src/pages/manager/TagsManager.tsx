@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ManagerTitle from "../../components/Manager/ManagerTitle";
 import { tagTitle } from "../../constants/data";
+import { MdOutlineCancel } from "react-icons/md";
 import { useGetTags } from "../../api/useGetTags";
 import { baseInstance } from "../../api/instance";
 
@@ -22,9 +23,11 @@ const TagsManager = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    const truncatedValue = value.slice(0, 14);
+
     setTagInputs((prevInputs) => ({
       ...prevInputs,
-      [name]: value,
+      [name]: truncatedValue,
     }));
   };
   const handleEnterKeyDown = async (
@@ -45,6 +48,14 @@ const TagsManager = () => {
       } catch (error) {
         console.error("에러 발생:", error);
       }
+    }
+  };
+  const handleDeleteClick = ({ itemId }: { itemId: number }) => {
+    try {
+      baseInstance.delete(`/tags/${itemId}`);
+      setFetchState(true);
+    } catch (error) {
+      console.error("에러 발생:", error);
     }
   };
 
@@ -82,11 +93,11 @@ const TagsManager = () => {
                   <div className="max-w-full overflow-hidden">
                     {item.tagContent}
                   </div>
-                  {/* <MdOutlineCancel
+                  <MdOutlineCancel
                     className="cursor-pointer hover:text-red-400"
                     key={item.tagId}
                     onClick={() => handleDeleteClick({ itemId: item.tagId })}
-                  /> */}
+                  />
                 </div>
               ))}
           </div>

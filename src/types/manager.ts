@@ -43,25 +43,25 @@ export type ManagerColumns<T> = {
   onClick?: () => void;
 }[];
 
-export interface OrdeInfoData extends OrderCount {
-  additionalPrice: number;
-  memo: string;
-  balance: number;
-  birth: string;
-  email: string;
-  endDate: string;
-  gender: string;
-  orderDate: string;
+export interface OrderInfoData extends OrderCount {
   orderNumberList: string[];
-  orderState: string;
-  packageName: string;
-  payedPrice: number;
-  phoneNumber: string;
-  productCode: string;
+  orderDate: string;
   reserveUser: string;
+  packageName: string;
+  productCode: string;
   startDate: string;
+  endDate: string;
   totalPrice: number;
+  payedPrice: number;
+  balance: number;
   travelerInfos: TravelerInfoData[];
+  additionalPrice?: number;
+  memo?: string;
+  birth?: string;
+  email?: string;
+  gender?: string;
+  orderState?: string;
+  phoneNumber?: string;
 }
 
 export interface TravelerInfoData {

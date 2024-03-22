@@ -8,6 +8,8 @@ import CommunityEditor from "../components/Community/CommunityEditor";
 import CommunityDetail from "../components/Community/CommunityDetail";
 import SectionTitle from "../components/Main/SectionTitle";
 import CustomPagination from "../components/common/CustomPagination";
+import { useRecoilValue } from "recoil";
+import { loginCheck } from "../atom/atom";
 
 type CommunityCloum = {
   title: string | JSX.Element;
@@ -30,7 +32,7 @@ const Community = () => {
   const [editorActive, setEditorActive] = useState<boolean>(true);
   const [selectCommunity, setSelectCommunity] = useState<number[]>([]);
   const [newData, setNewData] = useState<CommunityRow[]>([]);
-  const [isLogin] = useState<boolean>(true);
+  const isLogin = useRecoilValue(loginCheck);
   const [deleteActive, setDeleteActive] = useState<boolean>(false);
   const [offset, setOffset] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
@@ -120,7 +122,6 @@ const Community = () => {
       }
     });
   };
-
   // 사이드 네비게이션
   const handleNavClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -172,74 +173,76 @@ const Community = () => {
   }, [location.state]);
 
   return (
-    <div className="w-[1280px] flex flex-col justify-center items-center">
-      <div className="h-[400px] w-full bg-main-color mb-8" />
-      <div className="flex w-full  ">
-        <div className="flex flex-col items-start mr-9">
-          <SectionTitle title="커뮤니티" padding={true} />
-          {["공지사항", "자주묻는질문", "여행이야기"].map((el, idx) => (
-            <button
-              key={idx}
-              name={el}
-              onClick={(e) => handleNavClick(e, el)}
-              className={`border border-main-color w-44 h-9 font-bold hover:bg-main-color hover:text-white ${
-                active === el && "bg-main-color text-white"
-              } ${idx === 0 || idx === 1 ? "mb-2" : ""}`}
-            >
-              {el}
-            </button>
-          ))}
-        </div>
-        {!params.postId ? (
-          editorActive ? (
-            <div>
-              <Table
-                columns={columns}
-                data={newData}
-                tableStyle={
-                  "text-center w-[750px] border-main-color border-t-[0.5px] border-b-[0.5px]"
-                }
-                theadStyle={
-                  "bg-main-color bg-opacity-10 h-[24px] mt-[1px] border-t-[0.5px] border-b-[0.5px] border-main-color"
-                }
-                thStyle={"text-[12px]"}
-                tbodyStyle={"text-[10px]"}
-                tbodyTrStyle={
-                  "border-t-[0.5px] border-dashed border-main-color"
-                }
-                tdStyle={"py-[14px]"}
-              />
-              {isLogin ? (
-                <div className="flex justify-end w-full">
-                  {["삭제하기", "등록하기"].map((el, idx) => (
-                    <button
-                      className={`border border-main-color  rounded-full px-3 mt-4 hover:bg-main-color hover:text-white ${
-                        idx === 0 ? "mr-2" : ""
-                      }`}
-                      key={idx}
-                      name={el}
-                      onClick={handleRegisterDeleteClick}
-                    >
-                      {el}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <></>
-              )}
-              <div className="flex items-center w-full justify-center">
-                <CustomPagination
-                  handlePageClick={handlePageChange}
-                  totalPage={totalPage}
+    <div className="w-full flex justify-center">
+      <div className="w-[1280px] flex flex-col items-center">
+        <div className="h-[400px] w-full bg-main-color mb-8" />
+        <div className="flex w-full  ">
+          <div className="flex flex-col items-start mr-9">
+            <SectionTitle title="커뮤니티" padding={true} />
+            {["공지사항", "자주묻는질문", "여행이야기"].map((el, idx) => (
+              <button
+                key={idx}
+                name={el}
+                onClick={(e) => handleNavClick(e, el)}
+                className={`border border-main-color w-44 h-9 font-bold hover:bg-main-color hover:text-white ${
+                  active === el && "bg-main-color text-white"
+                } ${idx === 0 || idx === 1 ? "mb-2" : ""}`}
+              >
+                {el}
+              </button>
+            ))}
+          </div>
+          {!params.postId ? (
+            editorActive ? (
+              <div className="w-full">
+                <Table
+                  columns={columns}
+                  data={newData}
+                  tableStyle={
+                    "text-center w-full border-main-color border-t-[0.5px] border-b-[0.5px]"
+                  }
+                  theadStyle={
+                    "bg-main-color bg-opacity-10 h-[24px] mt-[1px] border-t-[0.5px] border-b-[0.5px] border-main-color"
+                  }
+                  thStyle={"text-[12px]"}
+                  tbodyStyle={"text-[10px]"}
+                  tbodyTrStyle={
+                    "border-t-[0.5px] border-dashed border-main-color"
+                  }
+                  tdStyle={"py-[14px]"}
                 />
+                {isLogin ? (
+                  <div className="flex justify-end w-full">
+                    {["삭제하기", "등록하기"].map((el, idx) => (
+                      <button
+                        className={`border border-main-color  rounded-full px-3 mt-4 hover:bg-main-color hover:text-white ${
+                          idx === 0 ? "mr-2" : ""
+                        }`}
+                        key={idx}
+                        name={el}
+                        onClick={handleRegisterDeleteClick}
+                      >
+                        {el}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <div className="flex items-center w-full justify-center">
+                  <CustomPagination
+                    handlePageClick={handlePageChange}
+                    totalPage={totalPage}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              <CommunityEditor active={active} />
+            )
           ) : (
-            <CommunityEditor />
-          )
-        ) : (
-          <CommunityDetail setEditorActive={setEditorActive} />
-        )}
+            <CommunityDetail setEditorActive={setEditorActive} />
+          )}
+        </div>
       </div>
     </div>
   );

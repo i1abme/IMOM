@@ -6,9 +6,11 @@ type SignUpPopUpType = {
 
 const SignUpPopup = ({ message }: SignUpPopUpType) => {
   return (
-    <div className="flex justify-center items-center absolute -right-44">
-      <img src="/X체크.svg" />
-      <div className="balloon">{message ? message : "잘못 된 형식"}</div>
+    <div className="flex justify-center items-center absolute -right-64">
+      <img src="/icon_cancel.svg" />
+      <div className="balloon whitespace-nowrap ">
+        {message ? message : "잘못 된 형식"}
+      </div>
     </div>
   );
 };

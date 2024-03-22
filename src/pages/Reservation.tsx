@@ -1,22 +1,21 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductInfo from "../components/Reservation/ProductInfo";
 import UserInfo from "../components/Reservation/UserInfo";
 import TravelerInfo from "../components/Reservation/TravelerInfo";
 import PriceInfo from "../components/Reservation/PriceInfo";
 import { useEffect, useState } from "react";
-import Payment from "../components/Reservation/Payment";
 import { PriceInfoData, TermsState, travelerInfo } from "../types/reservation";
 import Terms from "../components/Reservation/Terms";
 import { REQUIRED_TRAVELER_DATA } from "../constants/travelerdata";
 
 const Reservation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { productInfo, priceInfo } = location.state || {};
   const [travelerInfoList, setTravelerInfoList] = useState<{
     [key: string]: travelerInfo;
   }>({});
   const [infoCount, setInfoCount] = useState(0);
-  const [showPayment, setShowPayment] = useState(false);
   const [checkList, setCheckList] = useState<TermsState>({
     travel: false,
     refund: false,
@@ -162,7 +161,21 @@ const Reservation = () => {
       isRepresenterValid &&
       isRequriedChecked
     ) {
-      setShowPayment(true);
+      navigate("/paymentcheckout", {
+        state: {
+          orderId: "",
+          paymentKey: "",
+          productId: `${productInfo.productId}`,
+          adultCount: finalPriceInfo["성인"].count,
+          childCount: finalPriceInfo["아동"].count,
+          infantCount: finalPriceInfo["유아"].count,
+          totalCount: finalPriceInfo.totalCount,
+          totalPrice: finalPriceInfo.totalPay,
+          travelerInfoList: Object.values(travelerInfoList),
+          amount: Math.floor(finalPriceInfo.totalPay / 10),
+          marketing: checkList.marketing,
+        },
+      });
     } else if (
       priceInfo.totalCount !== infoCount ||
       !isAllValid ||
@@ -181,39 +194,28 @@ const Reservation = () => {
   }, [travelerInfoList]);
 
   return (
-    <div className="flex flex-col items-center gap-[80px] py-[216px] ">
-      {showPayment ? (
-        <Payment
-          travelerInfoList={Object.values(travelerInfoList)}
-          priceInfo={finalPriceInfo}
-          productId={productInfo.productId}
-          marketing={checkList.marketing}
-        />
-      ) : (
-        <>
-          <h1 className="text-main-color text-[20px] font-bold mt-[38px]">
-            예약하기
-          </h1>
-          <ProductInfo info={productInfo} />
-          <UserInfo />
-          <TravelerInfo
-            priceInfo={priceInfo}
-            handleTravelerInfo={handleTravelerInfo}
-            userInfo={userdata}
-            startDate={productInfo.startDate}
-            handleChangeAge={handleChangeAge}
-          />
-          <Terms
-            handleCheck={handleCheck}
-            handleAllAgree={handleAllAgree}
-            checkList={checkList}
-          />
-          <PriceInfo
-            finalPriceInfo={finalPriceInfo}
-            handlePayment={handlePayment} // 선택약관을 제외한 모든 체크박스 체크
-          />
-        </>
-      )}
+    <div className="flex flex-col items-center gap-[80px] w-full">
+      <h1 className="text-main-color text-[20px] font-bold mt-[38px]">
+        예약하기
+      </h1>
+      <ProductInfo info={productInfo} />
+      <UserInfo />
+      <TravelerInfo
+        priceInfo={priceInfo}
+        handleTravelerInfo={handleTravelerInfo}
+        userInfo={userdata}
+        startDate={productInfo.startDate}
+        handleChangeAge={handleChangeAge}
+      />
+      <Terms
+        handleCheck={handleCheck}
+        handleAllAgree={handleAllAgree}
+        checkList={checkList}
+      />
+      <PriceInfo
+        finalPriceInfo={finalPriceInfo}
+        handlePayment={handlePayment} // 선택약관을 제외한 모든 체크박스 체크
+      />
     </div>
   );
 };

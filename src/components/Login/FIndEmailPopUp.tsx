@@ -6,7 +6,6 @@ type FindEmailType = {
 };
 
 const FIndEmailPopUp = ({ setFindEmailActive, selectEmail }: FindEmailType) => {
-  console.log(selectEmail);
   return (
     <div className="w-[500px] h-[240px] border border-main-color rounded-2xl absolute centerPosition bg-white">
       <div className="flex text-sm flex-col h-full leading-10 justify-center items-center">

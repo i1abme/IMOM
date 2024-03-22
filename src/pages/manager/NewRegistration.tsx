@@ -41,7 +41,6 @@ const NewRegistration = () => {
   // 썸네일 이미지
   const [myImage, setMyImage] = useState<string[]>([]);
   const [sendImg, setSendImg] = useState<File[]>([]);
-  console.log(sendImg);
   // 에디터 및 input 형식
   const [days, setDays] = useState<DateProps[]>([
     {
@@ -149,15 +148,16 @@ const NewRegistration = () => {
         .post("/packages/create", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
-        .then(() => {
-          navigate("/packagemanager");
-          alert("등록이 완료됐습니다");
+        .then((res) => {
+          if (res.status === 2000) {
+            navigate("/packagemanager");
+            alert("등록이 완료됐습니다");
+          }
         });
     } else {
       alert("값을 전부 채워주세요");
     }
   };
-  console.log(days);
   // 날짜추가
   const addDay = () => {
     const newDay = days.length + 1;
@@ -224,8 +224,7 @@ const NewRegistration = () => {
     }
   };
   // 임시저장 함수
-  const handleTemporarySaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
+  const handleTemporarySaveClick = () => {
     const jsonData = {
       packageName: packageName,
       summary: packageSummary,

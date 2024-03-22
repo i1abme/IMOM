@@ -3,7 +3,7 @@ import {
   COUNT_CATEGORIES,
   ORDER_INFO_CATEGORIES,
 } from "../../../constants/managerdata";
-import { OrdeInfoData, TravelerInfoData } from "../../../types/manager";
+import { OrderInfoData, TravelerInfoData } from "../../../types/manager";
 import ManagerTitle from "../ManagerTitle";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
@@ -15,7 +15,7 @@ import SpecialAmount from "./SpecialAmount";
 import usePostTravelerInfo from "../../../queries/orders/usePostTravelerInfo";
 import useGetOrderCancel from "../../../queries/orders/useGetOrderCancel";
 
-const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
+const OrderInfo = ({ data, role }: { data: OrderInfoData; role: string }) => {
   const [travelerInfoList, setTravelerInfoList] = useState<TravelerInfoData[]>(
     data.travelerInfos
   );
@@ -73,6 +73,7 @@ const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
     changedRole?: string, // 변경될 인원 카테고리
     orderedRole?: string // 유저가 주문한 인원 카테고리
   ) => {
+    console.log(id);
     if (changedRole && orderedRole && changedRole !== orderedRole) {
       // 추가될 인원 카테고리
       const plusCategory =
@@ -138,16 +139,20 @@ const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
 
   return (
     <div className="text-sub-black flex flex-col gap-[32px] text-[14px]">
+      {data.additionalPrice && data.memo && data.orderState ? (
+        <div>
+          <SpecialAmount
+            orderId={data.imomOrderId}
+            additionalPrice={data.additionalPrice}
+            memo={data.memo}
+            orderState={data.orderState}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
       <div>
-        <SpecialAmount
-          orderId={data.imomOrderId}
-          additionalPrice={data.additionalPrice}
-          memo={data.memo}
-          orderState={data.orderState}
-        />
-      </div>
-      <div>
-        <ManagerTitle title="주문확인" style="mb-[12px] " />
+        <ManagerTitle title="주문확인" style="mb-[12px]" />
         <div className="flex justify-between flex-col border-y-[2px] border-sub-black min-w-fit">
           {ORDER_INFO_CATEGORIES.map((item) =>
             item.category === "총인원" ? (
@@ -182,7 +187,7 @@ const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
                   representative={true}
                 />
               </div>
-            ) : item.category === "주문상태" ? (
+            ) : item.category === "주문상태" && "orderState" in data ? (
               <div
                 key={item.category}
                 className={`flex w-full items-center border-b border-sub-black`}
@@ -197,17 +202,19 @@ const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
                 )}
               </div>
             ) : (
-              <TableRow
-                key={item.category}
-                category={item.category}
-                header={true}
-                content={
-                  item.category === "주문일시"
-                    ? orderDateFormat(data.orderDate)
-                    : `${data[item.content as keyof typeof data]}`
-                }
-                rowStyle={"border-b border-sub-black"}
-              />
+              item.category !== "주문상태" && (
+                <TableRow
+                  key={item.category}
+                  category={item.category}
+                  header={true}
+                  content={
+                    item.category === "주문일시"
+                      ? orderDateFormat(data.orderDate)
+                      : `${data[item.content as keyof typeof data]}`
+                  }
+                  rowStyle={"border-b border-sub-black"}
+                />
+              )
             )
           )}
         </div>
@@ -223,12 +230,12 @@ const OrderInfo = ({ data }: { data: OrdeInfoData }) => {
               handleDelete={handleDeleteTraveler}
               handleEdit={handleEditTraveler}
               startDate={data.startDate}
-              page="admin"
-              orderState={data.orderState}
+              role={role}
+              orderState={"orderState" in data ? data.orderState : undefined}
             />
           ))}
         </div>
-        {data.orderState !== "취소" && (
+        {"orderState" in data && data.orderState !== "취소" && (
           <OrderDetailBtn
             label="+"
             style="px-[80px] py-[px] text-[24px] w-fit self-center mt-[12px]"

@@ -22,7 +22,6 @@ export const useDeletePackage = ({
           operation: operation,
           ids: ids,
         });
-        console.log(response);
         setPackageDelete(response.data.code);
         setDeleteActive(false);
       } catch (error) {

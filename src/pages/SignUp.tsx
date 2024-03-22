@@ -23,6 +23,7 @@ const SignUp = () => {
   const [baby, setBaby] = useState("");
   const [gender, setGender] = useState(""); // 남녀 라디오버튼
   const [marketCheck, setMarketCheck] = useState<number>(0);
+  const [emailCheck, setEmailCheck] = useState(false);
 
   // debounce
   const debounceName = useDebounce(name, 300);
@@ -33,10 +34,9 @@ const SignUp = () => {
   const debouncePassword = useDebounce(password, 300);
   const debouncePasswordConfirm = useDebounce(passwordConfirm, 300);
   const debouncePhone = useDebounce(phone, 300);
-  console.log(englishLastName, englishName);
 
   // 정규식
-  const nameRegex = /^[가-힣]/;
+  const nameRegex = /^[가-힣]+$/;
   const englishNameRegex = /^[a-zA-Z]+$/;
 
   const birthRegex = /^(19|20)\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
@@ -120,14 +120,20 @@ const SignUp = () => {
         setFamily(Number(value));
         break;
       case "baby":
-        if (value.length <= 2) {
-          setBaby(value);
+        if (/^[ㄱ-ㅎ|가-힣]+$/.test(value)) {
+          setBaby(value.slice(0, 2));
+        } else if (value === "") {
+          setBaby("");
+        } else {
+          alert("한글 두글자만 입력가능합니다.");
         }
+
         break;
       default:
         break;
     }
   };
+  console.log(baby);
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGender(e.target.value);
@@ -144,163 +150,219 @@ const SignUp = () => {
       isValidEmail &&
       isValidPassword &&
       isValidPasswordConfirm &&
-      isValidPhone &&
-      marketCheck >= 2
+      isValidPhone
     ) {
-      baseInstance
-        .post("/auth/signup", {
-          userName: name,
-          enFirstName: englishLastName,
-          enLastName: englishName,
-          gender: gender,
-          birth: birth,
-          email: email,
-          password: passwordConfirm,
-          phoneNumber: phone,
-          headCount: family > 0 ? family : 0,
-          childName: baby,
-          marketing: marketCheck === 3 ? "동의" : "비동의",
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            navigation("/login");
-            alert("회원가입 완료!");
-          }
-        });
+      if (emailCheck) {
+        if (marketCheck >= 2) {
+          baseInstance
+            .post("/auth/signup", {
+              userName: name,
+              enFirstName: englishLastName,
+              enLastName: englishName,
+              gender: gender,
+              birth: birth,
+              email: email,
+              password: passwordConfirm,
+              phoneNumber: phone,
+              headCount: family > 0 ? family : 0,
+              childName: baby,
+              marketing: marketCheck === 3 ? "동의" : "비동의",
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                navigation("/login");
+                alert("회원가입 완료!");
+              }
+            })
+            .catch((err) => {
+              alert(err.response.data.message);
+            });
+        } else {
+          alert("필수약관 동의를 해주세요");
+        }
+      } else {
+        alert("이메일 인증을 완료해주세요.");
+      }
     } else {
-      alert("형식을 맞춰 입력해주세요!");
+      alert("필수 입력을 완료해주세요");
     }
   };
+
+  const handleSendMailClick = () => {
+    baseInstance
+      .post("/users/send-mail/certified", { email: email })
+      .then((res) => {
+        if (res.status === 200) {
+          alert("이메일 인증을 발송하였습니다.");
+          setEmailCheck(true);
+        }
+      });
+  };
+
   return (
     <>
-      <div className="flex flex-col h-full justify-center items-center lg:w-[500px]">
-        <div className="w-[170px] h-[50px] bg-main-color mb-[24px]" />
-        <div className="w-full">
-          <h2>필수항목입력</h2>
-          <SignUpInput
-            value={name}
-            name="name"
-            title="이름"
-            placeholder="이름"
-            onChange={handleInputChange}
-            isValid={isValidName}
-            length={name.length}
-            type="text"
-          />
-          <SignUpInput
-            value={englishName}
-            name="englishName"
-            title="영문이름"
-            placeholder="여권에 표시된 영문 이름"
-            onChange={handleInputChange}
-            isValid={isValidEnglishName}
-            length={englishName.length}
-            type="text"
-          />
+      <div className="flex flex-col w-full h-full justify-center items-center ">
+        <img src="/subLogo.svg" className="w-[20%] mb-10" />
+        <div className="w-full  border-y border-main-color py-10 flex justify-center ">
+          <div className="flex w-1/3 flex-col justify-center items-center h-full rounded-3xl  sm:w-3/4 md:w-2/3 lg:w-1/2 ">
+            <h2 className="font-bold text-2xl text-main-color mb-10">
+              필수항목입력
+            </h2>
+            <div className="flex flex-col w-full">
+              <SignUpInput
+                value={email}
+                name="email"
+                title="이메일"
+                placeholder="uriel@naver.com"
+                onChange={handleInputChange}
+                isValid={isValidEmail}
+                length={email.length}
+                type="email"
+                message="올바른 이메일이 아닙니다"
+              />
 
-          <SignUpInput
-            value={englishLastName}
-            name="englishLastName"
-            title="영문 성"
-            placeholder="여권에 표시된 영문 성"
-            onChange={handleInputChange}
-            isValid={isValidEnglishLastName}
-            length={englishLastName.length}
-            type="text"
-          />
-          <div className="flex justify-between items-center pl-16 w-full">
-            <div>성별</div>
-            <div className="flex justify-between w-3/4 border border-main-color rounded-full py-3 pl-7 pr-16 mb-[5px]">
-              {["남", "여"].map((option) => (
-                <label key={option}>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value={option}
-                    onChange={handleRadioChange}
-                  />
-                  {option}
-                </label>
-              ))}
+              {isValidEmail && (
+                <div
+                  className={`w-full flex flex-col items-center justify-center mb-5 animate-pulse`}
+                >
+                  <button
+                    className="whitespace-nowrap z-0 w-1/3 bg-main-color text-white rounded-full"
+                    onClick={handleSendMailClick}
+                  >
+                    인증메일발송
+                  </button>
+                  <div>발송된 이메일에서 '인증완료' 버튼을 눌러주세요</div>
+                </div>
+              )}
             </div>
-          </div>
-          <SignUpInput
-            value={birth}
-            name="birth"
-            title="생년월일"
-            placeholder="YYYY-MM-DD"
-            onChange={handleInputChange}
-            isValid={isValidBirth}
-            length={birth.length}
-            type="text"
-          />
-          <SignUpInput
-            value={email}
-            name="email"
-            title="이메일"
-            placeholder="uriel@naver.com"
-            onChange={handleInputChange}
-            isValid={isValidEmail}
-            length={email.length}
-            type="email"
-          />
-          <SignUpInput
-            value={password}
-            name="password"
-            title="비밀번호"
-            placeholder="6자리이상 대문자 1개이상 포함"
-            onChange={handleInputChange}
-            isValid={isValidPassword}
-            length={password.length}
-            type="password"
-          />
-          <SignUpInput
-            value={passwordConfirm}
-            name="passwordconfirm"
-            title="비밀번호확인"
-            placeholder="비밀번호 확인"
-            onChange={handleInputChange}
-            isValid={isValidPasswordConfirm}
-            length={passwordConfirm.length}
-            type="password"
-            message="비밀번호 불일치"
-          />
-          <SignUpInput
-            value={phone}
-            name="phone"
-            title="핸드폰번호"
-            placeholder="010-1234-5678"
-            onChange={handleInputChange}
-            isValid={isValidPhone}
-            length={phone.length}
-            type="text"
-          />
-        </div>
-        <div className="w-full mt-10">
-          <h2>선택입력항목</h2>
-          <div className="">
             <SignUpInput
-              value={family}
-              name="family"
-              title="가족인원"
-              placeholder="0"
+              value={name}
+              name="name"
+              title="이름"
+              placeholder="이름"
               onChange={handleInputChange}
-              type="number"
-              min={0}
-            />
-            <SignUpInput
-              value={baby}
-              name="baby"
-              title="자녀대표이름"
-              placeholder="애기이름 (두 글자로 입력해주세요.)"
-              onChange={handleInputChange}
+              isValid={isValidName}
+              length={name.length}
               type="text"
+              message="한글만 입력가능"
+            />
+            <SignUpInput
+              value={englishName}
+              name="englishName"
+              title="영문이름"
+              placeholder="여권에 표시된 영문 이름"
+              onChange={handleInputChange}
+              isValid={isValidEnglishName}
+              length={englishName.length}
+              type="text"
+              message="영어만 입력가능"
+            />
+
+            <SignUpInput
+              value={englishLastName}
+              name="englishLastName"
+              title="영문 성"
+              placeholder="여권에 표시된 영문 성"
+              onChange={handleInputChange}
+              isValid={isValidEnglishLastName}
+              length={englishLastName.length}
+              type="text"
+              message="영어만 입력가능"
+            />
+            <div className="flex justify-between items-center w-full">
+              <div className="">성별</div>
+              <div className="flex justify-between w-3/4 border border-main-color bg-white rounded-full py-3 pl-7 pr-16 mb-[5px]">
+                {["남", "여"].map((option) => (
+                  <label key={option}>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value={option}
+                      onChange={handleRadioChange}
+                      className="mr-4"
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <SignUpInput
+              value={birth}
+              name="birth"
+              title="생년월일"
+              placeholder="YYYY-MM-DD"
+              onChange={handleInputChange}
+              isValid={isValidBirth}
+              length={birth.length}
+              type="text"
+              message="형식을 맞춰주세요"
+            />
+
+            <SignUpInput
+              value={password}
+              name="password"
+              title="비밀번호"
+              placeholder="6자리이상 대문자 1개이상 포함"
+              onChange={handleInputChange}
+              isValid={isValidPassword}
+              length={password.length}
+              type="password"
+              message="비밀번호형식을 맞춰주세요"
+            />
+            <SignUpInput
+              value={passwordConfirm}
+              name="passwordconfirm"
+              title="비밀번호확인"
+              placeholder="비밀번호 확인"
+              onChange={handleInputChange}
+              isValid={isValidPasswordConfirm}
+              length={passwordConfirm.length}
+              type="password"
+              message="비밀번호 불일치"
+            />
+            <SignUpInput
+              value={phone}
+              name="phone"
+              title="핸드폰번호"
+              placeholder="010-1234-5678"
+              onChange={handleInputChange}
+              isValid={isValidPhone}
+              length={phone.length}
+              type="text"
+              message="핸드폰 형식을 맞춰주세요"
             />
           </div>
-          <SignUpTerms setMarketCheck={setMarketCheck} />
         </div>
-        <LoginSignUpBtn label="회원가입" onClick={handleSignUpClick} />
+        <div className="w-full flex justify-center">
+          <div className="w-1/3 mt-10  rounded-3xl  flex flex-col items-center  sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 className="font-bold text-main-color my-10 text-2xl">
+              선택입력항목
+            </h2>
+            <div className="w-full">
+              <SignUpInput
+                value={family}
+                name="family"
+                title="가족인원"
+                placeholder="0"
+                onChange={handleInputChange}
+                type="number"
+                min={0}
+              />
+              <SignUpInput
+                value={baby}
+                name="baby"
+                title="자녀대표이름"
+                placeholder="애기이름 (한글 두 글자로 입력해주세요.)"
+                onChange={handleInputChange}
+                type="text"
+              />
+            </div>
+            <SignUpTerms setMarketCheck={setMarketCheck} />
+          </div>
+        </div>
+        <div className="w-1/3">
+          <LoginSignUpBtn label="회원가입" onClick={handleSignUpClick} />
+        </div>
       </div>
       <Button loc="login" label="로그인" />
     </>

@@ -84,3 +84,16 @@ export const ORDER_EXCEL_HEADER = [
   { label: "총 금액", key: "totalPrice" },
   { label: "결제상태", key: "orderState" },
 ];
+export const USER_EXCEL_HEADER = [
+  { label: "이름", key: "userName" },
+  { label: "이메일", key: "email" },
+  { label: "영문이름", key: "enFirstName" },
+  { label: "영문성", key: "enLastName" },
+  { label: "핸드폰", key: "phoneNumber" },
+  { label: "생년월일", key: "birth" },
+  { label: "성별", key: "gender" },
+  { label: "아이이름", key: "childName" },
+  { label: "인원", key: "headCount" },
+  { label: "마케팅수집여부", key: "marketing" },
+  { label: "회원가입 수단", key: "socialType" },
+];

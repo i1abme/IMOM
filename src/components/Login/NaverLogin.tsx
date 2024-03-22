@@ -7,11 +7,14 @@ const NaverLogin = () => {
 
   const handleLogin = () => {
     window.location.href = NAVER_AUTH_URL;
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    console.log(code);
   };
 
-  return <button onClick={handleLogin}>네이버</button>;
+  return (
+    <img
+      className="h-1/2 w-1/2 mt-5 cursor-pointer"
+      src="/naverLogo.png"
+      onClick={handleLogin}
+    />
+  );
 };
 export default NaverLogin;

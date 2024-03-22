@@ -113,7 +113,6 @@ const ProductManager = () => {
       navagation(`/productdetail/${value}`);
       setTemporaryActive(saveData);
     } else if (name === "복사") {
-      console.log(value);
       baseInstance
         .get(`/products/duplicate/${value}`)
         .then((res) => {
@@ -219,7 +218,6 @@ const ProductManager = () => {
       [packageValue]: !prevState[packageValue],
     }));
   };
-  console.log(arrowState.startFilter, arrowState.endFilter);
   return (
     <div className="w-full">
       <h2>상품목록</h2>
