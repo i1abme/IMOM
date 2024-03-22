@@ -17,7 +17,7 @@ const TravelerInfo = ({
     info: travelerInfo | string,
     category?: keyof travelerInfo
   ) => void;
-  userInfo: User;
+  userInfo: User | undefined;
   startDate: string;
   handleChangeAge: (pickedAge: string, realAge: string) => void;
 }) => {

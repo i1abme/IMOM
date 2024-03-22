@@ -3,15 +3,17 @@ import { TAG_TITLE } from "../../constants/tagdata";
 import useGetTags from "../../queries/tags/useGetTags";
 import { FormEvent } from "react";
 import { TagBtnGroupProps, TagCheckList, TagData } from "../../types/tag";
+import { userChildName } from "../../atom/atom";
+import { useRecoilValue } from "recoil";
 
 const TagBtnGroup = ({
-  name = "우리",
   handleCheck,
   handleSubmit,
   tagCheckList,
   handleResetTags,
 }: TagBtnGroupProps) => {
   const { data, isPending, isError, error } = useGetTags();
+  const name = useRecoilValue(userChildName);
 
   if (isPending) {
     return <div>로딩 중...</div>;

@@ -30,6 +30,8 @@ const Login = () => {
               "refreshToken",
               res.data.data.refreshToken
             );
+            if (res.data.data.role === "ROLE_ADMIN")
+              window.localStorage.setItem("admin", res.data.data.role);
             alert("로그인 완료!");
             navigation("/");
           } else if (res.data.code === "40003") {

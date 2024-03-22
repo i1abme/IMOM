@@ -31,3 +31,8 @@ export const socialData = atom<SocialType | null>({
   key: "socialData",
   default: null,
 });
+
+export const userChildName = atom({
+  key: "userChildName",
+  default: "우리",
+});

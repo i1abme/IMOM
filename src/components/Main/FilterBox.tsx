@@ -3,9 +3,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetTags from "../../queries/tags/useGetTags";
 import { TagCheckList } from "../../types/tag";
+import useGetUserChildName from "../../queries/users/useGetUserChildName";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loginCheck, userChildName } from "../../atom/atom";
 
-const FilterBox = ({ name = "우리" }) => {
+const FilterBox = () => {
+  const isLogin = useRecoilValue(loginCheck);
+  const [name, setName] = useRecoilState(userChildName);
   const { data, isPending, isError, error } = useGetTags();
+  const { data: childNameData } = useGetUserChildName(isLogin);
   const navigate = useNavigate();
 
   const [tagCheckList, setTagCheckList] = useState<TagCheckList>({
@@ -33,6 +39,11 @@ const FilterBox = ({ name = "우리" }) => {
   useEffect(() => {
     console.log(tagCheckList);
   }, [tagCheckList]);
+
+  useEffect(() => {
+    if (childNameData && childNameData.childName.length > 0)
+      setName(childNameData?.childName);
+  }, [childNameData, setName]);
 
   if (isPending) {
     return <div>로딩 중...</div>;

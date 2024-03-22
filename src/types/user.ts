@@ -15,3 +15,7 @@ export type UserInfoCategoyry = {
   name: string | string[];
   description?: string | string[];
 }[];
+
+export type UserChildName = {
+  childName: string;
+};

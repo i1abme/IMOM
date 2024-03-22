@@ -21,7 +21,7 @@ import {
   Products,
 } from "../types/product";
 import { TagCheckList, TagDatas } from "../types/tag";
-import { User } from "../types/user";
+import { User, UserChildName } from "../types/user";
 import { baseInstance, userInstance } from "./instance";
 
 /* 배너 이미지 가져오기 */
@@ -71,6 +71,10 @@ export const GetTagPackages = (req: TagCheckList): Promise<Package[]> =>
 export const GetCountryPackages = (country: string): Promise<Package[]> =>
   baseInstance.get(`/countries/${country}`).then((res) => res.data.data);
 
+/* 유저 자녀 이름 조회 */
+export const GetUserChildName = (): Promise<UserChildName> =>
+  userInstance.get(`/users/child`).then((res) => res.data.data);
+
 /* 유저 정보 조회 */
 export const GetUserInfo = (): Promise<User> =>
   userInstance.get(`users/mypage`).then((res) => res.data.data);
@@ -88,7 +92,7 @@ export const PostDeposit = async (
 
 /* 유저 주문 정보 조회 */
 export const GetUserOrderDetail = (id: string): Promise<OrderInfoData> =>
-  baseInstance.get(`/orders/myinfo/${id}`).then((res) => res.data.data);
+  userInstance.get(`/orders/myinfo/${id}`).then((res) => res.data.data);
 
 /* 관리자 주문 목록 조회 */
 export const PostManagerOrders = (req: OrderRequest): Promise<OrderData> =>

@@ -7,10 +7,14 @@ import { useEffect, useState } from "react";
 import { PriceInfoData, TermsState, travelerInfo } from "../types/reservation";
 import Terms from "../components/Reservation/Terms";
 import { REQUIRED_TRAVELER_DATA } from "../constants/travelerdata";
+import useGetUserInfo from "../queries/users/useGetUserInfo";
 
 const Reservation = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { data: userData } = useGetUserInfo();
+
   const { productInfo, priceInfo } = location.state || {};
   const [travelerInfoList, setTravelerInfoList] = useState<{
     [key: string]: travelerInfo;
@@ -50,18 +54,6 @@ const Reservation = () => {
       setFinalPriceInfo(() => ({ ...priceInfo }));
     }
   }, [priceInfo]);
-
-  const userdata = {
-    email: "hahyuning@naver.com",
-    userName: "김우리",
-    enFirstName: "kim",
-    enLastName: "wooriiiiiiii",
-    gender: "남",
-    birth: "2000-11-11",
-    phoneNumber: "010-1234-5678",
-    headCount: 3,
-    childName: "정우리",
-  };
 
   const handleTravelerInfo = (
     travelerId: string,
@@ -199,11 +191,11 @@ const Reservation = () => {
         예약하기
       </h1>
       <ProductInfo info={productInfo} />
-      <UserInfo />
+      <UserInfo userdata={userData} />
       <TravelerInfo
         priceInfo={priceInfo}
         handleTravelerInfo={handleTravelerInfo}
-        userInfo={userdata}
+        userInfo={userData}
         startDate={productInfo.startDate}
         handleChangeAge={handleChangeAge}
       />
