@@ -8,9 +8,9 @@ import { baseInstance } from "../../api/instance";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetPackage } from "../../api/useGetPackage";
 import { useGetAirlines } from "../../api/useGetAirlines";
-import CustomDatePicker from "../../components/common/CustomDatePicker";
 import { useRecoilValue } from "recoil";
 import { saveState } from "../../atom/atom";
+import ProductDatePicker from "../../components/TravelProduct/ProductDatePicker";
 
 type StateMappings = {
   [key: string]: React.Dispatch<SetStateAction<string>>;
@@ -64,6 +64,7 @@ const ProductDetail = () => {
   const [excludedProduct, setExcludedProduct] = useState("");
   // 예약 유의사항
   const [reservationNotice, setReservationNotice] = useState("");
+
   // 임시저장 확인
   const temporarySave = useRecoilValue(saveState);
 
@@ -387,10 +388,16 @@ const ProductDetail = () => {
               title="출발/도착일시"
               className="border-r  border-black"
             />
-            <CustomDatePicker
+            {/* <CustomDatePicker
               startDate={startDate}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
+              endDate={endDate}
+            /> */}
+            <ProductDatePicker
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              startDate={startDate}
               endDate={endDate}
             />
           </div>

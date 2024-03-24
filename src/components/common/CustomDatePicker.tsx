@@ -8,8 +8,8 @@ interface DatePickerProps {
   startDate: Date | null;
   setEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
   endDate: Date | null;
-  endQuarterDate?: Date | null;
   setStartDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  endQuarterDate?: Date | null;
 }
 
 const CustomDatePicker = ({
@@ -28,7 +28,7 @@ const CustomDatePicker = ({
   return (
     <div className="flex items-center ml-5">
       <DatePicker
-        className="border border-black w-80 outline-none"
+        className="border border-black w-96 outline-none"
         dateFormat="yyyy년 MM월 dd일"
         selected={startDate}
         onChange={onChange}

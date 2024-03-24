@@ -27,7 +27,7 @@ const MyPageNav = () => {
     }
   };
   return (
-    <div className="w-full flex h-full pt-[220px]">
+    <div className="w-full flex h-full">
       <div className="h-full flex flex-col p-10 border-r border-main-color mr-20">
         {myPageNavTitle.map((el, index) => {
           return (
