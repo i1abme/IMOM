@@ -139,17 +139,15 @@ const OrderInfo = ({ data, role }: { data: OrderInfoData; role: string }) => {
 
   return (
     <div className="text-sub-black flex flex-col gap-[32px] text-[14px]">
-      {data.additionalPrice && data.memo && data.orderState ? (
+      {role === "admin" && (
         <div>
           <SpecialAmount
             orderId={data.imomOrderId}
-            additionalPrice={data.additionalPrice}
-            memo={data.memo}
-            orderState={data.orderState}
+            additionalPrice={data.additionalPrice ?? 0}
+            memo={data.memo ?? ""}
+            orderState={data.orderState ?? ""}
           />
         </div>
-      ) : (
-        <></>
       )}
       <div>
         <ManagerTitle title="주문확인" style="mb-[12px]" />
