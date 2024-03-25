@@ -34,6 +34,7 @@ const ProductCalendar = ({ packageId }: { packageId: number }) => {
             highlightedDates[item.productId] = new Date(
               new Date(item.startDate).setHours(0, 0, 0, 0)
             );
+            console.log(highlightDates);
             return highlightedDates;
           },
           {}

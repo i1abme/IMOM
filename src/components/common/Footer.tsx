@@ -12,18 +12,24 @@ const Footer = () => {
             backgroundImage: `url(${Logo})`,
           }}
         />
-        <div className="flex flex-col shrink-0">
-          <div className="flex gap-[24px]">
-            <span>상호명</span>
-            <span>주식회사 우리엘</span>
+        <div className="flex flex-col">
+          <div className="flex flex-col shrink-0">
+            <div className="flex gap-[24px]">
+              <span>상호명</span>
+              <span>주식회사 우리엘</span>
+            </div>
+            <div className="flex gap-[24px]">
+              <span>대표자</span>
+              <span>임영택</span>
+            </div>
+            <div className="flex gap-[24px]">
+              <span>고객센터</span>
+              <span>070-4151-9444</span>
+            </div>
           </div>
           <div className="flex gap-[24px]">
-            <span>대표자</span>
-            <span>임영택</span>
-          </div>
-          <div className="flex gap-[24px]">
-            <span>고객센터</span>
-            <span>070-4151-9444</span>
+            <span>통신 판매업 신고 번호</span>
+            <span>2024-서울종로-0144</span>
           </div>
         </div>
         <div className="flex flex-col shrink-0">
