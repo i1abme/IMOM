@@ -58,7 +58,7 @@ userInstance.interceptors.response.use(
     const { config, response } = error;
     if (
       config.url === "/auth/reissue" ||
-      response?.status !== 401 || // 추후 상태 코드 수정 예정
+      response?.status !== 40101 || // 추후 상태 코드 수정 예정
       config.retry
     ) {
       return Promise.reject(error);

@@ -91,6 +91,7 @@ const TravelerInfoForm = ({
         phoneNumber: "",
         representative: isRepresentative,
       };
+      setInputBirth("");
       setInfo(() => ({ ...newInfo }));
       handleTravelerInfo(travelerId, newInfo);
     }
