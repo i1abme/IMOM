@@ -6,6 +6,7 @@ import { TagCheckList } from "../../types/tag";
 import useGetUserChildName from "../../queries/users/useGetUserChildName";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginCheck, userChildName } from "../../atom/atom";
+import FilterBoxImg from "/public/main_filterbox.png";
 
 const FilterBox = () => {
   const isLogin = useRecoilValue(loginCheck);
@@ -111,8 +112,8 @@ const FilterBox = () => {
             </div>
           </div>
           <div
-            className="w-[327px] h-[250px] rounded-[40px] overflow-hidden bg-main-color"
-            // style={{ backgroundImage: `url(${})` }}
+            className="w-[327px] h-[250px] rounded-[40px] overflow-hidden bg-cover"
+            style={{ backgroundImage: `url(${FilterBoxImg})` }}
           ></div>
         </div>
       )}

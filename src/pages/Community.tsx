@@ -10,6 +10,7 @@ import SectionTitle from "../components/Main/SectionTitle";
 import CustomPagination from "../components/common/CustomPagination";
 import { useRecoilValue } from "recoil";
 import { loginCheck } from "../atom/atom";
+import CommunityImg from "/public/community.jpeg";
 
 type CommunityCloum = {
   title: string | JSX.Element;
@@ -175,7 +176,10 @@ const Community = () => {
   return (
     <div className="w-full flex justify-center">
       <div className="w-[1280px] flex flex-col items-center">
-        <div className="h-[400px] w-full bg-main-color mb-8" />
+        <div
+          className="h-[400px] w-full mb-8 bg-cover"
+          style={{ backgroundImage: `url(${CommunityImg})` }}
+        />
         <div className="flex w-full  ">
           <div className="flex flex-col items-start mr-9">
             <SectionTitle title="커뮤니티" padding={true} />
