@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ScheduleList from "../components/TravelDetail/ScheduleList";
 import ScheduleInfo from "../components/TravelDetail/ScheduleInfo";
-import CategoryBtns from "../components/TravelDetail/CategoryBtns";
+import CategoryBtns from "../components/common/CategoryBtns";
 import ProductInfo from "../components/TravelDetail/ProductInfo";
 import PackageDetail from "../components/TravelDetail/PackageDetail";
 import ProductDetail from "../components/TravelDetail/ProductDetail";
@@ -14,17 +14,29 @@ import {
   SCHEDULE_INFO_CATEGORIES,
 } from "../constants/productdata";
 import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { viewSize } from "../atom/atom";
+import "/src/components/common/Header/NavDropdown.css";
+import MbCategoryBtns from "../components/TravelDetail/MbCategoryBtn";
 
 const TravelDetail = () => {
   const { id } = useParams();
+
+  const viewSizeState = useRecoilValue(viewSize);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const startYRef = useRef(0);
+
   const [showScheduleInfo, setShowScheduleInfo] = useState<
     "hotelInfo" | "scheduleList" | "regionInfo" | "terms"
   >("scheduleList");
   const [showProductInfo, setShowProductInfo] = useState<string>("keyPoint");
   const [detailData, setDetailData] = useState<ProductDetialInfo>();
-  const { data, isPending, isError, error } = useGetProduct(id ? +id : 0);
+  const { data, isError, error } = useGetProduct(id ? +id : 0);
 
   const [scheduleInfo, setScheuleInfo] = useState<string>("");
+
+  const [showReserveBox, setShowReserveBox] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -54,41 +66,30 @@ const TravelDetail = () => {
     setShowProductInfo(() => id);
   };
 
-  const prices: Prices[] = detailData
-    ? [
-        {
-          age: "성인",
-          price: detailData?.productInfo?.adultPrice,
-          surcharge: detailData?.productInfo?.adultSurcharge,
-        },
-        {
-          age: "아동",
-          price: detailData?.productInfo?.childPrice,
-          surcharge: detailData?.productInfo?.childSurcharge,
-        },
-        {
-          age: "유아",
-          price: detailData?.productInfo?.infantPrice,
-          surcharge: detailData?.productInfo?.infantSurcharge,
-        },
-      ]
-    : [
-        {
-          age: "성인",
-          price: 0,
-          surcharge: 0,
-        },
-        {
-          age: "아동",
-          price: 0,
-          surcharge: 0,
-        },
-        {
-          age: "유아",
-          price: 0,
-          surcharge: 0,
-        },
-      ];
+  const handleReserve = () => {
+    setShowReserveBox(true);
+  };
+
+  const prices: Prices[] = [
+    {
+      label: "성인",
+      age: "adult",
+      price: detailData?.productInfo?.adultPrice || 0,
+      surcharge: detailData?.productInfo?.adultSurcharge || 0,
+    },
+    {
+      label: "아동",
+      age: "child",
+      price: detailData?.productInfo?.childPrice || 0,
+      surcharge: detailData?.productInfo?.childSurcharge || 0,
+    },
+    {
+      label: "유아",
+      age: "infant",
+      price: detailData?.productInfo?.infantPrice || 0,
+      surcharge: detailData?.productInfo?.infantSurcharge || 0,
+    },
+  ];
 
   const reservationInfo = detailData
     ? {
@@ -108,26 +109,76 @@ const TravelDetail = () => {
         productId: 0,
       };
 
-  if (id === undefined) {
-    return <div>잘못된 상품경로입니다.</div>;
-  }
-  if (isPending) {
-    return <div>로딩 중...</div>;
-  }
+  useEffect(() => {
+    console.log(showReserveBox);
+  }, [showReserveBox]);
 
+  useEffect(() => {
+    const handleDragStart = (event: MouseEvent | TouchEvent) => {
+      console.log("start");
+      const clientY =
+        event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
+
+      console.log(clientY);
+      startYRef.current = clientY;
+      event.preventDefault();
+    };
+
+    const handleDragEnd = (event: MouseEvent | TouchEvent) => {
+      console.log("end");
+
+      const clientY =
+        event instanceof TouchEvent
+          ? event.changedTouches[0].clientY
+          : event.clientY;
+
+      if (clientY - startYRef.current >= 50) {
+        setShowReserveBox(!showReserveBox);
+      }
+    };
+
+    const element = dropdownRef.current;
+    console.log(element);
+    if (viewSizeState === "mobile" && element) {
+      element.addEventListener("touchstart", handleDragStart, {
+        passive: false,
+      });
+      element.addEventListener("touchend", handleDragEnd, { passive: false });
+      element.addEventListener("mousedown", handleDragStart, {
+        passive: false,
+      });
+      element.addEventListener("mouseup", handleDragEnd, { passive: false });
+    }
+
+    return () => {
+      if (element) {
+        element.removeEventListener("touchstart", handleDragStart);
+        element.removeEventListener("touchend", handleDragEnd);
+        element.removeEventListener("mousedown", handleDragStart);
+        element.removeEventListener("mouseup", handleDragEnd);
+      }
+    };
+  }, [viewSizeState, showReserveBox]);
+
+  if (id === undefined) {
+    return <div className="w-full text-center">잘못된 상품경로입니다.</div>;
+  }
   if (isError) {
-    return <div>에러 발생: {error?.message}</div>;
+    return (
+      <div className="w-full text-center">에러 발생: {error?.message}</div>
+    );
   }
   if (!detailData) {
-    return <div>데이터가 없습니다.</div>;
+    return <div className="w-full text-center">데이터가 없습니다.</div>;
   }
   return (
-    <div className="w-full flex flex-col items-center gap-[46px]">
+    <div className="w-full flex flex-col items-center gap-[46px] max-xsm:gap-[30px] max-xsm:pb-[120px]">
+      <div className="bg-main-color h-[90px] rounded-b-[20px] absolute z-[-999] w-full hidden max-xsm:block" />
       <PackageDetail
         packageInfo={detailData.packageInfo}
         productInfo={detailData.productInfo}
       />
-      <div className="flex justify-between w-[765px]">
+      <div className="flex justify-between w-[765px] max-xsm:w-full">
         <ProductDetail info={detailData.productInfo} prices={prices} />
         <ReservationBox
           prices={prices}
@@ -135,9 +186,13 @@ const TravelDetail = () => {
           nowCount={detailData.productInfo.nowCount}
           info={reservationInfo}
           productState={detailData.productInfo.productState}
+          viewSize={viewSizeState}
         />
       </div>
-      <section className="flex flex-col items-center gap-[16px]">
+      <section
+        className="flex flex-col items-center gap-[16px] 
+        max-xsm:w-full max-xsm:mx-[16px] max-xsm:gap-[8px]"
+      >
         <CategoryBtns
           category={PRODUCT_INFO_CATEGORIES}
           handleClick={handleProductInfo}
@@ -154,13 +209,21 @@ const TravelDetail = () => {
           />
         )}
       </section>
-      <section className="flex flex-col items-center gap-[16px]">
-        <CategoryBtns
-          category={SCHEDULE_INFO_CATEGORIES}
-          handleClick={handleScheduleInfo}
-          active={showScheduleInfo}
-        />
-        <div className="flex flex-col gap-[43px]">
+      <section className="flex flex-col gap-[16px]">
+        {viewSizeState === "web" ? (
+          <CategoryBtns
+            category={SCHEDULE_INFO_CATEGORIES}
+            handleClick={handleScheduleInfo}
+            active={showScheduleInfo}
+          />
+        ) : (
+          <MbCategoryBtns
+            category={SCHEDULE_INFO_CATEGORIES}
+            handleClick={handleScheduleInfo}
+            active={showScheduleInfo}
+          />
+        )}
+        <div className="flex flex-col gap-[43px] max-xsm:gap-[10px] w-full items-center">
           {showScheduleInfo === "scheduleList" ? (
             <ScheduleList
               scheduleListData={
@@ -173,6 +236,36 @@ const TravelDetail = () => {
             <ScheduleInfo info={scheduleInfo} key={showScheduleInfo} />
           )}
         </div>
+        {viewSizeState === "mobile" && (
+          <div
+            className="dropdown bg-white z-50 fixed w-full flex-col
+            h-fit px-[50px] pb-[99px] rounded-t-[20px] py-0 flex items-center"
+            ref={dropdownRef}
+          >
+            <div className="w-[50px] h-[3px] rounded-[10px] bg-main-color mb-[12px] mt-[12px] flex self-center" />
+            {!showReserveBox && (
+              <button
+                className="bg-main-color rounded-[20px] text-white text-[12px] tracking-[-0.6px]
+            disabled:bg-sub-black disabled:bg-opacity-[0.3] px-[77px] py-[12px] "
+                onClick={handleReserve}
+                disabled={detailData.productInfo.productState !== "예약 가능"}
+              >
+                {detailData.productInfo.productState === "예약 가능"
+                  ? "예약하기"
+                  : detailData.productInfo.productState}
+              </button>
+            )}
+            <div className={`${showReserveBox ? "block" : "hidden"}`}>
+              <ReservationBox
+                prices={prices}
+                maxCount={detailData.productInfo.maxCount}
+                nowCount={detailData.productInfo.nowCount}
+                info={reservationInfo}
+                productState={detailData.productInfo.productState}
+              />
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

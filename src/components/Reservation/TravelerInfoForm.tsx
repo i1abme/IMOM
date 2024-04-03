@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { travelerInfo } from "../../types/reservation";
-import { User } from "../../types/user";
+import { TravelerInfoFormProps, travelerInfo } from "../../types/reservation";
 import {
   birthFormat,
   checkValidDate,
@@ -8,12 +7,16 @@ import {
   onlyKorean,
   phoneNumberFormat,
 } from "../../utils/validationUtils";
-import CustomRadioBtn from "./CustomRadionbtn";
+import CustomRadioBtn from "../common/CustomRadionbtn";
 import { WRONG_AGE_MESSAGES } from "../../constants/travelerdata";
 import "./TravelerInfoForm.css";
 import { calculateAge } from "../../utils/calculateAge";
+import { useRecoilValue } from "recoil";
+import { viewSize } from "../../atom/atom";
 
 const TravelerInfoForm = ({
+  priceInfo,
+  age,
   role,
   travelerId,
   isRepresentative,
@@ -21,23 +24,7 @@ const TravelerInfoForm = ({
   userInfo,
   startDate,
   handleChangeSort,
-}: {
-  role: string;
-  travelerId: string;
-  isRepresentative: boolean;
-  handleTravelerInfo: (
-    travelerId: string,
-    info: travelerInfo | string,
-    category?: keyof travelerInfo
-  ) => void;
-  startDate: string;
-  userInfo?: User;
-  handleChangeSort: (
-    id: string,
-    newCategory: string,
-    currentCategory: string
-  ) => void;
-}) => {
+}: TravelerInfoFormProps) => {
   const [info, setInfo] = useState({
     travelerName: "",
     enFirstName: "",
@@ -54,10 +41,12 @@ const TravelerInfoForm = ({
 
   const [animationTrigger, setAnimationTrigger] = useState(false);
 
+  const viewSizeState = useRecoilValue(viewSize);
+
   const handleSameAsUser = (checked: boolean) => {
     if (checked && userInfo) {
       // 성인 여부 확인
-      if (calculateAge(userInfo.birth, startDate) === "성인") {
+      if (calculateAge(userInfo.birth, startDate)[0] === "성인") {
         setSameAsUserInfo(true);
         const newInfo = {
           travelerName: userInfo.userName,
@@ -75,7 +64,7 @@ const TravelerInfoForm = ({
         const timeoutId = setTimeout(() => setAnimationTrigger(false), 1000);
         return () => clearTimeout(timeoutId);
       }
-      if (calculateAge(userInfo.birth, startDate) !== "성인") {
+      if (calculateAge(userInfo.birth, startDate)[0] !== "성인") {
         alert(WRONG_AGE_MESSAGES[role as keyof typeof WRONG_AGE_MESSAGES]);
         return;
       }
@@ -110,14 +99,24 @@ const TravelerInfoForm = ({
     if (date.length < 10) return;
     if (checkValidDate(date)) {
       const realRole = calculateAge(date, startDate);
-      if (realRole !== pickedRole) {
+      const priceValue = priceInfo[realRole[1] as keyof typeof priceInfo];
+      const isAbleToChange =
+        typeof priceValue !== "number" && priceValue.price !== 0;
+      if (realRole[0] !== pickedRole && isAbleToChange) {
         if (role === "대표1인") {
           alert(WRONG_AGE_MESSAGES[role]);
           setInputBirth("");
         } else {
-          const changeAge = confirm(WRONG_AGE_MESSAGES[realRole]);
+          const changeAge = confirm(
+            WRONG_AGE_MESSAGES[realRole[0] as keyof typeof WRONG_AGE_MESSAGES]
+          );
           if (changeAge) {
-            handleChangeSort(travelerId, realRole, role);
+            handleChangeSort(
+              travelerId,
+              realRole[0],
+              realRole[1] as "adult" | "child" | "infant",
+              age
+            );
             setInfo((prev) => {
               const updatedInfo = { ...prev, [id]: date };
               return updatedInfo;
@@ -133,7 +132,7 @@ const TravelerInfoForm = ({
             setInputBirth("");
           }
         }
-      } else if (realRole === pickedRole) {
+      } else if (realRole[0] === pickedRole && isAbleToChange) {
         setInfo((prev) => {
           const updatedInfo = { ...prev, [id]: date };
           return updatedInfo;
@@ -151,33 +150,47 @@ const TravelerInfoForm = ({
       className={`${animationTrigger && role !== "대표1인" ? "animate" : ""}`}
     >
       <div className={`flex items-center justify-between`}>
-        <h3 className="pb-[8px]">{role}</h3>
+        <h3 className="pb-[8px] max-xsm:text-[10px] max-xsm:pb-[6px]">
+          {role}
+        </h3>
         {role === "대표1인" && (
           <div className="flex items-center">
             <input
               type="checkbox"
               id="travelerInfo"
               checked={sameAsUserInfo}
+              className="max-xsm:w-[10px] max-xsm:h-[10px]"
               onChange={(e) => handleSameAsUser(e.target.checked)}
             />
-            <label htmlFor="travelerInfo" className="text-[14px] pl-[4px]">
+            <label
+              htmlFor="travelerInfo"
+              className="text-[14px] pl-[4px] max-xsm:text-[10px]"
+            >
               예약자 정보와 일치합니다.
             </label>
           </div>
         )}
       </div>
       <div
-        className={`flex flex-col flex-wrap gap-y-[16px] p-[22px] border-[1px] border-sub-black`}
+        className={`flex flex-col flex-wrap gap-y-[16px] p-[22px] border-[1px] border-sub-black
+        max-xsm:p-0 max-xsm:border-none max-xsm:gap-0 `}
       >
-        <div className="flex text-sub-black text-[14px] gap-[20px] shrink-0">
-          <label htmlFor="travelerName">
+        <div
+          className="flex text-sub-black text-[14px] gap-[20px] shrink-0 
+        max-xsm:w-full max-xsm:border-t-[0.5px] max-xsm:border-main-color"
+        >
+          <label
+            htmlFor="travelerName"
+            className="max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+            max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+          >
             <span className="text-red-700">*</span>
             이름
           </label>
           <input
             className={`flex disabled:bg-transparent ${
               animationTrigger && role === "대표1인" ? "animate" : ""
-            }`}
+            } max-xsm:text-[10px]`}
             type="text"
             id="travelerName"
             placeholder="이름을 입력하세요"
@@ -191,49 +204,115 @@ const TravelerInfoForm = ({
             disabled={sameAsUserInfo}
           />
         </div>
-        <div className="flex text-sub-black text-[14px] gap-[20px]">
-          <label htmlFor="enFirstName" className="shrink-0">
-            <span className="text-red-700">*</span>영문이름
-          </label>
-          <div className="shrink-0 gap-[10px] flex">
-            <label htmlFor="enFirstName">성:</label>
-            <input
-              className={`disabled:bg-transparent ${
-                animationTrigger && role === "대표1인" ? "animate" : ""
-              }`}
-              id="enFirstName"
-              placeholder="영문 성을 입력하세요"
-              value={info.enFirstName}
-              onChange={(e) =>
-                handleInput(
-                  e.target.id as keyof travelerInfo,
-                  onlyEnglish(e.target.value)
-                )
-              }
-              disabled={sameAsUserInfo}
-            />
+        {viewSizeState === "web" ? (
+          <div className="flex text-sub-black text-[14px] gap-[20px] ">
+            <label htmlFor="enFirstName" className="shrink-0">
+              <span className="text-red-700">*</span>영문이름
+            </label>
+            <div className="shrink-0 gap-[10px] flex">
+              <label htmlFor="enFirstName">성:</label>
+              <input
+                className={`disabled:bg-transparent ${
+                  animationTrigger && role === "대표1인" ? "animate" : ""
+                }`}
+                id="enFirstName"
+                placeholder="영문 성을 입력하세요"
+                value={info.enFirstName}
+                onChange={(e) =>
+                  handleInput(
+                    e.target.id as keyof travelerInfo,
+                    onlyEnglish(e.target.value)
+                  )
+                }
+                disabled={sameAsUserInfo}
+              />
+            </div>
+            <div className="shrink-0 gap-[10px] flex">
+              <span className="text-red-700">*</span>
+              <label htmlFor="enLastName">이름:</label>
+              <input
+                className={`disabled:bg-transparent ${
+                  animationTrigger && role === "대표1인" ? "animate" : ""
+                }`}
+                id="enLastName"
+                placeholder="영문 이름을 입력하세요"
+                value={info.enLastName}
+                onChange={(e) =>
+                  handleInput(
+                    e.target.id as keyof travelerInfo,
+                    onlyEnglish(e.target.value)
+                  )
+                }
+                disabled={sameAsUserInfo}
+              />
+            </div>
           </div>
-          <div className="shrink-0 gap-[10px] flex">
-            <label htmlFor="enLastName">이름:</label>
-            <input
-              className={`disabled:bg-transparent ${
-                animationTrigger && role === "대표1인" ? "animate" : ""
-              }`}
-              id="enLastName"
-              placeholder="영문 이름을 입력하세요"
-              value={info.enLastName}
-              onChange={(e) =>
-                handleInput(
-                  e.target.id as keyof travelerInfo,
-                  onlyEnglish(e.target.value)
-                )
-              }
-              disabled={sameAsUserInfo}
-            />
-          </div>
-        </div>
-        <div className="flex text-sub-black text-[14px] gap-[30px]">
-          <label>
+        ) : (
+          <>
+            <div
+              className="flex text-sub-black text-[14px] gap-[20px] shrink-0 
+            max-xsm:border-t-[0.5px] max-xsm:border-main-color max-xsm:w-full"
+            >
+              <label
+                htmlFor="enFirstName"
+                className="shrink-0 max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+                        max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+              >
+                <span className="text-red-700">*</span>영문 성
+              </label>
+              <input
+                className={`disabled:bg-transparent ${
+                  animationTrigger && role === "대표1인" ? "animate" : ""
+                } max-xsm:text-[10px]`}
+                id="enFirstName"
+                placeholder="영문 성을 입력하세요"
+                value={info.enFirstName}
+                onChange={(e) =>
+                  handleInput(
+                    e.target.id as keyof travelerInfo,
+                    onlyEnglish(e.target.value)
+                  )
+                }
+                disabled={sameAsUserInfo}
+              />
+            </div>
+            <div
+              className="flex text-sub-black text-[14px] gap-[20px] 
+            max-xsm:border-t-[0.5px] max-xsm:border-main-color max-xsm:w-full"
+            >
+              <label
+                htmlFor="enLastName"
+                className="shrink-0 max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+                        max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+              >
+                <span className="text-red-700">*</span>영문 이름
+              </label>
+              <input
+                className={`disabled:bg-transparent ${
+                  animationTrigger && role === "대표1인" ? "animate" : ""
+                } max-xsm:text-[10px]`}
+                id="enLastName"
+                placeholder="영문 이름을 입력하세요"
+                value={info.enLastName}
+                onChange={(e) =>
+                  handleInput(
+                    e.target.id as keyof travelerInfo,
+                    onlyEnglish(e.target.value)
+                  )
+                }
+                disabled={sameAsUserInfo}
+              />
+            </div>
+          </>
+        )}
+        <div
+          className="flex text-sub-black text-[14px] gap-[30px] 
+        max-xsm:border-t-[0.5px] max-xsm:border-main-color max-xsm:w-full max-xsm:gap-[20px]"
+        >
+          <label
+            className="shrink-0 max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+                        max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+          >
             <span className="text-red-700">*</span>성별
           </label>
           <CustomRadioBtn
@@ -255,8 +334,15 @@ const TravelerInfoForm = ({
             role={role}
           />
         </div>
-        <div className="flex text-sub-black text-[14px] gap-[20px]">
-          <label htmlFor="birth" className="min-w-[55px]">
+        <div
+          className="flex text-sub-black text-[14px] gap-[20px] 
+        max-xsm:border-t-[0.5px] max-xsm:border-main-color max-xsm:w-full"
+        >
+          <label
+            htmlFor="birth"
+            className="min-w-[55px] shrink-0 max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+                        max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+          >
             <span className="text-red-700">*</span>
             생년월일
           </label>
@@ -266,7 +352,7 @@ const TravelerInfoForm = ({
             placeholder="생년월일을 입력하세요"
             className={`disabled:bg-transparent ${
               animationTrigger && role === "대표1인" ? "animate" : ""
-            }`}
+            } max-xsm:text-[10px]`}
             value={inputBirth}
             onChange={(e) =>
               handleBirth(
@@ -278,15 +364,22 @@ const TravelerInfoForm = ({
           />
         </div>
 
-        <div className="flex text-sub-black text-[14px] gap-[20px]">
-          <label htmlFor="phoneNumber">
+        <div
+          className="flex text-sub-black text-[14px] gap-[20px] 
+        max-xsm:border-y-[0.5px] max-xsm:border-main-color max-xsm:w-full"
+        >
+          <label
+            htmlFor="phoneNumber"
+            className="shrink-0 max-xsm:bg-main-color/[.1] max-xsm:text-[12px] 
+                        max-xsm:py-[8px] max-xsm:w-[75px] max-xsm:text-center"
+          >
             {isRepresentative && <span className="text-red-700">*</span>}
             휴대폰번호
           </label>
           <input
             className={`disabled:bg-transparent ${
               animationTrigger && role === "대표1인" ? "animate" : ""
-            }`}
+            } max-xsm:text-[10px]`}
             type="tell"
             id="phoneNumber"
             maxLength={13}

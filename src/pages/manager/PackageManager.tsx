@@ -61,8 +61,8 @@ const PackageManager = () => {
   const { packageList, totalPage } = usePostPackage({
     data: {
       countryName: countrySelect === "전체 여행지" ? null : countrySelect,
-      privacy: privacy === "공개 상태" ? null : privacy,
-      saveState: save === "저장 상태" ? null : save,
+      privacy: privacy === "전체" ? null : privacy,
+      saveState: save === "전체" ? null : save,
       periodOrder: packagePeriod ? 0 : 1,
       offset: offset,
       limit: 10,
@@ -122,10 +122,17 @@ const PackageManager = () => {
       .catch((err) => console.error(err));
   };
 
+  const handleResetClick = () => {
+    setConuntrySelect(null);
+    setPrivacy(null);
+    setSave(null);
+    setPackagePeriod(false);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full pr-10">
       <ManagerTitle title="패키지 목록" />
-      <div className="flex items-center mb-20">
+      <div className="flex items-center mb-2">
         <ManagerTitleBox name="여행지" className="mr-8" />
         <select
           className="border border-black w-52 py-2"
@@ -143,6 +150,32 @@ const PackageManager = () => {
           })}
         </select>
       </div>
+      <div className="flex items-center mb-2">
+        <ManagerTitleBox name="공개상태별보기" className="mr-8" />
+        <PackageSelect
+          options={["전체", "공개", "비공개"]}
+          value={privacy}
+          onChange={setPrivacy}
+          className="mr-2 py-2"
+        />
+      </div>
+      <div className="flex items-center mb-5">
+        <ManagerTitleBox name="저장상태별보기" className="mr-8" />
+        <PackageSelect
+          options={["전체", "저장", "임시저장"]}
+          value={save}
+          onChange={setSave}
+          className="py-2"
+        />
+      </div>
+      <div className="flex w-full justify-center border-t pt-4 border-black">
+        <button
+          className="border border-black px-16"
+          onClick={handleResetClick}
+        >
+          필터 초기화
+        </button>
+      </div>
       <div className="mb-2 flex justify-between">
         <div>
           <button
@@ -157,20 +190,7 @@ const PackageManager = () => {
             onChange={setPrivacyState}
             disabledOption="공개 변경"
             setChangeActive={setChangeActive}
-          />
-        </div>
-        <div>
-          <PackageSelect
-            options={["공개 상태", "공개", "비공개"]}
-            value={privacy}
-            onChange={setPrivacy}
-            className="mr-2"
-          />
-
-          <PackageSelect
-            options={["저장 상태", "저장", "임시저장"]}
-            value={save}
-            onChange={setSave}
+            className="py-1"
           />
         </div>
       </div>
@@ -189,7 +209,11 @@ const PackageManager = () => {
                 {el.text}
                 {el.value === "packageperiod" && (
                   <button onClick={handlePackageToggle}>
-                    {packagePeriod ? "↑" : "↓"}
+                    {packagePeriod ? (
+                      <img src="icon_down.svg" className="rotate-180" />
+                    ) : (
+                      <img src="icon_down.svg" />
+                    )}
                   </button>
                 )}
               </th>

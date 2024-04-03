@@ -615,16 +615,16 @@ const NewRegistrationEdit = () => {
           <div className="w-full h-[1px] my-16 bg-black" />
           <div className="flex mb-10">
             <button
-              onClick={handleTemporarySave}
-              className="bg-title-box px-20 py-3 mr-2 border border-black"
+              onClick={handleOnSubmit}
+              className="bg-title-box px-20 py-3 border mr-2 border-black"
             >
-              저장하기
+              수정완료
             </button>
             <button
-              onClick={handleOnSubmit}
-              className="bg-title-box px-20 py-3 border border-black"
+              onClick={handleTemporarySave}
+              className="bg-title-box px-20 py-3  border border-black"
             >
-              수정하기
+              작성완료
             </button>
           </div>
         </div>

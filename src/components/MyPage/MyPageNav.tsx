@@ -2,12 +2,13 @@ import React from "react";
 import { myPageNavTitle } from "../../constants/data";
 import { Outlet, useNavigate } from "react-router-dom";
 import userInstance from "../../api/userInstance";
-import { useSetRecoilState } from "recoil";
-import { loginCheck } from "../../atom/atom";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { loginCheck, userChildName } from "../../atom/atom";
 
 const MyPageNav = () => {
   const navigation = useNavigate();
   const setLoginCheck = useSetRecoilState(loginCheck);
+  const resetName = useResetRecoilState(userChildName);
   const handleSideClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name } = e.currentTarget;
     if (name !== "secession") {
@@ -21,6 +22,8 @@ const MyPageNav = () => {
             navigation("/");
             window.localStorage.removeItem("token");
             window.localStorage.removeItem("refreshToken");
+            window.localStorage.removeItem("admin");
+            resetName();
           }
         });
       }
@@ -28,7 +31,7 @@ const MyPageNav = () => {
   };
   return (
     <div className="w-full flex h-full">
-      <div className="h-full flex flex-col p-10 border-r border-main-color mr-20">
+      <div className="h-full flex flex-col p-10 border-r border-main-color mr-20 max-xsm:hidden">
         {myPageNavTitle.map((el, index) => {
           return (
             <button

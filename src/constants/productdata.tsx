@@ -57,3 +57,17 @@ export const PRICE_EXCEPTION = [
     surcharge: 0,
   },
 ];
+
+export const MOBILE_PRODUCT_SUMMARY: { [key: string]: string }[] = [
+  { key: "productCode", label: "상품번호" },
+  { key: "startDate", label: "출발일시" },
+  { key: "endDate", label: "도착일시" },
+  { key: "airline", label: "항공" },
+  { key: "minCount", label: "최소출발" },
+];
+
+export const AGE_GUIDE = {
+  성인: "(만12세 이상)",
+  아동: "(만2세 ~ 만12세 미만)",
+  유아: "(만2세 미만)",
+};

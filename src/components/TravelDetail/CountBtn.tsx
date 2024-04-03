@@ -5,6 +5,7 @@ import { amountFormat } from "../../utils/amountFormat";
 const CountBtn = ({
   age,
   price,
+  label,
   onCountChange,
   remainCount,
   productState,
@@ -19,20 +20,25 @@ const CountBtn = ({
   };
 
   const handleIncrease = () => {
-    if (remainCount === 0) return;
     if (productState === "예약 마감") {
       alert("예약 마감된 상품입니다.");
+      return;
+    }
+    if (remainCount === 0) {
+      alert("재고가 부족합니다.");
       return;
     }
     const newCount = count + 1;
     setCount(newCount);
     onCountChange(age, newCount);
   };
+
+  if (price === 0) return;
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="flex justify-between w-[198px]">
         <div className="flex flex-col text-[14px] text-sub-black">
-          <span className="text-main-color font-bold">{age}</span>
+          <span className="text-main-color font-bold">{label}</span>
           <span>{amountFormat(price)}원</span>
         </div>
         <div className="flex gap-[22px] items-center">
@@ -53,12 +59,12 @@ const CountBtn = ({
           </button>
         </div>
       </div>
-      {age === "유아" && (
+      {age === "infant" && (
         <span className="text-red-700 text-[10px] text-center">
           유아는 출발일 기준 24개월 미만이어야 합니다.
         </span>
       )}
-      {age === "아동" && (
+      {age === "child" && (
         <span className="text-red-700 text-[10px] text-center">
           항공표준상 아동은 만 12세 미만이어야 합니다.
         </span>

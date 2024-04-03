@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CountBtn from "./CountBtn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReservationBoxProps } from "../../types/reservation";
 import { amountFormat } from "../../utils/amountFormat";
 import { useRecoilValue } from "recoil";
@@ -12,21 +12,22 @@ const ReservationBox = ({
   nowCount,
   info,
   productState,
+  viewSize,
 }: ReservationBoxProps) => {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginCheck);
   const [counts, setCounts] = useState({
-    성인: {
+    adult: {
       count: 0,
       totalPrice: 0,
       price: prices[0].price + prices[0].surcharge ?? 0,
     },
-    아동: {
+    child: {
       count: 0,
       totalPrice: 0,
       price: prices[1].price + prices[1].surcharge ?? 0,
     },
-    유아: {
+    infant: {
       count: 0,
       totalPrice: 0,
       price: prices[2].price + prices[2].surcharge ?? 0,
@@ -35,8 +36,12 @@ const ReservationBox = ({
     totalCount: 0,
   });
 
+  useEffect(() => {
+    sessionStorage.setItem("counts", JSON.stringify(counts));
+  }, [counts]);
+
   const handleCountChange = (
-    age: "성인" | "아동" | "유아",
+    age: "adult" | "child" | "infant",
     newCount: number
   ) => {
     setCounts((prev) => {
@@ -66,6 +71,7 @@ const ReservationBox = ({
       navigate("/reservation", {
         state: { productInfo: info, priceInfo: counts },
       });
+      sessionStorage.removeItem("counts");
     }
   };
 
@@ -77,13 +83,15 @@ const ReservationBox = ({
 
   return (
     <div
-      className="flex flex-col items-center w-[250px] px-[18px] py-[22px] gap-[20px] 
-    border-[1px] border-main-color rounded-[17px] text-sub-black"
+      className={`flex flex-col items-center w-[250px] px-[18px] py-[22px] gap-[20px] 
+    border-[1px] border-main-color rounded-[17px] text-sub-black h-fit max-xsm:gap-[8px] 
+    ${viewSize === "mobile" ? "max-xsm:hidden" : ""} select-none `}
     >
       {prices.map((item) => (
         <CountBtn
           key={item.age}
           age={item.age}
+          label={item.label}
           price={item.price + item.surcharge}
           remainCount={maxCount - nowCount - counts.totalCount}
           onCountChange={handleCountChange}
@@ -100,12 +108,12 @@ const ReservationBox = ({
       <button
         className="bg-main-color w-[198px] h-[59px] rounded-[19px] text-white
         disabled:bg-sub-black disabled:bg-opacity-[0.3]"
-        disabled={counts["성인"].count < 1}
+        disabled={counts["adult"].count < 1}
         onClick={handleReserve}
       >
-        {productState === "예약가능" ? "예약하기" : productState}
+        {productState === "예약 가능" ? "예약하기" : productState}
       </button>
-      {counts["성인"].count < 1 && (
+      {counts["adult"].count < 1 && (
         <span className="text-red-700 text-[10px]">
           성인1인 이상 포함필수입니다.
         </span>

@@ -127,6 +127,7 @@ const OrderManager = () => {
   };
 
   const handlePageClick = (selected: number) => {
+    console.log(selected);
     setOrderReq((prev) => ({
       ...prev,
       offset: selected,
@@ -154,7 +155,6 @@ const OrderManager = () => {
     packageName?: string
   ) => {
     if (packageName) setSelectedPackage(packageName);
-    console.log(packageName);
     setOrderReq((prev) => ({
       ...prev,
       [id]: value === "전체" ? null : value,
@@ -184,7 +184,7 @@ const OrderManager = () => {
       packageId: null, // 패키지명 드롭다운
       country: null,
       orderState: null,
-      userNameOrder: null, //
+      userNameOrder: null,
       order: null, // 주문일시 오름차순 : 0 , 내림차순 : 1
       start: null, // 출발일 오름차순 : 0 , 내림차순 : 1
       type: "", // 검색어 타입
@@ -215,7 +215,7 @@ const OrderManager = () => {
       key: "orderDate",
       label: "주문일시",
       sortable: true,
-      render: (value) => (value ? dateFormat(`${value}`) : ""),
+      render: (value) => (value ? `${dateFormat(`${value}`)}` : ""),
       onClick: () => handleSortOrder("orderDate"),
     },
     {
@@ -232,7 +232,7 @@ const OrderManager = () => {
       key: "startDate",
       label: "출발일",
       sortable: true,
-      render: (value) => (value ? dateFormat(`${value}`) : ""),
+      render: (value) => (value ? `${dateFormat(`${value}`)}` : ""),
       onClick: () => handleSortOrder("startDate"),
     },
     {
@@ -256,7 +256,6 @@ const OrderManager = () => {
       sortable: false,
     },
   ];
-  console.log(excelData);
 
   return (
     <div className="w-full flex flex-col gap-[27px] mr-20 items-center min-w-fit">
@@ -357,6 +356,7 @@ const OrderManager = () => {
           <CustomPagination
             totalPage={totalPages}
             handlePageClick={handlePageClick}
+            forcePage={orderReq.offset >= 0 ? orderReq.offset : 0}
           />
         </section>
       )}

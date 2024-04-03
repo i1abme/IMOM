@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <footer
       className="h-[200px] bg-black bg-opacity-[0.01] flex justify-center 
-    w-full shrink-0 items-center text-[12px] flex-grow-0"
+    w-full shrink-0 items-center text-[12px] flex-grow-0 max-xsm:hidden"
     >
       <div className="flex justify-between w-[800px] items-center shrink-0">
         <div

@@ -26,7 +26,7 @@ const TagBtnGroup = ({
   }
   return (
     <form
-      className="my-[66px] min-w-[200px] text-main-color"
+      className="my-[66px] min-w-[200px] text-main-color max-xsm:hidden"
       onSubmit={(e: FormEvent) => handleSubmit(e)}
     >
       <h1 className="text-[20px] font-bold">{name}(이)와 함께</h1>

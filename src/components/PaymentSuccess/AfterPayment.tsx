@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import usePostDeposit from "../../queries/orders/usePostDeposit";
 import { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
-import { BalanceRequset, PaymentData } from "../../types/payment";
+import { PaymentData } from "../../types/payment";
 
 const AfterPayment = () => {
   const navigate = useNavigate();
@@ -22,15 +22,13 @@ const AfterPayment = () => {
       )
     : null;
 
-  const [requestData, setRequestData] = useState<
-    PaymentData | BalanceRequset | null
-  >(null);
+  const [requestData, setRequestData] = useState<PaymentData | null>(null);
 
   const [progress, setProgress] = useState(1);
 
   console.log(encryptedData);
 
-  const { mutate, data, isPending, isError, error } = usePostDeposit(
+  const { mutate, data, isPending, isError, errorReason } = usePostDeposit(
     requestData,
     payFor
   );
@@ -56,21 +54,27 @@ const AfterPayment = () => {
   }, [requestData, mutate, payFor]);
 
   useEffect(() => {
+    sessionStorage.removeItem("paymentInfo"); // 결제 후 유저 정보 지우기
     if (data) {
-      sessionStorage.removeItem("paymentInfo"); // 결제 후 유저 정보 지우기
+      alert(
+        "예약해주셔서 감사합니다. 담당자가 영업일 기준 1일 이내로 연락드리겠습니다."
+      );
+      navigate("/");
     }
-  }, [data]);
+    if (isError) {
+      alert(errorReason !== null ? errorReason : "결제에 실패했습니다.");
+      navigate("/");
+    }
+  }, [data, isError, errorReason, navigate]);
 
   useEffect(() => {
     history.pushState(null, "", "");
-    console.log("스택쌓음");
 
     const handleClickBrowserBackBtn = () => {
       console.log("popstate 실행");
       if (progress <= 1) {
         setProgress((prev) => prev + 1);
       } else {
-        console.log("쌓인 스택만큼 제거 루프 실행");
         navigate(+1);
       }
     };
@@ -82,11 +86,15 @@ const AfterPayment = () => {
     };
   }, [progress, navigate]);
 
+  // useEffect(() => {
+  //   if (isError) {
+  //     alert(errorReason !== null ? errorReason : "결제에 실패했습니다.");
+  //     navigate("/");
+  //   }
+  // }, [isError, errorReason, navigate]);
+
   if (isPending) {
-    return <div>로딩 중...</div>;
-  }
-  if (isError) {
-    return <div>에러 발생: {error?.message} </div>;
+    return <div>예약 처리중...</div>;
   }
   if (!data) {
     return <div>데이터가 없습니다.</div>;

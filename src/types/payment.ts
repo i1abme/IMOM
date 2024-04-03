@@ -4,21 +4,15 @@ export interface PaymentData {
   orderId: string;
   amount: string | number;
   paymentKey: string;
-  productId: string;
-  adultCount: number;
-  childCount: number;
-  infantCount: number;
-  totalCount: number;
-  totalPrice: number;
-  travelerInfoList: travelerInfo[];
-  marketing: boolean;
-}
-
-export interface BalanceRequset {
-  orderId: string;
-  amount: string;
-  paymentKey: string;
-  imomOrderId: string;
+  productId?: string;
+  adultCount?: number;
+  childCount?: number;
+  infantCount?: number;
+  totalCount?: number;
+  totalPrice?: number;
+  travelerInfoList?: travelerInfo[];
+  marketing?: boolean;
+  imomOrderId?: string;
 }
 
 export interface Failure {

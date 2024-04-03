@@ -3,9 +3,11 @@ import ReactPaginate from "react-paginate";
 const CustomPagination = ({
   totalPage = 0,
   handlePageClick,
+  forcePage,
 }: {
   totalPage: number;
   handlePageClick: (selected: number) => void;
+  forcePage?: number;
 }) => {
   return (
     <ReactPaginate
@@ -27,6 +29,7 @@ const CustomPagination = ({
       containerClassName="pagination"
       activeClassName="active text-main-color"
       renderOnZeroPageCount={null}
+      forcePage={forcePage}
     />
   );
 };

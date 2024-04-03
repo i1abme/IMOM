@@ -14,12 +14,18 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
   };
 
   return (
-    <section className="flex flex-col justify-center items-center gap-[20px] w-[755px]">
-      <h1 className="text-main-color text-[20px]">
+    <section
+      className="flex flex-col justify-center items-center gap-[20px] w-[755px]
+    max-xsm:max-w-[375px] max-xsm:w-full max-xsm:gap-0"
+    >
+      <h1 className="text-main-color text-[20px] max-xsm:text-[14px] max-xsm:mb-[10px] max-xsm:mx-[16px]">
         <strong>{packageData.country || packageData.countryName}</strong>
         지역에서 우리 아이와 mom편한 여행 어떠세요?
       </h1>
-      <div className="w-[755px] h-[400px] rounded-[40px] overflow-hidden">
+      <div
+        className="w-[755px] h-[400px] rounded-[40px] overflow-hidden 
+      max-xsm:max-w-[342px] max-xsm:max-h-[217px] max-xsm:rounded-[20px] max-xsm:w-full max-xsm:mb-[17px] max-xsm:mx-[16px]"
+      >
         {packageData.thumbnailList && (
           <img
             src={packageData.thumbnailList[0]?.imageUrl}
@@ -36,7 +42,7 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
         hashTag={packageData.hashTag}
         page="travelproduct"
       />
-      <div className="flex flex-col items-center gap-[26px]">
+      <div className="flex flex-col items-center gap-[26px] max-xsm:mt-[14px] max-xsm:w-full">
         <ScheduleBtn
           showSchedule={showSchedule}
           handleScheduleBtn={handleScheduleBtn}
@@ -46,7 +52,7 @@ const PackageBox = ({ packageData }: { packageData: Package }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
-            className="flex flex-col items-center gap-[24px]"
+            className="flex flex-col items-center gap-[24px] w-full"
           >
             <ProductInfoList packageId={packageData.packageId} />
           </motion.div>

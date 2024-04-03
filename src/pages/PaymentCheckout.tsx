@@ -9,16 +9,30 @@ import { useLocation } from "react-router-dom";
 
 const PaymentCheckout = () => {
   const location = useLocation();
-  const paymentInfo = location.state;
+  const paymentInfo = location.state.paymentInfo;
+  const tossPaymentInfo = location.state.tossPaymentInfo;
   const [paymentWidgetLoaded, setPaymentWidgetLoaded] = useState(false);
+  const [payfor, setPayfor] = useState("");
+  const [orderId, setOrderId] = useState("");
 
   const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
 
-  const payFor = "productId" in paymentInfo ? "deposit" : "balance";
-
-  const orderId = `IMOM_PI${paymentInfo.productId}_DT${new Date().getTime()}`;
-
   console.log(paymentInfo);
+  console.log(tossPaymentInfo);
+
+  useEffect(() => {
+    if (paymentInfo) {
+      const orderId = paymentInfo.productId
+        ? `IMOM_PI${paymentInfo.productId}_DT${new Date().getTime()}`
+        : `IMOM_FULL${paymentInfo.amount}_DT${new Date().getTime()}`;
+
+      setOrderId(orderId);
+
+      const payFor = paymentInfo.productId ? "deposit" : "balance";
+
+      setPayfor(payFor);
+    }
+  }, [paymentInfo]);
 
   useEffect(() => {
     (async () => {
@@ -45,7 +59,7 @@ const PaymentCheckout = () => {
   }, [paymentInfo]);
 
   return (
-    <div className="w-[650px] h-full py-[100px] flex flex-col justify-center text-sub-black">
+    <div className="w-[650px] h-full py-[100px] flex flex-col justify-center text-sub-black max-xsm:w-full max-xms:h-fit max-xsm:py-[50px]">
       <h1 className="text-center text-[20px] pb-[20px]">
         결제 금액 {amountFormat(+paymentInfo.amount)}원
       </h1>
@@ -57,11 +71,11 @@ const PaymentCheckout = () => {
             try {
               await paymentWidget?.requestPayment({
                 orderId: orderId,
-                orderName: "토스 티셔츠 외 2건",
-                customerName: "김토스",
-                customerEmail: "customer123@gmail.com",
-                successUrl: `${window.location.href}/success?payFor=${payFor}`,
-                failUrl: `${window.location.origin}/fail`,
+                orderName: tossPaymentInfo.packageName,
+                customerName: tossPaymentInfo.userName,
+                customerEmail: tossPaymentInfo.email,
+                successUrl: `${window.location.href}/after/success?payFor=${payfor}`,
+                failUrl: `${window.location.href}/after/fail`,
               });
             } catch (err) {
               console.log(err);

@@ -5,7 +5,7 @@ import { SummaryTableInfo, SummaryTableProps } from "../../types/product";
 import { dateFormat } from "../../utils/dateFormat";
 
 const SummaryTable = ({
-  productId,
+  productCode,
   startDate,
   endDate,
   airline,
@@ -13,9 +13,9 @@ const SummaryTable = ({
 }: SummaryTableProps) => {
   const [data] = useState([
     {
-      id: productId,
-      startDate: dateFormat(startDate),
-      endDate: dateFormat(endDate),
+      id: productCode,
+      startDate: `${dateFormat(startDate)}`,
+      endDate: `${dateFormat(endDate)}`,
       airline: airline,
       minCount: minCount,
     },
@@ -34,9 +34,9 @@ const SummaryTable = ({
     <Table
       data={data}
       columns={columns}
-      tableStyle={"w-[460px] text-[10px] text-sub-black"}
-      thStyle={"border-[1px] border-main-color p-[6px]"}
-      tbodyStyle={"text-center"}
+      tableStyle={"w-[490px] text-[10px] text-sub-black max-xsm:hidden"}
+      thStyle={"border-[1px] border-main-color p-[4px] shrink-0"}
+      tbodyStyle={"text-center shrink-0"}
       tdStyle={"border-[1px] border-main-color p-[6px]"}
     />
   );

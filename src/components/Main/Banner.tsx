@@ -3,15 +3,18 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import useGetBanners from "../../queries/imgs/useGetBanners";
+import { viewSize } from "../../atom/atom";
+import { useRecoilValue } from "recoil";
 
 const Banner = () => {
-  const { data, isPending, isError, error } = useGetBanners();
+  const viewSizeState = useRecoilValue(viewSize);
+  const { data, isPending, isError, error } = useGetBanners(viewSizeState);
+
   console.log(data);
 
   if (isPending) {
     return <div>로딩 중...</div>;
   }
-
   if (isError) {
     return <div>에러 발생: {error?.message}</div>;
   }
@@ -19,7 +22,7 @@ const Banner = () => {
     return <div>데이터가 없습니다.</div>;
   }
   return (
-    <div className="w-full max-w-[1280px] h-[400px]">
+    <div className="max-w-[1280px] w-full max-xsm:h-[320px] h-[400px] ">
       <Swiper
         spaceBetween={0}
         centeredSlides={true}
@@ -38,11 +41,13 @@ const Banner = () => {
       >
         {data.map((item) => (
           <SwiperSlide
-            className={`overflow-hiddenw w-full h-[400px] bg-cover bg-no-repeat`}
+            className={`overflow-hiddenw w-full h-[400px] max-xsm:h-[320px] bg-cover bg-no-repeat cursor-pointer bg-center`}
             key={item.imageUrl}
             data-imageurl={item.imageUrl}
             style={{ backgroundImage: `url(${item.imageUrl})` }}
-          ></SwiperSlide>
+          >
+            <a href={item.link} className="h-full block" />
+          </SwiperSlide>
         ))}
       </Swiper>
     </div>

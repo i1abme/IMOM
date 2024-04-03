@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import useGetOrderDetail from "../../queries/orders/useGetOrderDetail";
-import CategoryBtns from "../../components/TravelDetail/CategoryBtns";
+import CategoryBtns from "../../components/common/CategoryBtns";
 import { ORDER_DETAIL_CATEGORIES } from "../../constants/managerdata";
 import { useEffect, useState } from "react";
-import OrderInfo from "../../components/Manager/orderDetail/OrderInfo";
-import PaymentInfo from "../../components/Manager/orderDetail/PaymentInfo";
+import OrderInfo from "../../components/common/Order/OrderInfo";
+import PaymentInfo from "../../components/common/Order/PaymentInfo";
 import OrderedAmount from "../../components/common/Order/OrderedAmount";
 
 const OrderDetail = () => {
@@ -16,6 +16,17 @@ const OrderDetail = () => {
 
   const [idList, setIdList] = useState<string[] | []>([]);
 
+  const [changeHistory, setChangeHistory] = useState([
+    {
+      changedPrice: 0,
+      memo: "",
+      payedPrice: 0,
+      totalPriceSnapshot: 0,
+      balanceSnapshot: 0,
+      updateDate: "",
+    },
+  ]);
+
   const handleShowInfo = (id: string) => {
     setShowInfo(id);
   };
@@ -24,6 +35,7 @@ const OrderDetail = () => {
     if (data) {
       console.log(data);
       setIdList(data.orderNumberList);
+      if (data.fluctuationInfos) setChangeHistory(data.fluctuationInfos);
     }
   }, [data]);
 
@@ -47,7 +59,11 @@ const OrderDetail = () => {
       {showInfo === "orderInfo" && data ? (
         <OrderInfo data={data} role={"admin"} />
       ) : (
-        <PaymentInfo idList={idList} />
+        <PaymentInfo
+          idList={idList}
+          role={"admin"}
+          changeHistory={changeHistory}
+        />
       )}
 
       <div className="h-[60px]" />

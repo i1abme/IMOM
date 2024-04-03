@@ -12,3 +12,9 @@ export const REQUIRED_TRAVELER_DATA = [
   "gender",
   "birth",
 ];
+
+export const AGE_CATEGORY = {
+  adult: "성인",
+  child: "아동",
+  infant: "유아",
+};

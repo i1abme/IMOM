@@ -39,13 +39,15 @@ const getNewToken = async () => {
         }
       )
       .then((res) => {
+        console.log("refreshToken", res.headers.refreshToken);
         window.localStorage.setItem("refreshToken", res.headers.refreshToken); // 리프레시토큰도 재발급
         window.localStorage.setItem("token", res.headers.accessToken);
       });
     return window.localStorage.getItem("token");
   } catch (error) {
-    window.localStorage.removeItem("refreshToken");
     window.localStorage.removeItem("token");
+    window.localStorage.removeItem("refreshToken");
+    window.localStorage.removeItem("admin");
     throw new Error("Token refresh failed");
   }
 };
@@ -58,9 +60,10 @@ userInstance.interceptors.response.use(
     const { config, response } = error;
     if (
       config.url === "/auth/reissue" ||
-      response?.status !== 40101 || // 추후 상태 코드 수정 예정
+      response?.data?.message !== "토큰 유효 시간이 만료되었습니다." ||
       config.retry
     ) {
+      console.log(response);
       return Promise.reject(error);
     }
 

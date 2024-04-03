@@ -58,8 +58,8 @@ export type ProductListRequest = {
 
 export type ProductListInfo = {
   productId: number;
-  startDate: string;
-  endDate: string;
+  startDate: string | JSX.Element;
+  endDate: string | JSX.Element;
   airline: string;
   price: number | string;
   productState: string;
@@ -67,7 +67,7 @@ export type ProductListInfo = {
 };
 
 export type SummaryTableProps = {
-  productId: string;
+  productCode: string;
   startDate: string;
   endDate: string;
   airline: string;
@@ -98,18 +98,21 @@ export type ScheduleListProps = {
 export type ScheduleItemProps = {
   title?: string;
   content: string;
+  viewSize?: string;
 };
 
 export type Prices = {
-  age: "성인" | "아동" | "유아";
+  label: "성인" | "아동" | "유아";
+  age: "adult" | "child" | "infant";
   price: number;
   surcharge: number;
 };
 
 export type CountBtnProps = {
-  age: "성인" | "아동" | "유아";
+  label: string;
+  age: "adult" | "child" | "infant";
   price: number;
-  onCountChange: (age: "성인" | "아동" | "유아", newCount: number) => void;
+  onCountChange: (age: "adult" | "child" | "infant", newCount: number) => void;
   remainCount: number;
   productState: string;
 };

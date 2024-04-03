@@ -46,7 +46,6 @@ const MainManagerBtn = ({
         <input
           id="banner"
           type="file"
-          multiple={true}
           accept=".jpg,.jpeg,.png"
           className="hidden"
           onChange={addImage}

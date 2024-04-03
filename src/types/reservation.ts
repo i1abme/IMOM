@@ -1,17 +1,18 @@
-import { ReservationInfo } from "./product";
+import { Prices, ReservationInfo } from "./product";
+import { User } from "./user";
 
 export type PriceInfoData = {
-  성인: {
+  adult: {
     count: number;
     price: number;
     totalPrice: number;
   };
-  아동: {
+  child: {
     count: number;
     price: number;
     totalPrice: number;
   };
-  유아: {
+  infant: {
     count: number;
     price: number;
     totalPrice: number;
@@ -21,15 +22,12 @@ export type PriceInfoData = {
 };
 
 export type ReservationBoxProps = {
-  prices: {
-    age: "성인" | "아동" | "유아";
-    price: number;
-    surcharge: number;
-  }[];
+  prices: Prices[];
   maxCount: number;
   nowCount: number;
   info: ReservationInfo;
   productState: string;
+  viewSize?: string;
 };
 
 export interface travelerInfo {
@@ -49,4 +47,25 @@ export interface TermsState {
   identification: boolean;
   thirdperson: boolean;
   marketing: boolean;
+}
+
+export interface TravelerInfoFormProps {
+  priceInfo: PriceInfoData;
+  age: "adult" | "child" | "infant";
+  role: string;
+  travelerId: string;
+  isRepresentative: boolean;
+  handleTravelerInfo: (
+    travelerId: string,
+    info: travelerInfo | string,
+    category?: keyof travelerInfo
+  ) => void;
+  startDate: string;
+  userInfo?: User;
+  handleChangeSort: (
+    id: string,
+    newCategory: string,
+    newAge: "adult" | "child" | "infant",
+    currentAge: "adult" | "child" | "infant"
+  ) => void;
 }

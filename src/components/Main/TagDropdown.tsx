@@ -35,7 +35,8 @@ const TagDropdown = ({
   return (
     <>
       <div
-        className={`border-b-[2px] border-main-color px-[30px] inline-flex justify-center text-main-color`}
+        className={`border-b-[2px] border-main-color px-[30px] inline-flex justify-center text-main-color
+        max-xsm:border-b-[1px] max-xsm:mx-[12px]`}
         ref={dropdownRef}
       >
         <button
@@ -52,7 +53,8 @@ const TagDropdown = ({
         {isOpen && (
           <ul
             className="absolute rounded-md shadow-lg flex flex-col py-[12px] w-fit overflow-y-scroll
-             bg-white max-h-[150px] h-fit mt-[30px] text-[16px] text-sub-black"
+             bg-white max-h-[150px] h-fit mt-[30px] text-[16px] text-sub-black 
+             max-xsm:text-[12px] max-xsm:max-h-[100px] max-xsm:py-[8px]"
           >
             {list.map((data) => (
               <li

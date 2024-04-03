@@ -20,6 +20,7 @@ const KakaoOAuthCallback = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.data.accessToken) {
+            window.localStorage.setItem("role", res.data.data.role);
             setLoginCheck(true);
             window.localStorage.setItem("token", res.data.data.accessToken);
             window.localStorage.setItem(

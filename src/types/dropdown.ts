@@ -13,7 +13,11 @@ export type FilterDropdownProps<T> = {
 };
 
 export type PackageDropdownProps = {
-  handleClick: (value: string, id: string, packageName?: string) => void;
+  handleClick: (
+    value: string | number,
+    id: string,
+    packageName?: string
+  ) => void;
   label?: string;
   divStyle?: string;
   labeStyle?: string;

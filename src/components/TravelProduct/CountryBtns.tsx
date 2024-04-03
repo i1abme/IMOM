@@ -31,8 +31,9 @@ const CountryBtns = ({ countryClick }: { countryClick: string }) => {
   }
   return (
     <div
-      className=" w-full overflow-hidden grid grid-cols-5
-    box-border border-[1px] border-main-color rounded-[25px] my-[33px]"
+      className="w-full overflow-hidden grid grid-cols-5
+    box-border border-[1px] border-main-color rounded-[15px] mt-[33px] 
+    max-xsm:max-w-[345px] max-xsm:shadow"
     >
       {fillEmptySpace(data).map((item, idx) => (
         <button
@@ -40,7 +41,7 @@ const CountryBtns = ({ countryClick }: { countryClick: string }) => {
           type="button"
           className={`placeBtn p-[10px] text-sub-black cursor-pointer 
           transition-colors duration-300 border-r-[1px] border-main-color 
-          border-b-[1px] box-border
+          border-b-[1px] box-border max-xsm:text-[10px] max-xsm:tracking-[-0.5px]
           ${
             item
               ? countryClick === item

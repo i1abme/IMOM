@@ -29,7 +29,7 @@ const ProductManager = () => {
   // 체크된 리스트
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   // 패키지 리스트
-  const { packagesList } = useGetPackage();
+  const { packagesList, setPackagesList, setResetActive } = useGetPackage();
   // 패키지 아이디
   const [packageId, setPackageId] = useState<number | null>(null);
   // 예약 상태
@@ -59,10 +59,13 @@ const ProductManager = () => {
   const [deleteActive, setDeleteActive] = useState<boolean>(false);
   // 복사 active
   const [copyActive, setCopyActive] = useState<boolean>(false);
-  const [arrowState, setArrowState] = useState<{ [key: string]: boolean }>({
+  const [arrowState, setArrowState] = useState<{
+    [key: string]: boolean | null;
+  }>({
     arrivalTime: false,
     departureTime: false,
   });
+
   // 페이지 네이션 페이지갯수
   const [totalPage, setTotalPage] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -172,19 +175,26 @@ const ProductManager = () => {
       .post("/products", {
         packageId: packageId ? packageId : null,
         productState:
-          reserveState === "" || reserveState === "예약 상태"
-            ? null
-            : reserveState,
-        privacy: privacy === "" || privacy === "공개 상태" ? null : privacy,
-        saveState: save === "" || save === "저장 상태" ? null : save,
+          reserveState === "" || reserveState === "전체" ? null : reserveState,
+        privacy: privacy === "" || privacy === "전체" ? null : privacy,
+        saveState: save === "" || save === "전체" ? null : save,
         startDateMin: endQuarterDate
           ? formatDateToISOString(endQuarterDate)
           : startDate,
         startDateMax: endQuarterDate
           ? formatDateToISOString(new Date())
           : endDate,
-        startDateOrder: arrowState.departureTime ? 1 : 0,
-        endDateOrder: arrowState.arrivalTime ? 1 : 0,
+        endDateOrder: arrowState.arrivalTime
+          ? 1
+          : arrowState.departureTime
+          ? 0
+          : null,
+        startDateOrder: arrowState.departureTime
+          ? 1
+          : arrowState.arrivalTime
+          ? 0
+          : null,
+
         offset: offset,
         limit: 10,
       })
@@ -209,25 +219,44 @@ const ProductManager = () => {
     arrowState.arrivalTime,
     offset,
   ]);
+
   const handleDateFilter = (e: React.MouseEvent<HTMLButtonElement>) => {
     const packageValue = e.currentTarget.dataset
       .product as keyof typeof arrowState;
 
     setArrowState((prevState) => ({
-      ...prevState,
-      [packageValue]: !prevState[packageValue],
+      ...Object.fromEntries(
+        Object.entries(prevState).map(([key, value]) => {
+          if (key === packageValue) return [key, !value];
+          if (key !== packageValue && value !== null) return [key, null];
+          return [key, value];
+        })
+      ),
     }));
   };
+  const handleResetClick = () => {
+    setPackageId(null);
+    setReserveState("");
+    setPrivacy("");
+    setSave("");
+    setStartDate(new Date());
+    setEndDate(null);
+    setEndQuarterDate(null);
+    setPeriod("");
+    setPackagesList([]);
+    setResetActive(true);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full pr-10">
       <h2>상품목록</h2>
-      <div>
-        <div className="flex  border-y w-full border-black h-10 items-center ">
+      <div className="mb-2">
+        <div className="flex  border-y w-full h-10 items-center ">
           <div className="h-full w-40 flex justify-center items-center bg-gray-300">
             패키지 이름
           </div>
           <select
-            className="ml-5 border w-80 outline-none h-full"
+            className="ml-5 border pl-4 py-2 border-black w-80 outline-none"
             onChange={(e) => setPackageId(Number(e.target.value))}
           >
             <option>패키지 목록</option>
@@ -242,20 +271,43 @@ const ProductManager = () => {
             )}
           </select>
         </div>
-        <div className="flex  border-b w-full border-black h-10 items-center">
+        <div className="flex  border-b w-full h-10 items-center">
           <div className="h-full flex w-40 justify-center items-center bg-gray-300">
             상품 상태
           </div>
           <select
-            className=" ml-5 border w-80 outline-none h-full"
+            className="ml-5 pl-4 py-2 border border-black w-80 outline-none"
             onChange={(e) => setReserveState(e.target.value)}
+            value={reserveState}
           >
-            {["예약 상태", "예약 가능", "예약 마감"].map((el, idx) => (
+            {["전체", "예약 가능", "예약 마감"].map((el, idx) => (
               <option key={idx} value={el}>
                 {el}
               </option>
             ))}
           </select>
+        </div>
+        <div className="flex  border-b w-full h-10 items-center">
+          <div className="h-full flex w-40 mr-5 justify-center items-center bg-gray-300">
+            공개 상태별 보기
+          </div>
+          <PackageSelect
+            onChange={setPrivacy}
+            value={privacy}
+            options={["전체", "공개", "비공개"]}
+            className="w-80 py-2"
+          />
+        </div>
+        <div className="flex  border-b w-full border-black h-10 items-center">
+          <div className="h-full flex w-40 mr-5 justify-center items-center bg-gray-300">
+            저장 상태별 보기
+          </div>
+          <PackageSelect
+            onChange={setSave}
+            value={save}
+            className="w-80 py-2"
+            options={["전체", "저장", "임시저장"]}
+          />
         </div>
       </div>
 
@@ -294,6 +346,14 @@ const ProductManager = () => {
       </div>
 
       <>
+        <div className="flex w-full justify-center">
+          <button
+            className="border border-black px-16"
+            onClick={handleResetClick}
+          >
+            필터 초기화
+          </button>
+        </div>
         <div className="w-full flex justify-between items-center mb-3">
           <div>
             <button
@@ -307,22 +367,9 @@ const ProductManager = () => {
               onChange={setPrivacyState}
               value={privacyState}
               options={["공개", "비공개"]}
-              className="mr-3"
+              className="mr-3 py-1"
               disabledOption="공개변경"
               setChangeActive={setChangeActive}
-            />
-          </div>
-          <div>
-            <PackageSelect
-              onChange={setPrivacy}
-              value={privacy}
-              options={["공개 상태", "공개", "비공개"]}
-              className="mr-3"
-            />
-            <PackageSelect
-              onChange={setSave}
-              value={save}
-              options={["저장 상태", "저장", "임시저장"]}
             />
           </div>
         </div>
@@ -345,7 +392,11 @@ const ProductManager = () => {
                         onClick={handleDateFilter}
                         data-product={el.value}
                       >
-                        {arrowState[el.value] ? "↑" : "↓"}
+                        {arrowState[el.value] ? (
+                          <img src="icon_down.svg" className="rotate-180" />
+                        ) : (
+                          <img src="icon_down.svg" />
+                        )}
                       </button>
                     )}
                   </div>

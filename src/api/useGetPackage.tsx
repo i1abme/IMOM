@@ -8,6 +8,7 @@ interface ProductItem {
 
 export const useGetPackage = () => {
   const [packagesList, setPackagesList] = useState<ProductItem[]>([]);
+  const [resetActive, setResetActive] = useState(false);
 
   useEffect(() => {
     baseInstance
@@ -17,12 +18,13 @@ export const useGetPackage = () => {
       try {
         const response = await baseInstance.get("packages/simple");
         setPackagesList(response.data.data);
+        setResetActive(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [resetActive]);
 
-  return { packagesList };
+  return { packagesList, setPackagesList, setResetActive };
 };

@@ -81,7 +81,7 @@ const PackageBoxGroup = ({
     return <div>해당 상품이 없습니다.</div>;
   }
   return (
-    <div className="flex flex-col gap-[52px]">
+    <div className="flex flex-col gap-[52px] w-full items-center">
       {packageData.map((data, idx) => (
         <PackageBox packageData={data} key={idx} />
       ))}

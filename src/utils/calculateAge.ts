@@ -1,7 +1,7 @@
 export const calculateAge = (
   birthDate: string,
   startDate: string
-): "유아" | "아동" | "성인" => {
+): string[] => {
   const birth = new Date(birthDate);
   const departure = new Date(startDate);
   const diffYears = departure.getFullYear() - birth.getFullYear();
@@ -13,7 +13,7 @@ export const calculateAge = (
       : 0;
   const age = diffYears + ageAdjustment;
 
-  if (age < 2) return "유아";
-  if (age < 12) return "아동";
-  return "성인";
+  if (age < 2) return ["유아", "infant"];
+  if (age < 12) return ["아동", "child"];
+  return ["성인", "adult"];
 };

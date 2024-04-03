@@ -17,6 +17,7 @@ export const loginCheck = atom({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
 export const tagFetchState = atom({
   key: "tagFetchState",
   default: false,
@@ -35,4 +36,9 @@ export const socialData = atom<SocialType | null>({
 export const userChildName = atom({
   key: "userChildName",
   default: "우리",
+});
+
+export const viewSize = atom({
+  key: "viewSize",
+  default: window.innerWidth <= 375 ? "mobile" : "web",
 });

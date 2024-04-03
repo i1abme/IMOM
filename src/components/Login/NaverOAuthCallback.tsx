@@ -19,8 +19,10 @@ const NaverOAuthCallback = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.data.accessToken) {
+            console.log(res);
             setLoginCheck(true);
             window.localStorage.setItem("token", res.data.data.accessToken);
+            window.localStorage.setItem("role", res.data.data.role);
             window.localStorage.setItem(
               "refreshToken",
               res.data.data.refreshToken

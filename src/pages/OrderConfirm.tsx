@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetUserOrderInfo from "../queries/orders/useGetUserOrderInfo";
-import CategoryBtns from "../components/TravelDetail/CategoryBtns";
+import CategoryBtns from "../components/common/CategoryBtns";
 import { ORDER_DETAIL_CATEGORIES } from "../constants/managerdata";
 import OrderedAmount from "../components/common/Order/OrderedAmount";
-import OrderInfo from "../components/Manager/orderDetail/OrderInfo";
-import PaymentInfo from "../components/Manager/orderDetail/PaymentInfo";
+import OrderInfo from "../components/common/Order/OrderInfo";
+import PaymentInfo from "../components/common/Order/PaymentInfo";
+import { useRecoilValue } from "recoil";
+import { viewSize } from "../atom/atom";
 
 const OrderConfirm = () => {
   const { orderId } = useParams();
   console.log(orderId);
   const navigate = useNavigate();
+  const viewSizeState = useRecoilValue(viewSize);
 
   const { data, isError } = useGetUserOrderInfo(orderId ?? "");
 
@@ -35,10 +38,17 @@ const OrderConfirm = () => {
   const handlePayment = () => {
     navigate("/paymentcheckout", {
       state: {
-        orderId: "",
-        amount: data?.balance,
-        paymentKey: "",
-        imomOrderId: data?.imomOrderId,
+        paymentInfo: {
+          orderId: "",
+          amount: data?.balance,
+          paymentKey: "",
+          imomOrderId: data?.imomOrderId,
+        },
+        tossPaymentInfo: {
+          email: data?.email,
+          userName: data?.reserveUser,
+          packageName: data?.packageName,
+        },
       },
     });
   };
@@ -47,13 +57,15 @@ const OrderConfirm = () => {
     return <div>정보를 불러올 수 없습니다.</div>;
   }
   return (
-    <div className="flex flex-col gap-10 w-full mr-20 mb-50 mt-[60px]">
-      <CategoryBtns
-        category={ORDER_DETAIL_CATEGORIES}
-        handleClick={handleShowInfo}
-        active={showInfo}
-        divStyle="!justify-start gap-[40px] w-full"
-      />
+    <div className="flex flex-col gap-10 w-full mr-20 mb-50 mt-[60px] max-xsm:mx-[16px]">
+      {viewSizeState === "web" && (
+        <CategoryBtns
+          category={ORDER_DETAIL_CATEGORIES}
+          handleClick={handleShowInfo}
+          active={showInfo}
+          divStyle="!justify-start gap-[40px] w-full"
+        />
+      )}
       <OrderedAmount
         totalPrice={data?.totalPrice}
         payedPrice={data?.payedPrice}
@@ -61,10 +73,18 @@ const OrderConfirm = () => {
         role={"user"}
         handlePayment={handlePayment}
       />
+      {viewSizeState === "mobile" && (
+        <CategoryBtns
+          category={ORDER_DETAIL_CATEGORIES}
+          handleClick={handleShowInfo}
+          active={showInfo}
+          divStyle="!justify-start gap-[40px] w-full"
+        />
+      )}
       {showInfo === "orderInfo" && data ? (
         <OrderInfo data={data} role={"user"} />
       ) : (
-        <PaymentInfo idList={idList} />
+        <PaymentInfo idList={idList} role="user" />
       )}
 
       <div className="h-[60px]" />

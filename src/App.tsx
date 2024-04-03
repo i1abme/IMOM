@@ -36,8 +36,10 @@ import NaverOAuthCallback from "./components/Login/NaverOAuthCallback";
 import OrderConfirm from "./pages/OrderConfirm";
 import PaymentCheckout from "./pages/PaymentCheckout";
 import MainLayout from "./components/common/MainLayout";
-import { loginCheck } from "./atom/atom";
+import { loginCheck, viewSize } from "./atom/atom";
 import { useRecoilValue } from "recoil";
+import { useSetRecoilState } from "recoil";
+import { useEffect } from "react";
 
 function App() {
   const queryClient = new QueryClient({
@@ -49,6 +51,25 @@ function App() {
   const refreshToken = window.localStorage.getItem("refreshToken");
   const isLoggedIn = useRecoilValue(loginCheck);
   console.log(isLoggedIn);
+
+  const setViewSize = useSetRecoilState(viewSize);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 375) {
+        setViewSize("mobile");
+      } else {
+        setViewSize("web");
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setViewSize]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -97,7 +118,6 @@ function App() {
             <Route path="/packagemanager" element={<PackageManager />} />
             <Route path="/productmanager" element={<ProductManager />} />
             <Route path="/ordermanager" element={<OrderManager />} />
-            {/* 임시: 페이지 띄우기*/}
             <Route path="/orderdetail/:id" element={<OrderDetail />} />
             <Route path="/newregistration" element={<NewRegistration />} />
             <Route
@@ -109,7 +129,10 @@ function App() {
             <Route path="/tagsmanager" element={<TagsManager />} />
           </Route>
           <Route path="/paymentcheckout" element={<PaymentCheckout />} />
-          <Route path="/paymentcheckout/success" element={<PaymentSuccess />} />
+          <Route
+            path="/paymentcheckout/after/:id"
+            element={<PaymentSuccess />}
+          />
         </Routes>
       </div>
     </QueryClientProvider>

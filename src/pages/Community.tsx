@@ -6,7 +6,7 @@ import "../App.css";
 import { baseInstance } from "../api/instance";
 import CommunityEditor from "../components/Community/CommunityEditor";
 import CommunityDetail from "../components/Community/CommunityDetail";
-import SectionTitle from "../components/Main/SectionTitle";
+import SectionTitle from "../components/common/SectionTitle";
 import CustomPagination from "../components/common/CustomPagination";
 import { useRecoilValue } from "recoil";
 import { loginCheck } from "../atom/atom";
@@ -37,6 +37,8 @@ const Community = () => {
   const [deleteActive, setDeleteActive] = useState<boolean>(false);
   const [offset, setOffset] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+  const isAdmin =
+    window.localStorage.getItem("role") === "ROLE_ADMIN" ? true : false;
 
   const handlePageChange = (selected: number) => {
     setOffset(selected);
@@ -177,7 +179,7 @@ const Community = () => {
     <div className="w-full flex justify-center">
       <div className="w-[1280px] flex flex-col items-center">
         <div
-          className="h-[400px] w-full mb-8 bg-cover"
+          className="h-[400px] w-full mb-8 bg-cover bg-center"
           style={{ backgroundImage: `url(${CommunityImg})` }}
         />
         <div className="flex w-full  ">
@@ -215,7 +217,7 @@ const Community = () => {
                   }
                   tdStyle={"py-[14px]"}
                 />
-                {isLogin ? (
+                {isAdmin ? (
                   <div className="flex justify-end w-full">
                     {["삭제하기", "등록하기"].map((el, idx) => (
                       <button
