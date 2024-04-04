@@ -1,5 +1,5 @@
-// import FlagCarrierTrue from "/public/flagCarrierTrue.svg";
-// import FlagCarrierFalse from "/public/flagCarrierFalse.svg";
+import FlagCarrierTrue from "/public/flagCarrierTrue.svg";
+import FlagCarrierFalse from "/public/flagCarrierFalse.svg";
 import TourConductorTrue from "/public/tourConductorTrue.svg";
 import TourConductorFalse from "/public/tourConductorFalse.svg";
 import ShoppingTrue from "/public/shoppingTrue.svg";
@@ -8,15 +8,15 @@ import OptionalTourTrue from "/public/optionalTourTrue.svg";
 import OptionalTourFalse from "/public/optionalTourFalse.svg";
 
 export const PACKAGE_ICON_CATEGORIES = {
+  flagCarrier: {
+    0: FlagCarrierFalse,
+    1: FlagCarrierTrue,
+    label: "국적기",
+  },
   tourConductor: {
     0: TourConductorFalse,
     1: TourConductorTrue,
     label: "인솔자",
-  },
-  flagCarrier: {
-    0: TourConductorFalse,
-    1: TourConductorTrue,
-    label: "국적기",
   },
   shopping: {
     0: ShoppingFalse,
