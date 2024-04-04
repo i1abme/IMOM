@@ -5,7 +5,10 @@ const PackageIcon = ({ productInfo }: { productInfo: Product }) => {
   console.log(productInfo.flagCarrier);
   return (
     <div className="flex gap-[6px] my-[13px]">
-      <div style={{ backgroundImage: `url("/public/flagCarrierTrue.svg")` }} />
+      <div
+        style={{ backgroundImage: `url("/public/flagCarrierTrue.svg")` }}
+        className="w-[53px] h-[53px] border-[1px] rounded-[10px] max-xsm:w-[45px] max-xsm:h-[45px] bg-cover"
+      />
       {Object.entries(PACKAGE_ICON_CATEGORIES).map(([key, value]) => (
         <div className="flex flex-col items-center" key={key}>
           <div
