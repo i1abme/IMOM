@@ -1,5 +1,5 @@
-import FlagCarrierTrue from "/src/assets/flagCarrierTrue.svg";
-import FlagCarrierFalse from "/src/assets/flagCarrierFalse.svg";
+import FlagCarrierTrue from "/public/flagCarrierTrue.svg";
+import FlagCarrierFalse from "/public/flagCarrierFalse.svg";
 import TourConductorTrue from "/public/tourConductorTrue.svg";
 import TourConductorFalse from "/public/tourConductorFalse.svg";
 import ShoppingTrue from "/public/shoppingTrue.svg";
