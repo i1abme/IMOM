@@ -74,8 +74,8 @@ const PaymentCheckout = () => {
                 orderName: tossPaymentInfo.packageName,
                 customerName: tossPaymentInfo.userName,
                 customerEmail: tossPaymentInfo.email,
-                successUrl: `${window.location.href}/after/success?payFor=${payfor}`,
-                failUrl: `${window.location.href}/after/fail`,
+                successUrl: `${window.location.origin}/paymentcheckout/after/success?payFor=${payfor}`,
+                failUrl: `${window.location.origin}/paymentcheckout/after/fail`,
               });
             } catch (err) {
               console.log(err);
