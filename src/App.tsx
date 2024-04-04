@@ -40,6 +40,7 @@ import { loginCheck, viewSize } from "./atom/atom";
 import { useRecoilValue } from "recoil";
 import { useSetRecoilState } from "recoil";
 import { useEffect } from "react";
+import PaymentFail from "./pages/PaymentFail";
 
 function App() {
   const queryClient = new QueryClient({
@@ -129,10 +130,8 @@ function App() {
             <Route path="/tagsmanager" element={<TagsManager />} />
           </Route>
           <Route path="/paymentcheckout" element={<PaymentCheckout />} />
-          <Route
-            path="/paymentcheckout/after/:id"
-            element={<PaymentSuccess />}
-          />
+          <Route path="/success" element={<PaymentSuccess />} />
+          <Route path="/fail" element={<PaymentFail />} />
         </Routes>
       </div>
     </QueryClientProvider>
