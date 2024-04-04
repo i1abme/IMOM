@@ -5,6 +5,7 @@ const PackageIcon = ({ productInfo }: { productInfo: Product }) => {
   console.log(productInfo.flagCarrier);
   return (
     <div className="flex gap-[6px] my-[13px]">
+      <div style={{ backgroundImage: `url("/public/flagCarrierTrue.svg")` }} />
       {Object.entries(PACKAGE_ICON_CATEGORIES).map(([key, value]) => (
         <div className="flex flex-col items-center" key={key}>
           <div
