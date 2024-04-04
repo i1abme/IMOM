@@ -1,31 +1,31 @@
-import flagCarrierTrue from "/public/flag_CarrierTrue.svg";
-import flagCarrierFalse from "/public/flag_CarrierFalse.svg";
-import tourConductorTrue from "/public/tourConductorTrue.svg";
-import tourConductorFalse from "/public/tourConductorFalse.svg";
-import shoppingTrue from "/public/shoppingTrue.svg";
-import shoppingFalse from "/public/shoppingFalse.svg";
-import optionalTourTrue from "/public/optionalTourTrue.svg";
-import optionalTourFalse from "/public/optionalTourFalse.svg";
+import FlagCarrierTrue from "/public/flagCarrierTrue.svg";
+import FlagCarrierFalse from "/public/flagCarrierFalse.svg";
+import TourConductorTrue from "/public/tourConductorTrue.svg";
+import TourConductorFalse from "/public/tourConductorFalse.svg";
+import ShoppingTrue from "/public/shoppingTrue.svg";
+import ShoppingFalse from "/public/shoppingFalse.svg";
+import OptionalTourTrue from "/public/optionalTourTrue.svg";
+import OptionalTourFalse from "/public/optionalTourFalse.svg";
 
 export const PACKAGE_ICON_CATEGORIES = {
-  flagCarrier: {
-    0: flagCarrierFalse,
-    1: flagCarrierTrue,
-    label: "국적기",
-  },
   tourConductor: {
-    0: tourConductorFalse,
-    1: tourConductorTrue,
+    0: TourConductorFalse,
+    1: TourConductorTrue,
     label: "인솔자",
   },
+  flagCarrier: {
+    0: FlagCarrierFalse,
+    1: FlagCarrierTrue,
+    label: "국적기",
+  },
   shopping: {
-    0: shoppingFalse,
-    1: shoppingTrue,
+    0: ShoppingFalse,
+    1: ShoppingTrue,
     label: "쇼핑",
   },
   optionalTour: {
-    0: optionalTourFalse,
-    1: optionalTourTrue,
+    0: OptionalTourFalse,
+    1: OptionalTourTrue,
     label: "선택관광",
   },
 };
