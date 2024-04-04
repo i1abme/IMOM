@@ -2,6 +2,7 @@ import { PACKAGE_ICON_CATEGORIES } from "../../constants/packagedata";
 import { Product } from "../../types/product";
 
 const PackageIcon = ({ productInfo }: { productInfo: Product }) => {
+  console.log(productInfo.flagCarrier);
   return (
     <div className="flex gap-[6px] my-[13px]">
       {Object.entries(PACKAGE_ICON_CATEGORIES).map(([key, value]) => (
