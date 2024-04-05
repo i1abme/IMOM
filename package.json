@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
+    "prebuild": "ts-node removeBgImage.ts",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -35,7 +36,6 @@
     "swiper": "^11.0.5"
   },
   "devDependencies": {
-    "@types/node": "^20.12.4",
     "@types/react": "^18.2.43",
     "@types/react-datepicker": "^4.19.6",
     "@types/react-dom": "^18.2.17",
