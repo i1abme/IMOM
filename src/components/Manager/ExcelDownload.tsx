@@ -31,7 +31,6 @@ const ExcelDownload = ({
       }`}
       ref={csvLink}
       target="_blank"
-      onClick={() => console.log("click")}
     >
       {title}
     </CSVLink>

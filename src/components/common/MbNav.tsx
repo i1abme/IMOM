@@ -66,7 +66,7 @@ const MbNav = () => {
         <button
           id="mypage"
           className="flex flex-col justify-center items-center shrink-0 gap-[6px]"
-          onClick={() => navigate("/editmember")}
+          onClick={() => navigate("/mypageorderinfo")}
         >
           <img src={IconMyPage} alt="askicon" className="w-[32px] h-[30px]" />
           <span className="text-[9px] text-sub-black">마이페이지</span>

@@ -32,7 +32,7 @@ const TravelDetail = () => {
   >("scheduleList");
   const [showProductInfo, setShowProductInfo] = useState<string>("keyPoint");
   const [detailData, setDetailData] = useState<ProductDetialInfo>();
-  const { data, isError, error } = useGetProduct(id ? +id : 0);
+  const { data, isError } = useGetProduct(id ? +id : 0);
 
   const [scheduleInfo, setScheuleInfo] = useState<string>("");
 
@@ -42,11 +42,9 @@ const TravelDetail = () => {
     if (data) {
       setDetailData(data);
     }
-    console.log(data);
   }, [data]);
 
   const handleScheduleInfo = (id: string) => {
-    console.log(id);
     if (detailData) {
       setShowScheduleInfo(
         () => id as "hotelInfo" | "scheduleList" | "regionInfo" | "terms"
@@ -110,23 +108,15 @@ const TravelDetail = () => {
       };
 
   useEffect(() => {
-    console.log(showReserveBox);
-  }, [showReserveBox]);
-
-  useEffect(() => {
     const handleDragStart = (event: MouseEvent | TouchEvent) => {
-      console.log("start");
       const clientY =
         event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
 
-      console.log(clientY);
       startYRef.current = clientY;
       event.preventDefault();
     };
 
     const handleDragEnd = (event: MouseEvent | TouchEvent) => {
-      console.log("end");
-
       const clientY =
         event instanceof TouchEvent
           ? event.changedTouches[0].clientY
@@ -135,10 +125,10 @@ const TravelDetail = () => {
       if (clientY - startYRef.current >= 50) {
         setShowReserveBox(!showReserveBox);
       }
+      event.preventDefault();
     };
 
     const element = dropdownRef.current;
-    console.log(element);
     if (viewSizeState === "mobile" && element) {
       element.addEventListener("touchstart", handleDragStart, {
         passive: false,
@@ -164,9 +154,7 @@ const TravelDetail = () => {
     return <div className="w-full text-center">잘못된 상품경로입니다.</div>;
   }
   if (isError) {
-    return (
-      <div className="w-full text-center">에러 발생: {error?.message}</div>
-    );
+    return <div className="w-full text-center">상품을 찾을 수 없습니다.</div>;
   }
   if (!detailData) {
     return <div className="w-full text-center">데이터가 없습니다.</div>;
@@ -248,6 +236,7 @@ const TravelDetail = () => {
                 className="bg-main-color rounded-[20px] text-white text-[12px] tracking-[-0.6px]
             disabled:bg-sub-black disabled:bg-opacity-[0.3] px-[77px] py-[12px] "
                 onClick={handleReserve}
+                onTouchStart={handleReserve}
                 disabled={detailData.productInfo.productState !== "예약 가능"}
               >
                 {detailData.productInfo.productState === "예약 가능"

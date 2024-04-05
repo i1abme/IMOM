@@ -77,7 +77,6 @@ const ReservationBox = ({
 
   const getPrice = (age: string, newCount: number) => {
     const priceInfo = prices.filter((item) => item.age === age);
-    console.log(priceInfo);
     return newCount * (priceInfo[0].surcharge + priceInfo[0].price);
   };
 
@@ -110,6 +109,7 @@ const ReservationBox = ({
         disabled:bg-sub-black disabled:bg-opacity-[0.3]"
         disabled={counts["adult"].count < 1}
         onClick={handleReserve}
+        onTouchStart={handleReserve}
       >
         {productState === "예약 가능" ? "예약하기" : productState}
       </button>

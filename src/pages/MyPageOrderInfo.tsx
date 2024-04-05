@@ -141,7 +141,13 @@ const MyPageOrderInfo = ({ refreshToken, token }: EditType) => {
             {orderHeaders.map((el, index) => (
               <th
                 key={index}
-                className="p-2 border border-white"
+                className={`p-2 border border-white whitespace-nowrap ${
+                  (el.key === 1 ||
+                    el.key === 2 ||
+                    el.key === 5 ||
+                    el.key === 6) &&
+                  "max-xsm:hidden"
+                }`}
                 onClick={() => handleFilter(el.text)}
               >
                 <div className="flex justify-center">
@@ -164,18 +170,24 @@ const MyPageOrderInfo = ({ refreshToken, token }: EditType) => {
         <tbody>
           {orderInfoData.map((el, idx) => (
             <tr className=" h-[45px] 2sm:h-[50px] text-center" key={idx}>
-              <td className="border border-main-color p-2">{el.imomOrderId}</td>
-              <td className="border border-main-color p-2">{el.orderDate}</td>
-              <td className="border border-main-color p-2">
+              <td className="border border-main-color p-2 max-xsm:hidden">
+                {el.imomOrderId}
+              </td>
+              <td className="border border-main-color p-2 max-xsm:hidden">
+                {el.orderDate}
+              </td>
+              <td className="border border-main-color p-2 ">
                 <button
-                  onClick={() => navigation(`/orderconfirm/${el.imomOrderId}`)}
+                  onClick={() => navigation(`/myorderdetail/${el.imomOrderId}`)}
                 >
                   {el.packageName}
                 </button>
               </td>
               <td className="border border-main-color p-2">{el.startDate}</td>
-              <td className="border border-main-color p-2">{el.totalCount}</td>
-              <td className="border border-main-color p-2">
+              <td className="border border-main-color p-2 max-xsm:hidden">
+                {el.totalCount}
+              </td>
+              <td className="border border-main-color p-2 max-xsm:hidden">
                 {el.productState}
               </td>
               <td className="border border-main-color p-2">{el.orderState}</td>

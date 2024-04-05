@@ -22,7 +22,7 @@ const MainManager = () => {
     });
   }, []);
   useEffect(() => {
-    baseInstance.get("/images/banners").then((res) => {
+    baseInstance.get("/images/banners/web").then((res) => {
       if (res.status === 200) {
         const imageData = res.data.data;
         setBanner1(imageData[0].link);
@@ -75,7 +75,7 @@ const MainManager = () => {
     }
 
     baseInstance
-      .post("/images/banners", formData, {
+      .post("/images/banners/web", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -107,8 +107,8 @@ const MainManager = () => {
       <MainTitle title={"메인관리-배너수정"} />
       <ManagerTitleBox name="배너 등록" className="mb-2" />
 
-      <form>
-        <div className="flex justify-center items-center border p-2 w-[600px] ">
+      <form className="mb-5">
+        <div className="flex justify-center items-center border p-2 w-[600px]">
           <MainManagerBtn
             limitLength={3}
             myImage={myImage}
@@ -118,8 +118,8 @@ const MainManager = () => {
           />
         </div>
         <div className="w-full flex flex-col items-center justify-center">
-          {["1배너", "2배너", "3배너"].map((el) => (
-            <div className="flex w-full my-3">
+          {["1배너", "2배너", "3배너"].map((el, index) => (
+            <div className="flex w-full my-3" key={index}>
               <div className="whitespace-nowrap mr-5">{el}</div>
               <input
                 className="border w-full"

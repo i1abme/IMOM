@@ -264,14 +264,17 @@ const EditMember = ({ refreshToken, token }: EditType) => {
   return (
     <div className="w-full relative">
       <ManagerTitle title="회원 정보 수정" />
-      <div className="border-t border-gray-200">
+      <div className="border-t border-gray-200 max-xsm:border-none">
         {Object.entries(userData)
           .filter(([key]) => keysToDisplay.includes(key))
           .map(([key, value]) => (
-            <table key={key} className="flex border-b border-gray-200 w-full ">
+            <table
+              key={key}
+              className="flex border-b border-gray-200 w-full max-xsm:border-none"
+            >
               <tbody>
                 <tr className="flex items-center">
-                  <th className="border-r w-40 whitespace-nowrap border-gray-200 bg-main-color text-white py-3">
+                  <th className="border-r w-40 whitespace-nowrap border-gray-200 bg-main-color text-white py-3 max-xsm:bg-white max-xsm:text-black max-xsm:border-none">
                     {keyToKorean(key)}
                   </th>
                   {key !== "email" ? (
@@ -322,15 +325,15 @@ const EditMember = ({ refreshToken, token }: EditType) => {
           ))}
       </div>
 
-      <div className="flex justify-end items-center mt-3">
+      <div className="flex w-full justify-end items-center mt-3 max-xsm:justify-center">
         <button
-          className="px-14 border border-main-color mr-5 hover:bg-main-color hover:text-white"
+          className="px-14 border border-main-color mr-5 hover:bg-main-color hover:text-white whitespace-nowrap max-xsm:p-2 max-xsm:bg-main-color max-xsm:text-white max-xsm:rounded-full"
           onClick={handlePasswordModalClick}
         >
           <span>비밀번호변경하기</span>
         </button>
         <button
-          className="px-14 border border-main-color hover:bg-main-color hover:text-white"
+          className="px-14 border border-main-color hover:bg-main-color hover:text-white whitespace-nowrap max-xsm:p-2 max-xsm:bg-main-color max-xsm:text-white max-xsm:rounded-full"
           onClick={handleEditBtnClick}
         >
           <span>수정하기</span>

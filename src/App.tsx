@@ -21,7 +21,6 @@ import {
   QueryClient,
   QueryCache,
 } from "@tanstack/react-query";
-import PaymentSuccess from "./pages/PaymentSuccess";
 import TagsManager from "./pages/manager/TagsManager";
 import MyPageNav from "./components/MyPage/MyPageNav";
 import EditMember from "./pages/EditMember";
@@ -33,14 +32,15 @@ import ResetPassword from "./pages/ResetPassword";
 import EasySignUp from "./pages/EasySignUp";
 import KakaoOAuthCallback from "./components/Login/KakaoOAuthCallback";
 import NaverOAuthCallback from "./components/Login/NaverOAuthCallback";
-import OrderConfirm from "./pages/OrderConfirm";
 import PaymentCheckout from "./pages/PaymentCheckout";
 import MainLayout from "./components/common/MainLayout";
-import { loginCheck, viewSize } from "./atom/atom";
-import { useRecoilValue } from "recoil";
+import { viewSize } from "./atom/atom";
+import MbMainManager from "./pages/manager/MbMainManager";
 import { useSetRecoilState } from "recoil";
 import { useEffect } from "react";
-import PaymentFail from "./pages/PaymentFail";
+import AfterPayment from "./pages/AfterPayment";
+import MyPageOrderDetail from "./pages/MyPageOrderDetail";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const queryClient = new QueryClient({
@@ -50,8 +50,6 @@ function App() {
   });
   const token = window.localStorage.getItem("token");
   const refreshToken = window.localStorage.getItem("refreshToken");
-  const isLoggedIn = useRecoilValue(loginCheck);
-  console.log(isLoggedIn);
 
   const setViewSize = useSetRecoilState(viewSize);
 
@@ -88,18 +86,21 @@ function App() {
           <Route element={<MainLayout />}>
             <Route element={<MyPageNav />}>
               <Route
+                path="/mypageorderinfo"
+                element={
+                  <MyPageOrderInfo token={token} refreshToken={refreshToken} />
+                }
+              />
+              <Route
                 path="/editmember"
                 element={
                   <EditMember token={token} refreshToken={refreshToken} />
                 }
               />
               <Route
-                path="/mypageorderinfo"
-                element={
-                  <MyPageOrderInfo token={token} refreshToken={refreshToken} />
-                }
+                path="/myorderdetail/:orderId"
+                element={<MyPageOrderDetail />}
               />
-              <Route path="/orderconfirm/:orderId" element={<OrderConfirm />} />
             </Route>
             <Route path="/" element={<Main />} />
             <Route path="/intro" element={<Intro />} />
@@ -116,6 +117,7 @@ function App() {
           {/* 관리자 네비게이션바 */}
           <Route element={<SideNav />}>
             <Route path="/mainmanager" element={<MainManager />} />
+            <Route path="/mbmainmanager" element={<MbMainManager />} />
             <Route path="/packagemanager" element={<PackageManager />} />
             <Route path="/productmanager" element={<ProductManager />} />
             <Route path="/ordermanager" element={<OrderManager />} />
@@ -130,8 +132,8 @@ function App() {
             <Route path="/tagsmanager" element={<TagsManager />} />
           </Route>
           <Route path="/paymentcheckout" element={<PaymentCheckout />} />
-          <Route path="/success" element={<PaymentSuccess />} />
-          <Route path="/fail" element={<PaymentFail />} />
+          <Route path="/paymentcheckout/after/:id" element={<AfterPayment />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </QueryClientProvider>

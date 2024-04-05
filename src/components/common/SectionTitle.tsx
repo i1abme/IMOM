@@ -2,13 +2,19 @@ const SectionTitle = ({
   title,
   padding,
   titleStyle,
+  divStyle,
 }: {
   title: string;
   padding?: boolean;
   titleStyle?: string;
+  divStyle?: string;
 }) => {
   return (
-    <div className={`${!padding ? "pl-[8px]" : ""} flex flex-col self-start`}>
+    <div
+      className={`${
+        !padding ? "pl-[8px]" : ""
+      } ${divStyle} flex flex-col self-start`}
+    >
       <hr className="border-main-color w-[50px] border-[2px] max-xsm:border-none max-xsm:bg-main-color max-xsm:h-[3px]" />
       <h2
         className={`${titleStyle} text-main-color text-[20px] font-bold 

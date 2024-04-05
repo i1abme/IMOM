@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./NavDropdown.css";
 import useGetCountries from "../../../queries/countries/useGetCountries";
 import UserMenu from "./UserMenu";
@@ -12,6 +12,8 @@ const NavDropdown = ({ handleMenuClose }: { handleMenuClose: () => void }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const startYRef = useRef(0);
 
+  const navigate = useNavigate();
+
   const travelProductList = data?.reduce<{ [key: string]: string }>(
     (acc, countryName) => {
       acc[countryName] = `/travelproduct/${countryName}`;
@@ -20,19 +22,20 @@ const NavDropdown = ({ handleMenuClose }: { handleMenuClose: () => void }) => {
     {}
   );
 
+  const handleMenu = (link: string, state: string) => {
+    navigate(`${link}`, { state: state });
+    handleMenuClose();
+  };
+
   const handleDragStart = (event: MouseEvent | TouchEvent) => {
-    console.log("start");
     const clientY =
       event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
 
-    console.log(clientY);
     startYRef.current = clientY;
     event.preventDefault();
   };
 
   const handleDragEnd = (event: MouseEvent | TouchEvent) => {
-    console.log("end");
-
     const clientY =
       event instanceof TouchEvent
         ? event.changedTouches[0].clientY
@@ -40,6 +43,7 @@ const NavDropdown = ({ handleMenuClose }: { handleMenuClose: () => void }) => {
 
     if (clientY - startYRef.current >= 80) {
       handleMenuClose();
+      event.preventDefault();
     }
   };
 
@@ -113,12 +117,11 @@ const NavDropdown = ({ handleMenuClose }: { handleMenuClose: () => void }) => {
                   {Object.entries(menu.list).map(([key, value]) => (
                     <li
                       key={key}
-                      onClick={handleMenuClose}
-                      className="mr-[30px]"
+                      onClick={() => handleMenu(value, key)}
+                      onTouchStart={() => handleMenu(value, key)}
+                      className="mr-[30px] cursor-pointer"
                     >
-                      <Link to={value} state={key}>
-                        {key}
-                      </Link>
+                      {key}
                     </li>
                   ))}
                 </ul>
@@ -126,95 +129,11 @@ const NavDropdown = ({ handleMenuClose }: { handleMenuClose: () => void }) => {
             </div>
           ))}
         </div>
-        {viewSizeState === "mobile" && <UserMenu />}
+        {viewSizeState === "mobile" && (
+          <UserMenu handleMenuClose={handleMenuClose} />
+        )}
       </div>
     </div>
   );
 };
 export default NavDropdown;
-// const handleTouchStart = (event: TouchEvent | MouseEvent) => {
-//   const startY =
-//     event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
-//   setStartY(startY);
-//   event.preventDefault();
-// };
-
-// const handleTouchMove = (event: TouchEvent | MouseEvent) => {
-//   if (!dropdownRef.current) return;
-//   const moveY =
-//     event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
-
-//   if (moveY - startY > 200) {
-//     setIsVisible(false);
-//     handleMenuClose();
-//     event.preventDefault();
-//   }
-// };
-
-// useEffect(() => {
-//   const element = dropdownRef.current;
-//   if (viewSizeState === "mobile" && element) {
-//     element.addEventListener("touchstart", handleTouchStart, {
-//       passive: false,
-//     });
-//     element.addEventListener("touchmove", handleTouchMove, {
-//       passive: false,
-//     });
-//     element.addEventListener("mousedown", handleTouchStart, {
-//       passive: false,
-//     });
-//     element.addEventListener("mousemove", handleTouchMove, {
-//       passive: false,
-//     });
-//   }
-
-//   return () => {
-//     if (element) {
-//       element.removeEventListener("touchstart", handleTouchStart);
-//       element.removeEventListener("touchmove", handleTouchMove);
-//       element.removeEventListener("mousedown", handleTouchStart);
-//       element.removeEventListener("mousemove", handleTouchMove);
-//     }
-//   };
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-// }, [viewSizeState]);
-
-// const handleStart = (event: TouchEvent | MouseEvent) => {
-//   console.log("start");
-//   const clientY =
-//     event instanceof TouchEvent ? event.touches[0].clientY : event.clientY;
-//   setStartY(clientY);
-//   event.preventDefault();
-// };
-
-// const handleEnd = (event: TouchEvent | MouseEvent) => {
-//   console.log("end");
-//   const clientY =
-//     event instanceof TouchEvent
-//       ? event.changedTouches[0].clientY
-//       : event.clientY;
-//   if (clientY - startY > 200) {
-//     // 드래그 거리가 200px 이상이면
-//     setIsVisible(false);
-//     handleMenuClose();
-//     event.preventDefault();
-//   }
-// };
-
-// useEffect(() => {
-//   const element = dropdownRef.current;
-//   if (element && viewSizeState === "mobile") {
-//     element.addEventListener("touchstart", handleStart, { passive: false });
-//     element.addEventListener("touchend", handleEnd, { passive: false });
-//     element.addEventListener("mousedown", handleStart, { passive: false });
-//     window.addEventListener("mouseup", handleEnd, { passive: false });
-
-//     return () => {
-//       element.removeEventListener("touchstart", handleStart);
-//       element.removeEventListener("touchend", handleEnd);
-//       element.removeEventListener("mousedown", handleStart);
-//       window.removeEventListener("mouseup", handleEnd);
-//     };
-//   }
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-// }, [viewSizeState]);

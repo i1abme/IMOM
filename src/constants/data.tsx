@@ -4,6 +4,10 @@ export const myPageNavTitle = [
   { title: "회원 정보 수정", prams: "/editmember" },
   { title: "회원 탈퇴", prams: "secession" },
 ];
+export const mbMyPageNavTitle = [
+  { title: "주문 정보", prams: "/mypageorderinfo" },
+  { title: "회원 정보 수정", prams: "/editmember" },
+];
 
 export const fileTitle = ["배너1", "배너2", "배너3"];
 

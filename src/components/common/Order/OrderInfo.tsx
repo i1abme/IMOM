@@ -77,7 +77,6 @@ const OrderInfo = ({ data, role }: { data: OrderInfoData; role: string }) => {
     changedRole?: string, // 변경될 인원 카테고리
     orderedRole?: string // 유저가 주문한 인원 카테고리
   ) => {
-    console.log(id);
     if (changedRole && orderedRole && changedRole !== orderedRole) {
       // 추가될 인원 카테고리
       const plusCategory = changedRole + "Count";
@@ -122,10 +121,6 @@ const OrderInfo = ({ data, role }: { data: OrderInfoData; role: string }) => {
       alert("여행자 정보 수정에 실패하였습니다.");
     }
   }, [isError, error]);
-
-  useEffect(() => {
-    console.log(travelerInfoList);
-  }, [travelerInfoList]);
 
   useEffect(() => {
     setTravelerInfoList(data.travelerInfos);

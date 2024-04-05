@@ -39,10 +39,6 @@ const TravelProduct = () => {
     }
   }, [location.state, category]);
 
-  useEffect(() => {
-    console.log(tagCheckList);
-  }, [tagCheckList]);
-
   const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
     setTagSubmit(true);

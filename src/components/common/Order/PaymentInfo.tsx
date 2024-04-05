@@ -21,7 +21,6 @@ const PaymentInfo = ({
   const viewSizeState = useRecoilValue(viewSize);
   const { data, isError, errors } = useGetPaymentInfo(idList);
   const [totalAmount, setTotalAmount] = useState(0);
-  console.log(data);
 
   const handleAmount = (amount: number) => {
     setTotalAmount((prev) => prev + amount);

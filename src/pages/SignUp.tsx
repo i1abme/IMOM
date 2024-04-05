@@ -133,7 +133,6 @@ const SignUp = () => {
         break;
     }
   };
-  console.log(baby);
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGender(e.target.value);
@@ -202,10 +201,10 @@ const SignUp = () => {
   return (
     <>
       <div className="flex flex-col w-full h-full justify-center items-center ">
-        <img src="/subLogo.svg" className="w-[20%] mb-10" />
-        <div className="w-full  border-y border-main-color py-10 flex justify-center ">
-          <div className="flex w-1/3 flex-col justify-center items-center h-full rounded-3xl  sm:w-3/4 md:w-2/3 lg:w-1/2 ">
-            <h2 className="font-bold text-2xl text-main-color mb-10">
+        <img src="/subLogo.svg" className="w-[20%] mb-10 max-sm:w-[50%]" />
+        <div className="w-full py-10 flex justify-center max-xsm:p-0">
+          <div className="flex w-1/3 flex-col justify-center items-center h-full rounded-3xl max-xsm:w-full max-sm:w-full max-xsm:bg-main-color max-xsm:bg-opacity-10">
+            <h2 className="font-bold text-2xl text-main-color mb-10 whitespace-nowrap">
               필수항목입력
             </h2>
             <div className="flex flex-col w-full">
@@ -334,8 +333,8 @@ const SignUp = () => {
           </div>
         </div>
         <div className="w-full flex justify-center">
-          <div className="w-1/3 mt-10  rounded-3xl  flex flex-col items-center  sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 className="font-bold text-main-color my-10 text-2xl">
+          <div className="w-1/3 mt-10  rounded-3xl  flex flex-col items-center max-xsm:w-full max-sm:w-full">
+            <h2 className="font-bold text-main-color my-10 text-2xl whitespace-nowrap">
               선택입력항목
             </h2>
             <div className="w-full">
@@ -360,7 +359,7 @@ const SignUp = () => {
             <SignUpTerms setMarketCheck={setMarketCheck} />
           </div>
         </div>
-        <div className="w-1/3">
+        <div className="w-1/3 max-xsm:w-full max-sm:w-full">
           <LoginSignUpBtn label="회원가입" onClick={handleSignUpClick} />
         </div>
       </div>

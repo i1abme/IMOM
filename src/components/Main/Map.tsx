@@ -4,14 +4,13 @@ import { useState } from "react";
 import CountryImgs from "./CountryImgs";
 import { useRecoilValue } from "recoil";
 import { viewSize } from "../../atom/atom";
-import { COUNTRY_INFO_IMG_DATA } from "../../constants/mapdata";
+import InfoImg from "./InfoImg";
 
 const Map = () => {
   const viewSizeState = useRecoilValue(viewSize);
   const [showImg, setShowImg] = useState<string | null>(null);
   const handleMouseOver = (event: React.MouseEvent<HTMLDivElement>) => {
     const ariaLabel = event.currentTarget.getAttribute("aria-label");
-    console.log("aria-label:", ariaLabel);
     setShowImg(() => ariaLabel);
   };
   const handleMouseOut = () => {
@@ -105,21 +104,7 @@ const Map = () => {
           islabelFirst={true}
         />
       </div>
-      {showImg !== null && (
-        <img
-          src={
-            viewSizeState === "web"
-              ? COUNTRY_INFO_IMG_DATA[
-                  showImg as keyof typeof COUNTRY_INFO_IMG_DATA
-                ]?.web
-              : COUNTRY_INFO_IMG_DATA[
-                  showImg as keyof typeof COUNTRY_INFO_IMG_DATA
-                ]?.mobile
-          }
-          alt="country info"
-          className="absolute z-20 bottom-[1%] right-[18%] max-xsm:bottom-0 max-xsm:right-[0%]"
-        />
-      )}
+      <InfoImg showImg={showImg} viewSizeState={viewSizeState} />
     </div>
   );
 };

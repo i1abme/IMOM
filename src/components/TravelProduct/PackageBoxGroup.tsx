@@ -29,23 +29,15 @@ const PackageBoxGroup = ({
   } = useGetPackages(tagSubmit, countryClick);
 
   useEffect(() => {
-    // console용 useEffect
-    console.log(packageData);
-  }, [packageData]);
-
-  useEffect(() => {
     if (tagData) {
-      console.log(`tagData`, tagData);
       setPackageData(tagData);
     }
   }, [tagData]);
 
   useEffect(() => {
     if (countryData && !tagSubmit) {
-      console.log(`country`, countryData);
       setPackageData(countryData);
     }
-    console.log(countryClick);
   }, [countryData, countryClick, tagSubmit]);
 
   useEffect(() => {

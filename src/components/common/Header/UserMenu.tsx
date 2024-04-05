@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { loginCheck, userChildName } from "../../../atom/atom";
 import userInstance from "../../../api/userInstance";
-const UserMenu = () => {
+const UserMenu = ({ handleMenuClose }: { handleMenuClose?: () => void }) => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(loginCheck);
   const isAdmin =
     window.localStorage.getItem("role") === "ROLE_ADMIN" ? true : false;
-  console.log(window.localStorage.getItem("role"));
   const resetName = useResetRecoilState(userChildName);
 
   const handleLogoutClick = () => {
@@ -20,7 +20,11 @@ const UserMenu = () => {
             window.localStorage.removeItem("refreshToken");
             window.localStorage.removeItem("role");
             resetName();
+            navigate("/");
             alert("로그아웃 완료!");
+            if (handleMenuClose) {
+              handleMenuClose();
+            }
           }
         })
         .catch((err) => console.error(err));
@@ -30,23 +34,32 @@ const UserMenu = () => {
     <>
       {!isLogin ? (
         <div className="flex gap-[12px] justify-between text-[10px] text-sub-black max-xsm:items-center max-xsm:text-[11px]">
-          <Link to={"/login"} className="max-xsm:flex max-xsm:gap-[5px]">
+          <button
+            onClick={() => navigate("/login")}
+            onTouchStart={() => navigate("/login")}
+            className="max-xsm:flex-row max-xsm:gap-[5px] flex items-center flex-col"
+          >
             <img
               src="/login.svg"
               alt="login"
-              className="w-[30px] h-[30px] max-xsm:w-[18px] max-xsm:h-[21px]"
+              className="w-[30px] h-[30px] max-xsm:w-[18px] max-xsm:h-[21px] "
             />
             <button type="button">로그인</button>
-          </Link>
-          <Link to={"/signup"} className="hidden max-xsm:inline">
+          </button>
+          <button
+            onClick={() => navigate("/signup")}
+            onTouchStart={() => navigate("/signup")}
+            className="hidden max-xsm:inline"
+          >
             <button type="button">회원가입</button>
-          </Link>
+          </button>
         </div>
       ) : (
         <div className="flex items-center justify-center text-[10px] text-sub-black gap-[12px]">
           {!isAdmin ? (
-            <Link
-              to={"/editmember"}
+            <button
+              onClick={() => navigate("/mypageorderinfo")}
+              onTouchStart={() => navigate("/mypageorderinfo")}
               className="flex justify-center flex-col items-center max-xsm:hidden"
             >
               <img
@@ -55,10 +68,10 @@ const UserMenu = () => {
                 className="w-[30px] h-[30px]"
               />
               마이페이지
-            </Link>
+            </button>
           ) : (
-            <Link
-              to={"/mainmanager"}
+            <button
+              onClick={() => navigate("/mainmanager")}
               className="flex justify-center flex-col items-center max-xsm:hidden"
             >
               <img
@@ -67,11 +80,12 @@ const UserMenu = () => {
                 className="w-[30px] h-[30px]"
               />
               관리자페이지
-            </Link>
+            </button>
           )}
           <button
             className="flex justify-center flex-col items-center max-xsm:flex-row max-xsm:gap-[5px]"
             onClick={handleLogoutClick}
+            onTouchStart={handleLogoutClick}
           >
             <img
               src="/sublogout.svg"

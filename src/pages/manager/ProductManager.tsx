@@ -9,6 +9,7 @@ import { useGetPackage } from "../../api/useGetPackage";
 import { useSetRecoilState } from "recoil";
 import { saveState } from "../../atom/atom";
 import CustomPagination from "../../components/common/CustomPagination";
+import ManagerTitle from "../../components/Manager/ManagerTitle";
 
 type ProductData = {
   endDate: string;
@@ -249,7 +250,7 @@ const ProductManager = () => {
 
   return (
     <div className="w-full pr-10">
-      <h2>상품목록</h2>
+      <ManagerTitle title="상품 목록" />
       <div className="mb-2">
         <div className="flex  border-y w-full h-10 items-center ">
           <div className="h-full w-40 flex justify-center items-center bg-gray-300">

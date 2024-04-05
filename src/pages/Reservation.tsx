@@ -193,10 +193,6 @@ const Reservation = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(travelerInfoList);
-  }, [travelerInfoList]);
-
   return (
     <div className="flex flex-col items-center gap-[80px] w-full max-xsm:px-[16px] max-xsm:gap-[24px]">
       {viewSizeState === "web" && (

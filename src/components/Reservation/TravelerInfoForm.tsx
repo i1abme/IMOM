@@ -87,7 +87,6 @@ const TravelerInfoForm = ({
   };
 
   const handleInput = (id: keyof travelerInfo, value: string) => {
-    console.log(value);
     const updatedInfo = { ...info, [id]: value };
     setInfo(() => updatedInfo);
     handleTravelerInfo(travelerId, updatedInfo);
@@ -214,7 +213,7 @@ const TravelerInfoForm = ({
               <input
                 className={`disabled:bg-transparent ${
                   animationTrigger && role === "대표1인" ? "animate" : ""
-                }`}
+                } w-[180px]`}
                 id="enFirstName"
                 placeholder="영문 성을 입력하세요"
                 value={info.enFirstName}
@@ -233,7 +232,7 @@ const TravelerInfoForm = ({
               <input
                 className={`disabled:bg-transparent ${
                   animationTrigger && role === "대표1인" ? "animate" : ""
-                }`}
+                } w-[180px]`}
                 id="enLastName"
                 placeholder="영문 이름을 입력하세요"
                 value={info.enLastName}

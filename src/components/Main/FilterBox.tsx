@@ -1,4 +1,3 @@
-import TagDropdown from "./TagDropdown";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetTags from "../../queries/tags/useGetTags";
@@ -7,6 +6,7 @@ import useGetUserChildName from "../../queries/users/useGetUserChildName";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginCheck, userChildName } from "../../atom/atom";
 import FilterBoxImg from "/public/main_filterbox.png";
+import TagDropdown from "./TagDropdown";
 
 const FilterBox = () => {
   const isLogin = useRecoilValue(loginCheck);
@@ -36,10 +36,6 @@ const FilterBox = () => {
   const handleSubmit = () => {
     navigate("/travelproduct", { state: { tagCheckList } });
   };
-
-  useEffect(() => {
-    console.log(tagCheckList);
-  }, [tagCheckList]);
 
   useEffect(() => {
     if (childNameData && childNameData.childName.length > 0)

@@ -9,7 +9,7 @@ const Button = ({ label, loc }: ButtonProps) => {
   const navigation = useNavigate();
   return (
     <button
-      className="absolute backBtn text-main-color font-bold"
+      className="absolute backBtn text-main-color font-bold max-xsm:hidden"
       onClick={() => navigation(`/${loc}`)}
     >{`< ${label}`}</button>
   );

@@ -24,7 +24,6 @@ const Login = () => {
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data);
             setLoginCheck(true);
             window.localStorage.setItem("role", res.data.data.role);
             window.localStorage.setItem("token", res.data.data.accessToken);
@@ -53,10 +52,10 @@ const Login = () => {
   };
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="flex flex-col justify-center h-full items-center sm:w-[300px] md:w-[400px] lg:w-[500px]">
+      <div className="flex flex-col xsm:justify-center items-center h-full  sm:w-[300px] md:w-[400px] lg:w-[500px]">
         <img
           src="/subLogo.svg"
-          className="sm:w-[200px] md:w-[300px] lg:w-[400px]"
+          className="max-sm:w-[200px] max-md:w-[300px] max-lg:w-[400px]"
         />
         <LoginInput
           placeholder={"이메일 계정"}

@@ -14,7 +14,6 @@ const ProductCalendar = ({ packageId }: { packageId: number }) => {
   const [highlightDates, setHighlightDates] = useState<CalendarProductDates>(
     {}
   );
-  console.log(data);
 
   const handleCalendar = (e: [Date | null, Date | null]) => {
     if (!e[0]) return;

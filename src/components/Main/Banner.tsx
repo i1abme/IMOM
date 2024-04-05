@@ -10,8 +10,6 @@ const Banner = () => {
   const viewSizeState = useRecoilValue(viewSize);
   const { data, isPending, isError, error } = useGetBanners(viewSizeState);
 
-  console.log(data);
-
   if (isPending) {
     return <div>로딩 중...</div>;
   }

@@ -17,9 +17,6 @@ const PaymentCheckout = () => {
 
   const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
 
-  console.log(paymentInfo);
-  console.log(tossPaymentInfo);
-
   useEffect(() => {
     if (paymentInfo) {
       const orderId = paymentInfo.productId
@@ -74,8 +71,8 @@ const PaymentCheckout = () => {
                 orderName: tossPaymentInfo.packageName,
                 customerName: tossPaymentInfo.userName,
                 customerEmail: tossPaymentInfo.email,
-                successUrl: `${window.location.origin}/success?payFor=${payfor}`,
-                failUrl: `${window.location.origin}/fail`,
+                successUrl: `${window.location.origin}/paymentcheckout/after/success?payFor=${payfor}`,
+                failUrl: `${window.location.origin}/paymentcheckout/after/fail`,
               });
             } catch (err) {
               console.log(err);

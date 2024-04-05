@@ -45,6 +45,7 @@ const CountBtn = ({
           <button
             type="button"
             onClick={handleDecrease}
+            onTouchStart={handleDecrease}
             className="text-[#707070]"
           >
             -
@@ -53,6 +54,7 @@ const CountBtn = ({
           <button
             type="button"
             onClick={handleIncrease}
+            onTouchStart={handleIncrease}
             className="text-[#707070]"
           >
             +

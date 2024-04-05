@@ -27,7 +27,7 @@ const OrderManager = () => {
     country: null,
     orderState: null,
     userNameOrder: null, //
-    order: null, // 주문일시 오름차순 : 0 , 내림차순 : 1
+    order: 1, // 주문일시 오름차순 : 0 , 내림차순 : 1
     start: null, // 출발일 오름차순 : 0 , 내림차순 : 1
     type: "", // 검색어 타입
     target: "", // 검색어
@@ -63,7 +63,6 @@ const OrderManager = () => {
       (orderReq.orderDateMin && orderReq.orderDateMax) ||
       (!orderReq.orderDateMin && !orderReq.orderDateMax)
     ) {
-      console.log(orderReq);
       mutate();
     }
   }, [orderReq, mutate]);
@@ -72,7 +71,6 @@ const OrderManager = () => {
     if (data) {
       setOrderList(() => fillData(data.content, 10, ORDER_EMPTYDATA));
       setTotalPages(data.totalPages);
-      console.log(data);
     }
     return;
   }, [data]);
@@ -117,7 +115,6 @@ const OrderManager = () => {
       }
       return el.replace("Date", "");
     });
-    console.log(otherCategoriesReqName);
     setOrderReq((prev) => ({
       ...prev,
       [reqCategory]: prev[reqCategory as keyof OrderRequest] === 0 ? 1 : 0,
@@ -127,7 +124,6 @@ const OrderManager = () => {
   };
 
   const handlePageClick = (selected: number) => {
-    console.log(selected);
     setOrderReq((prev) => ({
       ...prev,
       offset: selected,
@@ -185,7 +181,7 @@ const OrderManager = () => {
       country: null,
       orderState: null,
       userNameOrder: null,
-      order: null, // 주문일시 오름차순 : 0 , 내림차순 : 1
+      order: 1, // 주문일시 오름차순 : 0 , 내림차순 : 1
       start: null, // 출발일 오름차순 : 0 , 내림차순 : 1
       type: "", // 검색어 타입
       target: "", // 검색어
@@ -258,7 +254,7 @@ const OrderManager = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-[27px] mr-20 items-center min-w-fit">
+    <div className="w-full flex flex-col gap-[27px] mr-20 items-center min-w-fit pr-10">
       <div className="flex self-start w-fit gap-[30px] ">
         <ManagerTitle title="주문목록" />
         {excelData && excelData.length > 0 && (

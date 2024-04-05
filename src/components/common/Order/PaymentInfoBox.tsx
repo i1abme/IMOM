@@ -59,7 +59,7 @@ const PaymentInfoBox = ({
                 : (info[key as keyof typeof info] as string)
             }
             rowStyle="min-w-fit border-b border-sub-black max-xsm:border-main-color max-xsm:border-b-[0.5px] max-xsm:border-x-0"
-            headerStyle="max-xsm:max-w-[100px]"
+            headerStyle="max-xsm:max-w-[100px] whitespace-nowrap"
             key={`${key}_${idx}`}
           />
         ))}

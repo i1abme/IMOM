@@ -42,19 +42,18 @@ const AmountChangeHistory = ({
           <div className="border-y border-sub-black">
             <TableRow category="변경사유" header={false} content={info.memo} />
           </div>
-          <div className="flex">
-            <div className="w-[33%]"></div>
+          <div className="flex w-[66.5%]">
             <TableRow
               category="변경후 총액"
               header={false}
               content={`${amountFormat(info.totalPriceSnapshot)} 원`}
-              rowStyle={"w-[33%] min-w-fit"}
+              rowStyle={"min-w-fit"}
             />
             <TableRow
               category="변경후 잔액"
               header={false}
               content={`${amountFormat(info.balanceSnapshot)} 원`}
-              rowStyle={"w-[33%] min-w-fit"}
+              rowStyle={"min-w-fit"}
             />
           </div>
         </div>

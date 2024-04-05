@@ -7,7 +7,6 @@ import TableRow from "../common/Order/TableRow";
 
 const UserInfo = ({ userdata }: { userdata: User | undefined }) => {
   const viewSizeState = useRecoilValue(viewSize);
-  console.log(userdata);
   return (
     <section>
       <SectionTitle title="예약자 정보" />

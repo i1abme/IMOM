@@ -45,9 +45,9 @@ const getNewToken = async () => {
       });
     return window.localStorage.getItem("token");
   } catch (error) {
-    window.localStorage.removeItem("token");
-    window.localStorage.removeItem("refreshToken");
-    window.localStorage.removeItem("admin");
+    // window.localStorage.removeItem("token");
+    // window.localStorage.removeItem("refreshToken");
+    // window.localStorage.removeItem("role");
     throw new Error("Token refresh failed");
   }
 };

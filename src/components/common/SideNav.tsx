@@ -9,7 +9,8 @@ const SideNav = () => {
   );
   const managerNavOption = [
     { title: "홈으로 가기", prams: "/" },
-    { title: "메인 관리 페이지", prams: "/mainmanager" },
+    { title: "메인 배너", prams: "/mainmanager" },
+    { title: "모바일 메인 배너", prams: "/mbmainmanager" },
     { title: "패키지 관리 페이지", prams: "/packagemanager" },
     { title: "상품 관리 페이지", prams: "/productmanager" },
     { title: "주문 관리 페이지", prams: "/ordermanager" },

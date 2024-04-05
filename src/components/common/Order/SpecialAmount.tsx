@@ -54,13 +54,11 @@ const SpecialAmount = ({
   };
 
   const handleInput = (id: string, value: string | number) => {
-    console.log(typeof value);
     if (amountType === "할인금" && id === "additionalPrice" && +value > 0) {
       setAmount((prev) => ({ ...prev, [id]: -value }));
     } else {
       setAmount((prev) => ({ ...prev, [id]: value }));
     }
-    console.log(id, value);
   };
 
   const handleAmountType = (id: string, value: string) => {
